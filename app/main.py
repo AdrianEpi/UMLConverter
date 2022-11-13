@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-11-13 16:57:42
+#   @Last Modified time: 2022-11-13 18:59:53
 #   @Description:        ...
 
 
@@ -15,17 +15,14 @@
 import ast
 import inspect
 from modules.ast_module.node import Node
-
-with open('../samples/Simple_Samples/AccessModifiers/Private/main.py', 'r') as f:
-    lines = f.readlines()
-f.close()
-
-string = ""
-for i in lines:
-	string = string + i
+from modules.reader_module.reader import Reader
 
 
-myAst = ast.dump(ast.parse(string), annotate_fields=True, include_attributes=False, indent=4)
+filename = "../samples/Simple_Samples/AccessModifiers/Private/main.py"
+reader = Reader(filename)
+
+
+myAst = ast.dump(ast.parse(reader.getData()), annotate_fields=True, include_attributes=False, indent=4)
 l = myAst.split("\n")
 
 for i in l:
