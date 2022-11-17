@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-11-14 09:43:46
+#   @Last Modified time: 2022-11-17 13:26:56
 #   @Description:        ...
 
 
@@ -19,31 +19,92 @@ from modules.file_module.file import File
 from modules.file_module.searcher import Searcher
 
 
-filename = "../samples/Simple_Samples/AccessModifiers/Private/main.py"
+
+
+filename = "testclass.py"
 file = File(filename)
 
 
 myAst = ast.dump(ast.parse(file.getData()), annotate_fields=True, include_attributes=False, indent=4)
 l = myAst.split("\n")
-
-path = "./"
-ext = ".py"
-s = Searcher()
-l = s.lookForFiles(path, ext)
-#print(l)
-
+ns = []
 for i in l:
-	f = File(i)
-	classAST = ast.dump(ast.parse(f.getData()), annotate_fields=True, include_attributes=False, indent=4)
-	print("\n\n\n")
-	print(classAST)
-	
-# for i in l:
-# 	tmp = Node(i)
-# 	#print(tmp.getIndentation())
-# 	print(tmp.getData())
-# 	#print(tmp.getRawData())
-# 	#print("\n")
+	ns.append(Node(i))
+print(myAst)
 
-# #print(myAst)
+
+# path = "../samples/Simple_Samples/AccessModifiers/Private"
+# ext = ".py"
+# s = Searcher()
+# files = s.lookForFiles(path, ext)
+# #print(l)
+# l = []
+# for i in files:
+# 	f = File(i)
+# 	classAST = ast.dump(ast.parse(f.getData()), annotate_fields=True, include_attributes=False, indent=4)
+# 	l = classAST.split("\n")
+# 	print("\n\n\n")
+# 	print(classAST)
+
+
+
+
+
+
+
+
+
+
+
+
+# # filename = "../samples/Simple_Samples/AccessModifiers/Private/main.py"
+# # file = File(filename)
+
+
+# # myAst = ast.dump(ast.parse(file.getData()), annotate_fields=True, include_attributes=False, indent=4)
+# # l = myAst.split("\n")
+
+# #path = "./"
+# path = "../samples/Simple_Samples/AccessModifiers/Private"
+# ext = ".py"
+# s = Searcher()
+# files = s.lookForFiles(path, ext)
+# #print(l)
+# l = []
+# for i in files:
+# 	f = File(i)
+# 	classAST = ast.dump(ast.parse(f.getData()), annotate_fields=True, include_attributes=False, indent=4)
+# 	l = classAST.split("\n")
+# 	print("\n\n\n")
+# 	print(classAST)
+# 	# parser = ast.parse(f.getData(), type_comments=False)
+# 	# print(ast.iter_fields(parser))
+# 	# for k in ast.walk(parser):
+# 	# 	for j in ast.iter_fields(k):
+# 	# 		print(j)
+
+# # def generateTree(l:list) -> Node:
+# # 	tmpTree = []
+# # 	tree = []
+# # 	for i in l:
+# # 		tmpTree.append(Node(i))
+
+# # 	tree.append(Node("root"))
+# # 	for i in range(len(tmpTree)):
+# # 		print(i)
+
+
+# # generateTree(l)
+
+
+
+
+# # for i in l:
+# # 	tmp = Node(i)
+# # 	#print(tmp.getIndentation())
+# # 	print(tmp.getData())
+# # 	#print(tmp.getRawData())
+# # 	#print("\n")
+
+# # #print(myAst)
 

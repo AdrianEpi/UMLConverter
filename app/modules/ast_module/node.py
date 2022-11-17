@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-11-13 18:58:42
+#   @Last Modified time: 2022-11-14 20:39:43
 #   @Description:        This file describes a node and its functionality
 
 import math
@@ -22,6 +22,7 @@ class Node:
 	indentation = int
 	data = str
 	indentationLevel = int
+	args = list
 
 	def __init__(self, line: str):
 		"""
@@ -33,6 +34,7 @@ class Node:
 		self.indentation = 0
 		self.data = ""
 		self.indentationLevel = 0
+		self.args = []
 		self.__generateNode(line)
 
 	
