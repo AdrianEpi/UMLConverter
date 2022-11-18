@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
 #   @Proyect:            UMLConverter
 #   @Author:             Adrian Epifanio
-#   @File:               node.py
+#   @File:               line.py
 #   @Author:             Adrian Epifanio
 #   @Date:               2022-11-13 16:25:18
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-11-14 20:39:43
-#   @Description:        This file describes a node and its functionality
+#   @Last Modified time: 2022-11-18 13:42:35
+#   @Description:        This file describes a line and its functionality
 
 import math
 
 
 INDENTATION_SIZE = 4
 
-class Node:
+class Line:
 	"""
-	This class describes a node.
+	This class describes a string line.
 	"""
 	indentation = int
 	data = str
@@ -35,7 +35,7 @@ class Node:
 		self.data = ""
 		self.indentationLevel = 0
 		self.args = []
-		self.__generateNode(line)
+		self.__generateLine(line)
 
 	
 	def getIndentation(self)  -> int:
@@ -78,9 +78,9 @@ class Node:
 		return self.indentationLevel
 
 
-	def __generateNode(self, line: str):
+	def __generateLine(self, line: str):
 		"""
-		Generates the node by reading the data from line
+		Generates the line by reading the data from line
 
 		:param      line:  The line
 		:type       line:  str

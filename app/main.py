@@ -7,17 +7,17 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-11-17 13:26:56
+#   @Last Modified time: 2022-11-18 18:30:20
 #   @Description:        ...
 
 
 
 import ast
 import inspect
-from modules.ast_module.node import Node
+from modules.ast_module.line import Line
 from modules.file_module.file import File
 from modules.file_module.searcher import Searcher
-
+from modules.ast_module.pyAST import PyAST
 
 
 
@@ -28,23 +28,24 @@ file = File(filename)
 myAst = ast.dump(ast.parse(file.getData()), annotate_fields=True, include_attributes=False, indent=4)
 l = myAst.split("\n")
 ns = []
-for i in l:
-	ns.append(Node(i))
-print(myAst)
+for i in range(len(l)):
+	ns.append(Line(l[i]))
+	print(str(i) + "    " + l[i])
+
+tree = PyAST()
+tree.generateTree(ns)
+tree.print()
 
 
-# path = "../samples/Simple_Samples/AccessModifiers/Private"
-# ext = ".py"
-# s = Searcher()
-# files = s.lookForFiles(path, ext)
-# #print(l)
-# l = []
-# for i in files:
-# 	f = File(i)
-# 	classAST = ast.dump(ast.parse(f.getData()), annotate_fields=True, include_attributes=False, indent=4)
-# 	l = classAST.split("\n")
-# 	print("\n\n\n")
-# 	print(classAST)
+
+
+
+
+
+
+
+
+
 
 
 
@@ -83,13 +84,13 @@ print(myAst)
 # 	# 	for j in ast.iter_fields(k):
 # 	# 		print(j)
 
-# # def generateTree(l:list) -> Node:
+# # def generateTree(l:list) -> Line:
 # # 	tmpTree = []
 # # 	tree = []
 # # 	for i in l:
-# # 		tmpTree.append(Node(i))
+# # 		tmpTree.append(Line(i))
 
-# # 	tree.append(Node("root"))
+# # 	tree.append(Line("root"))
 # # 	for i in range(len(tmpTree)):
 # # 		print(i)
 
@@ -100,7 +101,7 @@ print(myAst)
 
 
 # # for i in l:
-# # 	tmp = Node(i)
+# # 	tmp = Line(i)
 # # 	#print(tmp.getIndentation())
 # # 	print(tmp.getData())
 # # 	#print(tmp.getRawData())

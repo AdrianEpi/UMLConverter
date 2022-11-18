@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-11-17 22:38:07
+#   @Last Modified time: 2022-11-18 21:39:12
 #   @Description:        ...
 
 
@@ -29,7 +29,7 @@ class PythonNode:
 	nodeType: str 
 	name: str or None
 	value: str or int or list or None #returns for functions
-	args: list or None
+	args: list or None # inheritance for classes
 	body: list or None
 
 	def __init__(self):
@@ -81,23 +81,38 @@ class PythonNode:
 		self.body = newBody
 
 
-	def addArg(self, node: PythonNode):
+	def addArg(self, node):
 		self.args.append(node)
 
 
+	def addBody(self, node):
+		self.body.append(node)
+
+
 	def toString(self, indent = 1) -> str:
-		output = ""
+		output = "\n"
 		tab = str(indent * "\t")
-		output += tab + "Node:\n" + tab + "Type: " + self.nodeType
+		output += tab + self.nodeType
 		if(self.name):
-			output += "\n" + tab + "Name: " + self.name
+			output += "\n" + tab + "    Name: " + self.name
 		if(self.value):
-			output += "\n" + tab + "Value: " + self.value
+			output += "\n" + tab + "    Value: " + str(self.value)
 		if(self.args):
-			output += "\n" + tab + "Args: ["
+			output += "\n" + tab + "    Args: ["
 			for i in self.args:
-				output += "\n" + i.toString(indent + 1)
-			output += "]"
+				if (isinstance(i, PythonNode)):
+					output += "\n" + i.toString(indent + 1)
+				else:
+					output += "\n" + str((indent + 1) * "\t") + i
+			output += "\n" + tab + "    ]"
+		if(self.body):
+			output += "\n" + tab + "    Body: ["
+			for i in self.body:
+				if (isinstance(i, PythonNode)):
+					output += "\n" + i.toString(indent + 1)
+				else:
+					output += "\n" + str((indent + 1) * "\t")
+			output += "\n" + tab + "    ]"
 
 		return output
 
