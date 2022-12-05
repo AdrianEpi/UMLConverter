@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-05 10:28:14
+#   @Last Modified time: 2022-12-05 10:46:09
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from modules.ast_module.pythonNode import PythonNode
@@ -38,16 +38,16 @@ class PyAST:
 		return self.dataList
 
 
-	# def getTree (self) -> PythonNode:
-	# 	return self.tree
+	def getTree (self) -> PythonNode:
+		return self.tree
 
 
-	# def setDataList (self, l: list):
-	# 	self.dataList = l
+	def setDataList (self, l: list):
+		self.dataList = l
 
 
-	# def setTree (self, t: PythonNode):
-	# 	self.tree = t
+	def setTree (self, t: PythonNode):
+		self.tree = t
 
 
 	# def generateTree(self, l: list):

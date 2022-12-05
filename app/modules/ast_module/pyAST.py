@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-05 10:24:42
+#   @Last Modified time: 2022-12-05 10:45:55
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from modules.ast_module.pythonNode import PythonNode
@@ -365,7 +365,8 @@ class PyAST:
 						node.addBody(n)
 					elif isinstance(n, list):
 						for j in n:
-							node.addBody(j)
+							if (j.getName() != j.getValue()):
+								node.addBody(j)
 					else:
 						raise Exception("Error in PyAST.generateFunctionDef() (ast line {}), not valid dataType for body".format(pos))
 			elif (self.dataList[i].getIndentationLevel() <= self.dataList[bodyPos].getIndentationLevel()):
