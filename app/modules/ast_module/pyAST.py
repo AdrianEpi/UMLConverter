@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-05 10:45:55
+#   @Last Modified time: 2022-12-05 11:21:45
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from modules.ast_module.pythonNode import PythonNode
@@ -242,6 +242,7 @@ class PyAST:
 					i += 1
 					assigns.append(node)
 			if ("value=Call(" == self.dataList[i].getData()): # No elif, already incremented
+				print("AAAAAAA")
 				tmp = self.generateFunctionCall(i)
 				for j in assigns:
 					j.setValue(tmp)
@@ -268,7 +269,13 @@ class PyAST:
 	def generateFunctionCall(self, pos: int) -> str: 
 		i = pos + 1
 		expectedIndent = self.dataList[i].getIndentationLevel()
-		func = self.findName(self.dataList[i].getData()) + "("
+		func = ""
+		f = False
+		if "func=Attribute(" in self.dataList[i].getData():
+			func = self.generateAttribute(i)
+		else:
+			f = True
+			func=self.findName(self.dataList[i].getData()) + "("
 		if self.dataList[i + 1].getData() == "args=[":
 			i += 2
 			while True:
@@ -278,14 +285,15 @@ class PyAST:
 					break
 				i += 1
 			func = func[0:(len(func) - 2)]
-		func += ")"
+		if f:
+			func += ")"
 		return func
 
 
 
 	def generateAttribute(self, pos: int) -> str: # Generates class attributes ["self", "tree", "data"] = self.tree.data
 		attrib = ""
-		if ("value=Attribute(" == self.dataList[pos + 1]):
+		if ("value=Attribute(" == self.dataList[pos + 1]) or ("func=Attribute(" == self.dataList[pos + 1]):
 			attrib = self.generateAttribute(pos + 1)
 		elif ("value=Name(" in self.dataList[pos + 1].getData()):
 			attrib = self.findName(self.dataList[pos + 1].getData())
