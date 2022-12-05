@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-05 12:03:08
+#   @Last Modified time: 2022-12-05 14:33:41
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from modules.ast_module.pythonNode import PythonNode
@@ -145,59 +145,6 @@ class PyAST:
 		return node
 
 
-	# def generateAssign(self, pos: int):
-	# 	# assigns = []
-	# 	# for i in range(pos + 2, len(self.dataList), 1):
-	# 	# 	if ("Name(id='" in self.dataList[i].getData()) and ("', ctx=Store()" in self.dataList[i].getData()):
-	# 	# 		node = PythonNode()
-	# 	# 		node.setNodeType("Assign")
-	# 	# 		node.setName(self.findName(self.dataList[i].getData()))
-	# 	# 		assigns.append(node)
-	# 	# 	elif ("value=Constant" in self.dataList[i].getData()):
-	# 	# 		for j in assigns:
-	# 	# 			j.setValue(self.findValue(self.dataList[i].getData()))
-	# 	# 		break
-	# 	# 	elif ("value=Call" in self.dataList[i].getData()):
-	# 	# 		for j in assigns:
-	# 	# 			j.setValue(self.findName(self.dataList[i + 1].getData()))
-	# 	# 		break
-	# 	# 	else:
-	# 	# 		raise Exception("Error in PyAST.generateAssign() (ast line {}), not defined structure".format(pos))
-	# 	# return assigns
-	# 	# 
-	# 	assigns = []
-	# 	indent = self.dataList[pos].getIndentationLevel()
-
-	# 	i = pos + 1
-	# 	# while i < len(self.dataList):
-	# 	# 	if (dataList[i].getIndentationLevel() <= indent):
-	# 	# 		break
-	# 	# 	if ("Name(id='" in self.dataList[i].getData()):
-	# 	# 		if ("', ctx=Store()" in self.dataList[i].getData()): # Assign a str, int ...
-
-	# 	# 		elif ("', ctx=Load()" in self.dataList[i].getData()): # Assign a func or class
-
-
-
-
-	# 	for i in range(pos + 2, len(self.dataList), 1):
-	# 		if ("Name(id='" in self.dataList[i].getData()) and ("', ctx=Store()" in self.dataList[i].getData()):
-	# 			node = PythonNode()
-	# 			node.setNodeType("Assign")
-	# 			node.setName(self.findName(self.dataList[i].getData()))
-	# 			assigns.append(node)
-	# 		elif ("value=Constant" in self.dataList[i].getData()):
-	# 			for j in assigns:
-	# 				j.setValue(self.findValue(self.dataList[i].getData()))
-	# 			break
-	# 		elif ("value=Call" in self.dataList[i].getData()):
-	# 			for j in assigns:
-	# 				j.setValue(self.findName(self.dataList[i + 1].getData()))
-	# 			break
-	# 		else:
-	# 			raise Exception("Error in PyAST.generateAssign() (ast line {}), not defined structure".format(pos))
-	# 	return assigns
-
 	def generateAssign(self, pos: int):
 		assigns = []
 		i = pos + 1
@@ -242,7 +189,6 @@ class PyAST:
 					i += 1
 					assigns.append(node)
 			if ("value=Call(" == self.dataList[i].getData()): # No elif, already incremented
-				print("AAAAAAA")
 				tmp = self.generateFunctionCall(i)
 				for j in assigns:
 					j.setValue(tmp)
@@ -260,6 +206,10 @@ class PyAST:
 				tmp = self.findName(self.dataList[i].getData())
 				for j in assigns:
 					j.setValue(tmp)
+				break
+			if ("value=BinOp(" in self.dataList[i].getData()):
+				for j in assigns:
+					j.setValue("BinaryOperation")
 				break
 			i += 1
 		return assigns
@@ -297,11 +247,14 @@ class PyAST:
 			attrib = self.findName(self.dataList[pos + 1].getData())
 		elif ("func=Attribute(" == self.dataList[pos].getData()):
 			attrib = self.generateAttribute(pos + 1)
+		elif self.dataList[pos].getData() == "value=Subscript(":
+			return self.generateAttribute(pos + 1)
 		elif ("value=Attribute(" == self.dataList[pos + 1].getData()):
 			attrib = self.generateAttribute(pos + 1)
 		elif (self.dataList[pos].getData() == "value=Call("):
 			attrib = self.generateFunctionCall(pos)
 			return attrib
+
 		expectedIndent = self.dataList[pos].getIndentationLevel() + 1
 		i = pos + 1
 		while True:
@@ -329,15 +282,10 @@ class PyAST:
 			node.setValue(self.findName(self.dataList[pos + 2].getData()))
 		elif "annotation=Call" in self.dataList[pos + 2].getData():
 			node.setValue(self.findName(self.dataList[pos + 3].getData()))
-		elif "annotation=BoolOp" in self.dataList[pos + 2].getData():
-			l = []
-			for i in range(pos + 5, len(self.dataList), 1):
-				if ("Name(id='" in self.dataList[i].getData()) and ("', ctx=Load()" in self.dataList[i].getData()):
-					l.append(self.findName(self.dataList[i].getData()))
-				elif ("simple=" in self.dataList[i].getData()):
-					break
-				else:
-					raise Exception("Error in PyAST.generateAssign() (ast line {}), not defined structure".format(pos))
+
+		elif ("annotation=BoolOp(" in self.dataList[pos + 2].getData()):
+			l = self.getBoolOp(pos + 4)
+			node.setValue(l)
 		else:
 			raise Exception("Error in PyAST.generateAnnAssign() (ast line {}), not value found.".format(pos))
 		return node
@@ -433,7 +381,7 @@ class PyAST:
 				if line[i] == "'":
 					value += "'"
 					isString = True
-				elif line[i] != ")" and line[i] != "," and line[i] != "=":
+				elif line[i] != ")" and line[i] != "," and line[i] != "=" and line[i] != "]":
 					value += str(line[i])
 				elif line[i] == "=":
 					break
@@ -445,9 +393,11 @@ class PyAST:
 				if line[i] == "'":
 					isString = False
 
+
+
 		if value == "":
 			raise Exception("Error in PyAST.findValue(), no value found")
-		return value
+		return value[::-1] # [::-1] reverses python string
 
 
 	def findBodyPos (self, pos: int) -> int:
@@ -461,6 +411,21 @@ class PyAST:
 					return 0 # Empty body
 		raise Exception("Error in PyAST.findBodyPos() (ast line {}), not body".format(pos))
 
+
+	def getBoolOp(self, pos: int):
+		l = []
+		expectedIndent = self.dataList[pos].getIndentationLevel() + 1
+		i = pos + 1
+		while True:
+			if (self.dataList[i].getIndentationLevel() < expectedIndent):
+				break
+			else:
+				if ("Name" in self.dataList[i].getData()):
+					l.append(self.findName(self.dataList[i].getData()))
+				else:
+					l.append(self.findValue(self.dataList[i].getData()))
+			i += 1
+		return l
 
 	def print (self):
 		print(self.tree.toString())
