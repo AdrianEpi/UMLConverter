@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-05 16:17:38
+#   @Last Modified time: 2022-12-05 16:22:39
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from modules.ast_module.pythonNode import PythonNode
@@ -62,7 +62,7 @@ class PyAST:
 				self.tree.addBody(self.generateNode(i, self.dataList[i].getData()))
 
 
-	def generateModule(self, pos: int):
+	def generateModule(self, pos: int) -> PythonNode:
 		node = PythonNode()
 		node.setNodeType("Module")
 		for i in range(pos + 2, len(self.dataList), 1):
@@ -81,7 +81,7 @@ class PyAST:
 		return node
 
 
-	def generateClassDef(self, pos: int):
+	def generateClassDef(self, pos: int) -> PythonNode:
 		node = PythonNode()
 		node.setNodeType("ClassDef")
 		node.setName(self.findName(self.dataList[pos + 1].getData()))
@@ -112,7 +112,7 @@ class PyAST:
 		return node
 
 
-	def generateImport(self, pos: int):
+	def generateImport(self, pos: int) -> list:
 		imports = []
 		for i in range(pos + 2, len(self.dataList), 1):
 			if "alias(name='" in self.dataList[i].getData():
@@ -127,7 +127,7 @@ class PyAST:
 		return imports
 
 
-	def generateImportFrom(self, pos: int):
+	def generateImportFrom(self, pos: int) -> PythonNode:
 		node = PythonNode()
 		node.setNodeType("ImportFrom")
 		imports = []
@@ -145,7 +145,7 @@ class PyAST:
 		return node
 
 
-	def generateAssign(self, pos: int):
+	def generateAssign(self, pos: int) -> list:
 		assigns = []
 		i = pos + 1
 		expectedIndent = self.dataList[i].getIndentationLevel()
@@ -270,7 +270,7 @@ class PyAST:
 
 
 
-	def generateAnnAssign(self, pos: int):
+	def generateAnnAssign(self, pos: int) -> PythonNode:
 		node = PythonNode()
 		node.setNodeType("AnnAssign")
 		if "Name(id='" in self.dataList[pos + 1].getData():
@@ -296,7 +296,7 @@ class PyAST:
 		node.setNodeType("AsyncFunctionDef")
 
 
-	def generateFunctionDef(self, pos: int):
+	def generateFunctionDef(self, pos: int) -> PythonNode:
 		node = PythonNode()
 		node.setNodeType("FunctionDef")
 		node.setName(self.findName(self.dataList[pos + 1].getData()))
@@ -422,7 +422,7 @@ class PyAST:
 					return 0 # Empty body
 		raise Exception("Error in PyAST.findBodyPos() (ast line {}), not body".format(pos))
 
-	def findReturn (self, pos: int) -> str:
+	def findReturn (self, pos: int) -> str or list:
 		expectedIndent = self.dataList[pos].getIndentationLevel()
 		for i in range(pos + 1, len(self.dataList), 1):
 			if (self.dataList[i].getIndentationLevel() <= expectedIndent):
@@ -430,6 +430,8 @@ class PyAST:
 			elif (self.dataList[i].getIndentationLevel() == (self.dataList[pos].getIndentationLevel() + 1)):
 				if "returns=Name(" in self.dataList[i].getData():
 					return self.findName(self.dataList[i].getData())
+				elif "returns=BoolOp(" in self.dataList[i].getData():
+					return self.getBoolOp(i)
 
 		raise Exception("Error in PyAST.findReturn() (ast line {}), no return found".format(pos))
 

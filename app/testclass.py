@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 #   @Proyect:            UMLConverter
 #   @Author:             Adrian Epifanio
-#   @File:               testclass.py
+#   @File:               pyAST.py
 #   @Author:             Adrian Epifanio
 #   @Date:               2022-11-17 13:08:56
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-05 16:17:49
+#   @Last Modified time: 2022-12-05 16:22:59
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from modules.ast_module.pythonNode import PythonNode
@@ -62,7 +62,7 @@ class PyAST:
 				self.tree.addBody(self.generateNode(i, self.dataList[i].getData()))
 
 
-	def generateModule(self, pos: int):
+	def generateModule(self, pos: int) -> PythonNode:
 		node = PythonNode()
 		node.setNodeType("Module")
 		for i in range(pos + 2, len(self.dataList), 1):
@@ -81,7 +81,7 @@ class PyAST:
 		return node
 
 
-	def generateClassDef(self, pos: int):
+	def generateClassDef(self, pos: int) -> PythonNode:
 		node = PythonNode()
 		node.setNodeType("ClassDef")
 		node.setName(self.findName(self.dataList[pos + 1].getData()))
@@ -112,7 +112,7 @@ class PyAST:
 		return node
 
 
-	def generateImport(self, pos: int):
+	def generateImport(self, pos: int) -> list:
 		imports = []
 		for i in range(pos + 2, len(self.dataList), 1):
 			if "alias(name='" in self.dataList[i].getData():
@@ -127,7 +127,7 @@ class PyAST:
 		return imports
 
 
-	def generateImportFrom(self, pos: int):
+	def generateImportFrom(self, pos: int) -> PythonNode:
 		node = PythonNode()
 		node.setNodeType("ImportFrom")
 		imports = []
@@ -145,7 +145,7 @@ class PyAST:
 		return node
 
 
-	def generateAssign(self, pos: int):
+	def generateAssign(self, pos: int) -> list:
 		assigns = []
 		i = pos + 1
 		expectedIndent = self.dataList[i].getIndentationLevel()
@@ -270,7 +270,7 @@ class PyAST:
 
 
 
-	def generateAnnAssign(self, pos: int):
+	def generateAnnAssign(self, pos: int) -> PythonNode:
 		node = PythonNode()
 		node.setNodeType("AnnAssign")
 		if "Name(id='" in self.dataList[pos + 1].getData():
@@ -296,7 +296,7 @@ class PyAST:
 		node.setNodeType("AsyncFunctionDef")
 
 
-	def generateFunctionDef(self, pos: int):
+	def generateFunctionDef(self, pos: int) -> PythonNode:
 		node = PythonNode()
 		node.setNodeType("FunctionDef")
 		node.setName(self.findName(self.dataList[pos + 1].getData()))
@@ -314,7 +314,6 @@ class PyAST:
 						if ("annotation=Name(" in self.dataList[i + 2].getData()):
 							param = str(self.findName(self.dataList[i + 1].getData())) + ": " + str(self.findName(self.dataList[i + 2].getData()))
 						elif ("annotation=BoolOp(" in self.dataList[i + 2].getData()):
-							print("entra")
 							param = str(self.getBoolOp(i + 2))
 						else:
 							raise Exception("Error in PyAST.generateFunctionDef() (ast line {}), not valid args type".format(i))	
@@ -342,6 +341,9 @@ class PyAST:
 			elif (self.dataList[i].getIndentationLevel() <= self.dataList[bodyPos].getIndentationLevel()):
 				break
 
+		r = self.findReturn(pos)
+		if r:
+			node.setValue(r)
 		return node
 
 
@@ -420,6 +422,19 @@ class PyAST:
 					return 0 # Empty body
 		raise Exception("Error in PyAST.findBodyPos() (ast line {}), not body".format(pos))
 
+	def findReturn (self, pos: int) -> str or list:
+		expectedIndent = self.dataList[pos].getIndentationLevel()
+		for i in range(pos + 1, len(self.dataList), 1):
+			if (self.dataList[i].getIndentationLevel() <= expectedIndent):
+				return None
+			elif (self.dataList[i].getIndentationLevel() == (self.dataList[pos].getIndentationLevel() + 1)):
+				if "returns=Name(" in self.dataList[i].getData():
+					return self.findName(self.dataList[i].getData())
+				elif "returns=BoolOp(" in self.dataList[i].getData():
+					return self.getBoolOp(i)
+
+		raise Exception("Error in PyAST.findReturn() (ast line {}), no return found".format(pos))
+
 
 	def findNextIndentPos (self, pos: int) -> int:
 		ind = self.dataList[pos].getIndentationLevel()
@@ -448,9 +463,6 @@ class PyAST:
 
 	def print (self):
 		print(self.tree.toString())
-
-
-
 
 # -*- coding: utf-8 -*-
 #   @Proyect:            UMLConverter
