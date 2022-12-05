@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-11-18 21:42:00
+#   @Last Modified time: 2022-12-05 10:24:42
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from modules.ast_module.pythonNode import PythonNode
@@ -84,7 +84,7 @@ class PyAST:
 	def generateClassDef(self, pos: int):
 		node = PythonNode()
 		node.setNodeType("ClassDef")
-		node.setName(self.dataList[pos + 1].getData())
+		node.setName(self.findName(self.dataList[pos + 1].getData()))
 		if (self.dataList[pos + 2].getData() != "bases=[],"): # The class has inheritance
 			inheritance = []
 			for i in range(pos + 3, len(self.dataList), 1):
