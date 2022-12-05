@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-05 15:48:59
+#   @Last Modified time: 2022-12-05 16:17:38
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from modules.ast_module.pythonNode import PythonNode
@@ -341,6 +341,9 @@ class PyAST:
 			elif (self.dataList[i].getIndentationLevel() <= self.dataList[bodyPos].getIndentationLevel()):
 				break
 
+		r = self.findReturn(pos)
+		if r:
+			node.setValue(r)
 		return node
 
 
@@ -418,6 +421,17 @@ class PyAST:
 				elif self.dataList[i].getData() == "body=[],":
 					return 0 # Empty body
 		raise Exception("Error in PyAST.findBodyPos() (ast line {}), not body".format(pos))
+
+	def findReturn (self, pos: int) -> str:
+		expectedIndent = self.dataList[pos].getIndentationLevel()
+		for i in range(pos + 1, len(self.dataList), 1):
+			if (self.dataList[i].getIndentationLevel() <= expectedIndent):
+				return None
+			elif (self.dataList[i].getIndentationLevel() == (self.dataList[pos].getIndentationLevel() + 1)):
+				if "returns=Name(" in self.dataList[i].getData():
+					return self.findName(self.dataList[i].getData())
+
+		raise Exception("Error in PyAST.findReturn() (ast line {}), no return found".format(pos))
 
 
 	def findNextIndentPos (self, pos: int) -> int:

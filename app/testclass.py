@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-05 15:47:20
+#   @Last Modified time: 2022-12-05 16:17:49
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from modules.ast_module.pythonNode import PythonNode
