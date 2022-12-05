@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-05 16:22:39
+#   @Last Modified time: 2022-12-05 16:43:38
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from modules.ast_module.pythonNode import PythonNode
@@ -231,6 +231,10 @@ class PyAST:
 			while True:
 				if "Name(id='" in self.dataList[i].getData():
 					func += self.findName(self.dataList[i].getData()) + ", "
+				elif "BinOp(" in self.dataList[i].getData():
+					func += "BinaryOperation, "
+					i = self.findNextIndentPos(i)
+					i -= 1
 				else: 
 					break
 				i += 1
@@ -315,6 +319,7 @@ class PyAST:
 							param = str(self.findName(self.dataList[i + 1].getData())) + ": " + str(self.findName(self.dataList[i + 2].getData()))
 						elif ("annotation=BoolOp(" in self.dataList[i + 2].getData()):
 							param = str(self.getBoolOp(i + 2))
+
 						else:
 							raise Exception("Error in PyAST.generateFunctionDef() (ast line {}), not valid args type".format(i))	
 
@@ -322,6 +327,7 @@ class PyAST:
 						i = self.findNextIndentPos(i)
 						if (i == -1):
 							break
+						i -= 1
 				i += 1
 			node.setArgs(args)
 
@@ -441,7 +447,7 @@ class PyAST:
 		for i in range(pos + 1, len(self.dataList), 1):
 			if (ind == self.dataList[i].getIndentationLevel()):
 				return i
-			elif ind < self.dataList[i].getIndentationLevel():
+			elif ind > self.dataList[i].getIndentationLevel():
 				return -1
 		raise Exception("Error in PyAST.findNextIndentPos() (ast line {}), not lower indent found".format(pos))
 
