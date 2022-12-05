@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-05 14:33:41
+#   @Last Modified time: 2022-12-05 15:48:59
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from modules.ast_module.pythonNode import PythonNode
@@ -304,16 +304,24 @@ class PyAST:
 			args = []
 			i = pos + 5
 			while (i < len(self.dataList)):
-			#for i in range(pos + 5, len(self.dataList), 1):
 				if "kwonlyargs=[" in self.dataList[i].getData():
 					break
 				else:
 					if "arg(arg=" in self.dataList[i].getData(): # Non typed param
 						args.append(self.findName(self.dataList[i].getData()))
 					else: # Typed param -> Generate param name with format "Name: type"
-						param = str(self.findName(self.dataList[i + 1].getData())) + ": " + str(self.findName(self.dataList[i + 2].getData()))
-						i += 2
+						param = ""
+						if ("annotation=Name(" in self.dataList[i + 2].getData()):
+							param = str(self.findName(self.dataList[i + 1].getData())) + ": " + str(self.findName(self.dataList[i + 2].getData()))
+						elif ("annotation=BoolOp(" in self.dataList[i + 2].getData()):
+							param = str(self.getBoolOp(i + 2))
+						else:
+							raise Exception("Error in PyAST.generateFunctionDef() (ast line {}), not valid args type".format(i))	
+
 						args.append(param)
+						i = self.findNextIndentPos(i)
+						if (i == -1):
+							break
 				i += 1
 			node.setArgs(args)
 
@@ -412,7 +420,17 @@ class PyAST:
 		raise Exception("Error in PyAST.findBodyPos() (ast line {}), not body".format(pos))
 
 
-	def getBoolOp(self, pos: int):
+	def findNextIndentPos (self, pos: int) -> int:
+		ind = self.dataList[pos].getIndentationLevel()
+		for i in range(pos + 1, len(self.dataList), 1):
+			if (ind == self.dataList[i].getIndentationLevel()):
+				return i
+			elif ind < self.dataList[i].getIndentationLevel():
+				return -1
+		raise Exception("Error in PyAST.findNextIndentPos() (ast line {}), not lower indent found".format(pos))
+
+
+	def getBoolOp(self, pos: int) -> list:
 		l = []
 		expectedIndent = self.dataList[pos].getIndentationLevel() + 1
 		i = pos + 1
@@ -422,7 +440,7 @@ class PyAST:
 			else:
 				if ("Name" in self.dataList[i].getData()):
 					l.append(self.findName(self.dataList[i].getData()))
-				else:
+				elif ("Constant" in self.dataList[i].getData()):
 					l.append(self.findValue(self.dataList[i].getData()))
 			i += 1
 		return l

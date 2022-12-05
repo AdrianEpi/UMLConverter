@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-05 14:34:57
+#   @Last Modified time: 2022-12-05 15:47:20
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from modules.ast_module.pythonNode import PythonNode
@@ -189,7 +189,6 @@ class PyAST:
 					i += 1
 					assigns.append(node)
 			if ("value=Call(" == self.dataList[i].getData()): # No elif, already incremented
-				print("AAAAAAA")
 				tmp = self.generateFunctionCall(i)
 				for j in assigns:
 					j.setValue(tmp)
@@ -207,6 +206,10 @@ class PyAST:
 				tmp = self.findName(self.dataList[i].getData())
 				for j in assigns:
 					j.setValue(tmp)
+				break
+			if ("value=BinOp(" in self.dataList[i].getData()):
+				for j in assigns:
+					j.setValue("BinaryOperation")
 				break
 			i += 1
 		return assigns
@@ -244,11 +247,14 @@ class PyAST:
 			attrib = self.findName(self.dataList[pos + 1].getData())
 		elif ("func=Attribute(" == self.dataList[pos].getData()):
 			attrib = self.generateAttribute(pos + 1)
+		elif self.dataList[pos].getData() == "value=Subscript(":
+			return self.generateAttribute(pos + 1)
 		elif ("value=Attribute(" == self.dataList[pos + 1].getData()):
 			attrib = self.generateAttribute(pos + 1)
 		elif (self.dataList[pos].getData() == "value=Call("):
 			attrib = self.generateFunctionCall(pos)
 			return attrib
+
 		expectedIndent = self.dataList[pos].getIndentationLevel() + 1
 		i = pos + 1
 		while True:
@@ -276,15 +282,10 @@ class PyAST:
 			node.setValue(self.findName(self.dataList[pos + 2].getData()))
 		elif "annotation=Call" in self.dataList[pos + 2].getData():
 			node.setValue(self.findName(self.dataList[pos + 3].getData()))
-		elif "annotation=BoolOp" in self.dataList[pos + 2].getData():
-			l = []
-			for i in range(pos + 5, len(self.dataList), 1):
-				if ("Name(id='" in self.dataList[i].getData()) and ("', ctx=Load()" in self.dataList[i].getData()):
-					l.append(self.findName(self.dataList[i].getData()))
-				elif ("simple=" in self.dataList[i].getData()):
-					break
-				else:
-					raise Exception("Error in PyAST.generateAssign() (ast line {}), not defined structure".format(pos))
+
+		elif ("annotation=BoolOp(" in self.dataList[pos + 2].getData()):
+			l = self.getBoolOp(pos + 4)
+			node.setValue(l)
 		else:
 			raise Exception("Error in PyAST.generateAnnAssign() (ast line {}), not value found.".format(pos))
 		return node
@@ -303,16 +304,25 @@ class PyAST:
 			args = []
 			i = pos + 5
 			while (i < len(self.dataList)):
-			#for i in range(pos + 5, len(self.dataList), 1):
 				if "kwonlyargs=[" in self.dataList[i].getData():
 					break
 				else:
 					if "arg(arg=" in self.dataList[i].getData(): # Non typed param
 						args.append(self.findName(self.dataList[i].getData()))
 					else: # Typed param -> Generate param name with format "Name: type"
-						param = str(self.findName(self.dataList[i + 1].getData())) + ": " + str(self.findName(self.dataList[i + 2].getData()))
-						i += 2
+						param = ""
+						if ("annotation=Name(" in self.dataList[i + 2].getData()):
+							param = str(self.findName(self.dataList[i + 1].getData())) + ": " + str(self.findName(self.dataList[i + 2].getData()))
+						elif ("annotation=BoolOp(" in self.dataList[i + 2].getData()):
+							print("entra")
+							param = str(self.getBoolOp(i + 2))
+						else:
+							raise Exception("Error in PyAST.generateFunctionDef() (ast line {}), not valid args type".format(i))	
+
 						args.append(param)
+						i = self.findNextIndentPos(i)
+						if (i == -1):
+							break
 				i += 1
 			node.setArgs(args)
 
@@ -380,7 +390,7 @@ class PyAST:
 				if line[i] == "'":
 					value += "'"
 					isString = True
-				elif line[i] != ")" and line[i] != "," and line[i] != "=":
+				elif line[i] != ")" and line[i] != "," and line[i] != "=" and line[i] != "]":
 					value += str(line[i])
 				elif line[i] == "=":
 					break
@@ -392,9 +402,11 @@ class PyAST:
 				if line[i] == "'":
 					isString = False
 
+
+
 		if value == "":
 			raise Exception("Error in PyAST.findValue(), no value found")
-		return value
+		return value[::-1] # [::-1] reverses python string
 
 
 	def findBodyPos (self, pos: int) -> int:
@@ -409,17 +421,68 @@ class PyAST:
 		raise Exception("Error in PyAST.findBodyPos() (ast line {}), not body".format(pos))
 
 
+	def findNextIndentPos (self, pos: int) -> int:
+		ind = self.dataList[pos].getIndentationLevel()
+		for i in range(pos + 1, len(self.dataList), 1):
+			if (ind == self.dataList[i].getIndentationLevel()):
+				return i
+			elif ind < self.dataList[i].getIndentationLevel():
+				return -1
+		raise Exception("Error in PyAST.findNextIndentPos() (ast line {}), not lower indent found".format(pos))
+
+
+	def getBoolOp(self, pos: int) -> list:
+		l = []
+		expectedIndent = self.dataList[pos].getIndentationLevel() + 1
+		i = pos + 1
+		while True:
+			if (self.dataList[i].getIndentationLevel() < expectedIndent):
+				break
+			else:
+				if ("Name" in self.dataList[i].getData()):
+					l.append(self.findName(self.dataList[i].getData()))
+				elif ("Constant" in self.dataList[i].getData()):
+					l.append(self.findValue(self.dataList[i].getData()))
+			i += 1
+		return l
+
 	def print (self):
 		print(self.tree.toString())
 
 
 
 
+# -*- coding: utf-8 -*-
+#   @Proyect:            UMLConverter
+#   @Author:             Adrian Epifanio
+#   @File:               pythonNode.py
+#   @Author:             Adrian Epifanio
+#   @Date:               2022-11-14 21:07:53
+#   @Email:              adrianepi@gmail.com
+#   @GitHub:             https://github.com/AdrianEpi
+#   @Last Modified by:   Adrian Epifanio
+#   @Last Modified time: 2022-11-18 21:39:12
+#   @Description:        ...
+
+
+
+NODETYPES = [
+	"Module",
+	"ClassDef",
+	"Import",
+	"ImportFrom",
+	"Assign",
+	"AnnAssign",
+	"AsyncFunctionDef",
+	"FunctionDef",
+	"Return"
+]
+
 class PythonNode:
 
 	nodeType: str 
 	name: str or None
-	value: str or int or list or None or 6 #returns for functions
+	value: str or int or list or None #returns for functions
 	args: list or None # inheritance for classes
 	body: list or None
 
@@ -460,51 +523,51 @@ class PythonNode:
 		self.name = newName
 
 
-	# def setValue(self, newValue: str or int):
-	# 	self.value = newValue
+	def setValue(self, newValue: str or int):
+		self.value = newValue
 
 
-	# def setArgs(self, newArgs: list):
-	# 	self.args = newArgs
+	def setArgs(self, newArgs: list):
+		self.args = newArgs
 
 
-	# def setBody(self, newBody: list):
-	# 	self.body = newBody
+	def setBody(self, newBody: list):
+		self.body = newBody
 
 
-	# def addArg(self, node):
-	# 	self.args.append(node)
+	def addArg(self, node):
+		self.args.append(node)
 
 
-	# def addBody(self, node):
-	# 	self.body.append(node)
+	def addBody(self, node):
+		self.body.append(node)
 
 
-	# def toString(self, indent = 1) -> str:
-	# 	output = "\n"
-	# 	tab = str(indent * "\t")
-	# 	output += tab + self.nodeType
-	# 	if(self.name):
-	# 		output += "\n" + tab + "    Name: " + self.name
-	# 	if(self.value):
-	# 		output += "\n" + tab + "    Value: " + str(self.value)
-	# 	if(self.args):
-	# 		output += "\n" + tab + "    Args: ["
-	# 		for i in self.args:
-	# 			if (isinstance(i, PythonNode)):
-	# 				output += "\n" + i.toString(indent + 1)
-	# 			else:
-	# 				output += "\n" + str((indent + 1) * "\t") + i
-	# 		output += "\n" + tab + "    ]"
-	# 	if(self.body):
-	# 		output += "\n" + tab + "    Body: ["
-	# 		for i in self.body:
-	# 			if (isinstance(i, PythonNode)):
-	# 				output += "\n" + i.toString(indent + 1)
-	# 			else:
-	# 				output += "\n" + str((indent + 1) * "\t")
-	# 		output += "\n" + tab + "    ]"
+	def toString(self, indent = 1) -> str:
+		output = "\n"
+		tab = str(indent * "\t")
+		output += tab + self.nodeType
+		if(self.name):
+			output += "\n" + tab + "    Name: " + self.name
+		if(self.value):
+			output += "\n" + tab + "    Value: " + str(self.value)
+		if(self.args):
+			output += "\n" + tab + "    Args: ["
+			for i in self.args:
+				if (isinstance(i, PythonNode)):
+					output += "\n" + i.toString(indent + 1)
+				else:
+					output += "\n" + str((indent + 1) * "\t") + i
+			output += "\n" + tab + "    ]"
+		if(self.body):
+			output += "\n" + tab + "    Body: ["
+			for i in self.body:
+				if (isinstance(i, PythonNode)):
+					output += "\n" + i.toString(indent + 1)
+				else:
+					output += "\n" + str((indent + 1) * "\t")
+			output += "\n" + tab + "    ]"
 
-	# 	return output
+		return output
 
 
