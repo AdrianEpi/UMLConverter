@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-05 11:22:03
+#   @Last Modified time: 2022-12-05 12:01:16
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from modules.ast_module.pythonNode import PythonNode
@@ -29,87 +29,87 @@ class PyAST:
 	tree: PythonNode()
 	dataList: list
 
-	def __init__ (self):
-		self.tree = PythonNode()
-		self.dataList = []
+	# def __init__ (self):
+	# 	self.tree = PythonNode()
+	# 	self.dataList = []
 
 
-	def getDataList (self) -> list:
-		return self.dataList
+	# def getDataList (self) -> list:
+	# 	return self.dataList
 
 
-	def getTree (self) -> PythonNode:
-		return self.tree
+	# def getTree (self) -> PythonNode:
+	# 	return self.tree
 
 
-	def setDataList (self, l: list):
-		self.dataList = l
+	# def setDataList (self, l: list):
+	# 	self.dataList = l
 
 
-	def setTree (self, t: PythonNode):
-		self.tree = t
+	# def setTree (self, t: PythonNode):
+	# 	self.tree = t
 
 
-	def generateTree(self, l: list):
-		self.dataList = l
-		pos = 0
-		indent = 9999
-		self.tree.setName("root")
-		self.tree.setNodeType("root")
-		for i in range(0, len(self.dataList), 1):
-			if((indent >= self.dataList[i].getIndentationLevel()) and (self.dataList[i].getData() in NODETYPES)):
-				indent = self.dataList[i].getIndentationLevel()
-				self.tree.addBody(self.generateNode(i, self.dataList[i].getData()))
+	# def generateTree(self, l: list):
+	# 	self.dataList = l
+	# 	pos = 0
+	# 	indent = 9999
+	# 	self.tree.setName("root")
+	# 	self.tree.setNodeType("root")
+	# 	for i in range(0, len(self.dataList), 1):
+	# 		if((indent >= self.dataList[i].getIndentationLevel()) and (self.dataList[i].getData() in NODETYPES)):
+	# 			indent = self.dataList[i].getIndentationLevel()
+	# 			self.tree.addBody(self.generateNode(i, self.dataList[i].getData()))
 
 
-	def generateModule(self, pos: int):
-		node = PythonNode()
-		node.setNodeType("Module")
-		for i in range(pos + 2, len(self.dataList), 1):
-			if (self.dataList[i].getIndentationLevel() == (self.dataList[pos].getIndentationLevel() + 2)):
-				if self.dataList[i].getData() in NODETYPES:
-					n =	self.generateNode(i, self.dataList[i].getData())
-					if isinstance(n, PythonNode):
-						node.addBody(n)
-					elif isinstance(n, list):
-						for j in n:
-							node.addBody(j)
-					else:
-						raise Exception("Error in PyAST.generateModule() (ast line {}), not valid dataType for body".format(pos))
-			elif (self.dataList[i].getIndentationLevel() <= self.dataList[pos].getIndentationLevel()):
-				break
-		return node
+	# def generateModule(self, pos: int):
+	# 	node = PythonNode()
+	# 	node.setNodeType("Module")
+	# 	for i in range(pos + 2, len(self.dataList), 1):
+	# 		if (self.dataList[i].getIndentationLevel() == (self.dataList[pos].getIndentationLevel() + 2)):
+	# 			if self.dataList[i].getData() in NODETYPES:
+	# 				n =	self.generateNode(i, self.dataList[i].getData())
+	# 				if isinstance(n, PythonNode):
+	# 					node.addBody(n)
+	# 				elif isinstance(n, list):
+	# 					for j in n:
+	# 						node.addBody(j)
+	# 				else:
+	# 					raise Exception("Error in PyAST.generateModule() (ast line {}), not valid dataType for body".format(pos))
+	# 		elif (self.dataList[i].getIndentationLevel() <= self.dataList[pos].getIndentationLevel()):
+	# 			break
+	# 	return node
 
 
-	def generateClassDef(self, pos: int):
-		node = PythonNode()
-		node.setNodeType("ClassDef")
-		node.setName(self.dataList[pos + 1].getData())
-		if (self.dataList[pos + 2].getData() != "bases=[],"): # The class has inheritance
-			inheritance = []
-			for i in range(pos + 3, len(self.dataList), 1):
-				if "keywords=[" in self.dataList[i].getData():
-					break
-				else:
-					inheritance.append(self.findName(self.dataList[i].getData()))
-			node.setArgs(inheritance)
+	# def generateClassDef(self, pos: int):
+	# 	node = PythonNode()
+	# 	node.setNodeType("ClassDef")
+	# 	node.setName(self.dataList[pos + 1].getData())
+	# 	if (self.dataList[pos + 2].getData() != "bases=[],"): # The class has inheritance
+	# 		inheritance = []
+	# 		for i in range(pos + 3, len(self.dataList), 1):
+	# 			if "keywords=[" in self.dataList[i].getData():
+	# 				break
+	# 			else:
+	# 				inheritance.append(self.findName(self.dataList[i].getData()))
+	# 		node.setArgs(inheritance)
 
-		bodyPos = self.findBodyPos(pos)
-		for i in range(bodyPos + 1, len(self.dataList), 1):
-			if (self.dataList[i].getIndentationLevel() == (self.dataList[bodyPos].getIndentationLevel() + 1)):
-				if self.dataList[i].getData() in NODETYPES:
-					n =	self.generateNode(i, self.dataList[i].getData())
-					if isinstance(n, PythonNode):
-						node.addBody(n)
-					elif isinstance(n, list):
-						for j in n:
-							node.addBody(j)
-					else:
-						raise Exception("Error in PyAST.generateClassDef() (ast line {}), not valid dataType for body".format(pos))
-			elif (self.dataList[i].getIndentationLevel() <= self.dataList[bodyPos].getIndentationLevel()):
-				break
+	# 	bodyPos = self.findBodyPos(pos)
+	# 	for i in range(bodyPos + 1, len(self.dataList), 1):
+	# 		if (self.dataList[i].getIndentationLevel() == (self.dataList[bodyPos].getIndentationLevel() + 1)):
+	# 			if self.dataList[i].getData() in NODETYPES:
+	# 				n =	self.generateNode(i, self.dataList[i].getData())
+	# 				if isinstance(n, PythonNode):
+	# 					node.addBody(n)
+	# 				elif isinstance(n, list):
+	# 					for j in n:
+	# 						node.addBody(j)
+	# 				else:
+	# 					raise Exception("Error in PyAST.generateClassDef() (ast line {}), not valid dataType for body".format(pos))
+	# 		elif (self.dataList[i].getIndentationLevel() <= self.dataList[bodyPos].getIndentationLevel()):
+	# 			break
 
-		return node
+	# 	return node
 
 
 	# def generateImport(self, pos: int):
@@ -127,22 +127,23 @@ class PyAST:
 	# 	return imports
 
 
-	# def generateImportFrom(self, pos: int):
-	# 	node = PythonNode()
-	# 	node.setNodeType("ImportFrom")
-	# 	imports = []
-	# 	l = self.dataList[pos + 1].getData().split("'")
-	# 	#TRY NAMES
-	# 	node.setName(l[1]) # Will always be the second format:"  module='XXXXX',"
-	# 	for i in range(pos + 3, len(self.dataList), 1):
-	# 		if "alias(name='" in self.dataList[i].getData():
-	# 			imports.append(self.findName(self.dataList[i].getData()))
-	# 			if (")]," in self.dataList[i].getData()):
-	# 				break
-	# 		else:
-	# 			raise Exception("Error in PyAST.generateImport() (ast line {}), not import name found".format(pos))
-	# 	node.setValue(imports)
-	# 	return node
+	def generateImportFrom(self, pos: int):
+		# node = PythonNode()
+		# node.setNodeType("ImportFrom")
+		# imports = []
+		l = self.dataList.getData().split("'")
+		asd =self.atr()
+		# #TRY NAMES
+		# node.setName(l[1]) # Will always be the second format:"  module='XXXXX',"
+		# for i in range(pos + 3, len(self.dataList), 1):
+		# 	if "alias(name='" in self.dataList[i].getData():
+		# 		imports.append(self.findName(self.dataList[i].getData()))
+		# 		if (")]," in self.dataList[i].getData()):
+		# 			break
+		# 	else:
+		# 		raise Exception("Error in PyAST.generateImport() (ast line {}), not import name found".format(pos))
+		# node.setValue(imports)
+		# return node
 
 
 	# # def generateAssign(self, pos: int):

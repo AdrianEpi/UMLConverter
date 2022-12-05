@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-05 11:21:45
+#   @Last Modified time: 2022-12-05 12:03:08
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from modules.ast_module.pythonNode import PythonNode
@@ -292,11 +292,16 @@ class PyAST:
 
 
 	def generateAttribute(self, pos: int) -> str: # Generates class attributes ["self", "tree", "data"] = self.tree.data
-		attrib = ""
-		if ("value=Attribute(" == self.dataList[pos + 1]) or ("func=Attribute(" == self.dataList[pos + 1]):
-			attrib = self.generateAttribute(pos + 1)
-		elif ("value=Name(" in self.dataList[pos + 1].getData()):
+		attrib = ""		
+		if ("value=Name(" in self.dataList[pos + 1].getData()):
 			attrib = self.findName(self.dataList[pos + 1].getData())
+		elif ("func=Attribute(" == self.dataList[pos].getData()):
+			attrib = self.generateAttribute(pos + 1)
+		elif ("value=Attribute(" == self.dataList[pos + 1].getData()):
+			attrib = self.generateAttribute(pos + 1)
+		elif (self.dataList[pos].getData() == "value=Call("):
+			attrib = self.generateFunctionCall(pos)
+			return attrib
 		expectedIndent = self.dataList[pos].getIndentationLevel() + 1
 		i = pos + 1
 		while True:
