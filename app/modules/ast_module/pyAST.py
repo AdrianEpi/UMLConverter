@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-08 13:04:33
+#   @Last Modified time: 2022-12-08 13:05:26
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from modules.ast_module.pythonNode import PythonNode
@@ -28,6 +28,7 @@ class PyAST:
 
 	tree: PythonNode()
 	dataList: list
+
 
 	def __init__ (self):
 		self.tree = PythonNode()
@@ -224,8 +225,7 @@ class PyAST:
 			i += 1
 		return assigns
 
-
-						
+			
 	def generateFunctionCall(self, pos: int) -> str: 
 		i = pos + 1
 		expectedIndent = self.dataList[i].getIndentationLevel()
@@ -253,7 +253,6 @@ class PyAST:
 		if f:
 			func += ")"
 		return func
-
 
 
 	def generateAttribute(self, pos: int) -> str: # Generates class attributes ["self", "tree", "data"] = self.tree.data
@@ -287,7 +286,6 @@ class PyAST:
 				break
 			i += 1
 		return attrib
-
 
 
 	def generateAnnAssign(self, pos: int) -> PythonNode:

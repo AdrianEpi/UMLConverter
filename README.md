@@ -34,5 +34,8 @@ In order to run the project for the first time:
 ```sh
 	soruce .venv/bin/activate
 ```
-
-
+7) Install all the packages
+```sh
+	cd app/
+	pip install -r requirements.txt
+```
