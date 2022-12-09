@@ -7,16 +7,17 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-11-14 09:37:52
+#   @Last Modified time: 2022-12-09 10:38:08
 #   @Description:        This file describes a file and its functionality
 
+import sys
 
 class File:
 	"""
 	This class describes a file.
 	"""
 
-	filename: str
+	fileName: str
 	data: str
 
 	def __init__(self, file: str):
@@ -27,18 +28,18 @@ class File:
 		:type       file:  str
 		"""
 		self.data = ""
-		self.filename = file
+		self.fileName = file
 		self.__read()
 
 
-	def getFilename(self) -> str:
+	def getFileName(self) -> str:
 		"""
-		Gets the filename.
+		Gets the fileName.
 		
-		:returns:   The filename.
+		:returns:   The fileName.
 		:rtype:     str
 		"""
-		return self.filename
+		return self.fileName
 
 
 	def getData(self) -> str:
@@ -51,21 +52,38 @@ class File:
 		return self.data
 
 
+	def setFileName(self, name: str):
+		"""
+		Sets the fileName.
+
+		:param      name:  The name
+		:type       name:  str
+		"""
+		self.fileName = name
+
+
+	def setData(self, newData: str):
+		"""
+		Sets the data.
+
+		:param      newData:  The new data
+		:type       newData:  str
+		"""
+		self.data = newData
+
+
 	def __read(self):
 		"""
 		Reads a file or raises and error if there's a problem
 		"""
 		try:
-			f = open(self.filename, 'r')
+			f = open(self.fileName, 'r')
 		except FileNotFoundError:
-			print(f"File {self.filename} not found.  Aborting")
-			sys.exit(1)
+			raise FileNotFoundError("Error, {} file not found.".format(self.fileName))
 		except OSError:
-			print(f"OS error occurred trying to open {self.filename}")
-			sys.exit(1)
+			raise OSError("OS error trying to open {} file.".format(self.fileName))
 		except Exception as err:
-			print(f"Unexpected error opening {self.filename} is",repr(err))
-			sys.exit(1)  
+			raise Exception("Unexpected error, {} file not found.".format(self.fileName))
 		else:
 			with f:
 				lines = f.readlines()
