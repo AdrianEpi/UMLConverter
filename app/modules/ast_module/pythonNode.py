@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-11-18 21:39:12
+#   @Last Modified time: 2022-12-09 09:53:38
 #   @Description:        ...
 
 
@@ -111,7 +111,7 @@ class PythonNode:
 				if (isinstance(i, PythonNode)):
 					output += "\n" + i.toString(indent + 1)
 				else:
-					output += "\n" + str((indent + 1) * "\t")
+					raise Exception("Error PythonNode.toString(), body must be a node.")
 			output += "\n" + tab + "    ]"
 
 		return output

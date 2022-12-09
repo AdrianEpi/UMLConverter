@@ -7,11 +7,11 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-09 09:28:28
+#   @Last Modified time: 2022-12-09 09:53:07
 #   @Description:        Tests for app/ast_module/pythonNode.py
 
 from app.modules.ast_module.pythonNode import PythonNode
-
+import pytest
 
 node = PythonNode()
 node1 = PythonNode()
@@ -66,9 +66,16 @@ def test_toString():
 	node2.setName("var1")
 	node1.setValue("str")
 	node2.setValue(10)
-	node1.setArgs(["arg1", "arg2", "arg3"])
+	node1.setArgs(["arg1", "arg2", "arg3", node2])
 	node.addBody(node1)
 	node1.addBody(node2)
-	result = "\n\tClassDef\n\t    Name: Class1\n\t    Body: [\n\n\t\tFunctionDef\n\t\t    Name: Func1\n\t\t    Value: str\n\t\t    Args: [\n\t\t\targ1\n\t\t\targ2\n\t\t\targ3\n\t\t    ]\n\t\t    Body: [\n\n\t\t\tAssign\n\t\t\t    Name: var1\n\t\t\t    Value: 10\n\t\t    ]\n\t    ]"
+	result = "\n\tClassDef\n\t    Name: Class1\n\t    Body: [\n\n\t\tFunctionDef\n\t\t    Name: Func1\n\t\t    Value: str\n\t\t    Args: [\n\t\t\targ1\n\t\t\targ2\n\t\t\targ3\n\n\t\t\tAssign\n\t\t\t    Name: var1\n\t\t\t    Value: 10\n\t\t    ]\n\t\t    Body: [\n\n\t\t\tAssign\n\t\t\t    Name: var1\n\t\t\t    Value: 10\n\t\t    ]\n\t    ]"
 	assert(node.toString() == result)
 
+
+def test_toStringBodyException():
+	node = PythonNode()
+	node.addBody("AA")
+	with pytest.raises(Exception) as exception_info:
+		node.toString()
+	assert str(exception_info.value) == 'Error PythonNode.toString(), body must be a node.'
