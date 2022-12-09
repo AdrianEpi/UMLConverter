@@ -39,3 +39,22 @@ In order to run the project for the first time:
 	cd app/
 	pip install -r requirements.txt
 ```
+
+
+## TEST AND COVERAGE
+
+1) Test the code
+```sh
+	cd UMLConverter/
+	coverage run -m pytest
+```
+
+2) Print report of coverage
+```sh
+	coverage report
+```
+
+2) Generate html version of coverage in `htmlcov/`
+```sh
+	coverage html
+```
