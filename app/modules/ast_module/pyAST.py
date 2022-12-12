@@ -7,10 +7,10 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-12 09:20:35
+#   @Last Modified time: 2022-12-12 10:09:49
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
-from modules.ast_module.pythonNode import PythonNode
+from app.modules.ast_module.pythonNode import PythonNode
 
 NODETYPES = [
 	"Module(",
@@ -126,12 +126,13 @@ class PyAST:
 	def generateImport(self, pos: int) -> list:
 		imports = []
 		for i in range(pos + 2, len(self.dataList), 1):
-			if "alias(name='" in self.dataList[i].getData():
+			data = self.dataList[i].getData()
+			if "alias(name='" in data:
 				node = PythonNode()
 				node.setNodeType("Import")
 				node.setName(self.findName(i))
 				imports.append(node)
-				if ("])," in self.dataList[i].getData()):
+				if ("])," in data or ")]," in data):
 					break
 			else:
 				raise Exception("Error in PyAST.generateImport() (ast line {}), not import name found".format(pos))

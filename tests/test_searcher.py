@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-12 08:51:07
+#   @Last Modified time: 2022-12-12 10:50:09
 #   @Description:        Tests for app/file_module/searcher.py
 
 
@@ -17,7 +17,7 @@ import pytest
 path = "app/modules/file_module"
 
 s = Searcher()
-filesExpected = ['app/modules/file_module/file.py', 'app/modules/file_module/searcher.py']
+filesExpected = ['app/modules/file_module/file.py', 'app/modules/file_module/searcher.py', 'app/modules/file_module/__init__.py']
 dirExpected = ['tests', 'tests/testFiles']
 
 

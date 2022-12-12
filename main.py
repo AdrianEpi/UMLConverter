@@ -7,21 +7,21 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-11-18 18:30:20
+#   @Last Modified time: 2022-12-12 10:06:42
 #   @Description:        ...
 
 
 
 import ast
 import inspect
-from modules.ast_module.line import Line
-from modules.file_module.file import File
-from modules.file_module.searcher import Searcher
-from modules.ast_module.pyAST import PyAST
+from app.modules.ast_module.line import Line
+from app.modules.file_module.file import File
+from app.modules.file_module.searcher import Searcher
+from app.modules.ast_module.pyAST import PyAST
 
 
 
-filename = "testclass.py"
+filename = "app/testclass.py"
 file = File(filename)
 
 
