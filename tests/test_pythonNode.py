@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-09 09:53:07
+#   @Last Modified time: 2022-12-12 08:54:18
 #   @Description:        Tests for app/ast_module/pythonNode.py
 
 from app.modules.ast_module.pythonNode import PythonNode
@@ -16,6 +16,7 @@ import pytest
 node = PythonNode()
 node1 = PythonNode()
 node2 = PythonNode()
+
 def test_setgetNodeType():
 	nodeType = "ClassDef"
 	node.setNodeType(nodeType)

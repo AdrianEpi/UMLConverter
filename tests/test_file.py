@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-09 10:37:03
+#   @Last Modified time: 2022-12-09 11:57:23
 #   @Description:        Tests for app/file_module/file.py
 
 from app.modules.file_module.file import File
@@ -28,6 +28,7 @@ def test_getSetData():
 	assert(f.getData() == data)
 	f.setData("NewData")
 	assert(f.getData() == "NewData")
+
 
 def test_readFileNotFoundError():
 	with pytest.raises(FileNotFoundError) as exception_info:

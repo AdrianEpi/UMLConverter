@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-09 10:38:08
+#   @Last Modified time: 2022-12-09 10:44:51
 #   @Description:        This file describes a file and its functionality
 
 import sys
@@ -83,7 +83,7 @@ class File:
 		except OSError:
 			raise OSError("OS error trying to open {} file.".format(self.fileName))
 		except Exception as err:
-			raise Exception("Unexpected error, {} file not found.".format(self.fileName))
+			raise Exception("Unexpected error with {} file.".format(self.fileName))
 		else:
 			with f:
 				lines = f.readlines()
