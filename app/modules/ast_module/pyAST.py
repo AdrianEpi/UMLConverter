@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-08 13:05:26
+#   @Last Modified time: 2022-12-12 09:20:35
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from modules.ast_module.pythonNode import PythonNode
@@ -63,6 +63,8 @@ class PyAST:
 			if((indent >= newIndent) and (data in NODETYPES)):
 				indent = newIndent
 				self.tree.addBody(self.generateNode(i, data))
+		if (len(self.tree.getBody()) == 1):
+			self.tree = self.tree.getBody()[0]
 
 
 	def generateModule(self, pos: int) -> PythonNode:
@@ -495,6 +497,7 @@ class PyAST:
 					l.append(self.findValue(i))
 			i += 1
 		return l
+
 
 	def print (self):
 		print(self.tree.toString())

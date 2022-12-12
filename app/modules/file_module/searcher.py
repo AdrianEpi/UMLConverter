@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-12 08:50:38
+#   @Last Modified time: 2022-12-12 08:57:52
 #   @Description:        This file describes a searcher of files and directories
 
 from os import listdir
