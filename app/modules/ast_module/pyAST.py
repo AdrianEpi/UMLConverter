@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-13 10:37:54
+#   @Last Modified time: 2022-12-13 10:39:51
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from app.modules.ast_module.pythonNode import PythonNode
@@ -299,6 +299,8 @@ class PyAST:
 			node.setName(self.findName(pos + 1))
 		elif "target=Subscript(" in data1:
 			node.setName(self.findName(pos + 2) + "[...]")
+		elif "target=Attribute(" in data1:
+			node.setName(self.generateAttribute(pos + 1))
 		else:
 			raise Exception("Error in PyAST.generateAnnAssign() (ast line {}), not name found.".format(pos))
 

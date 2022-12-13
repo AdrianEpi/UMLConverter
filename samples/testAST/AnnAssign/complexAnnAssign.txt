@@ -1,1 +1,8 @@
-(var): int = 1
+
+	Module
+	    Body: [
+
+		AnnAssign
+		    Name: a
+		    Value: int
+	    ]
