@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-12 10:09:49
+#   @Last Modified time: 2022-12-13 10:08:53
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from app.modules.ast_module.pythonNode import PythonNode
@@ -294,12 +294,26 @@ class PyAST:
 	def generateAnnAssign(self, pos: int) -> PythonNode:
 		node = PythonNode()
 		node.setNodeType("AnnAssign")
-		data2 = self.dataList[pos + 2].getData()
-		if "Name(id='" in self.dataList[pos + 1].getData():
+		data1 = self.dataList[pos + 1].getData()
+		if "Name(id='" in data1:
 			node.setName(self.findName(pos + 1))
+		elif "target=Subscript(" in data1:
+			node.setName(self.findName(pos + 2) + "[...]")
+			posVal = self.findNextIndentPos(pos + 1)
+			dataTmp = self.dataList[posVal].getData()
+			if "annotation=Constant" in dataTmp:
+				node.setValue(self.findValue(posVal))
+			elif "annotation=Name" in dataTmp:
+				node.setValue(self.findName(posVal))
+			else:
+				raise Exception("Error in PyAST.generateAnnAssign() (ast line {}), not value found.".format(pos))
+			return node
 		else:
 			raise Exception("Error in PyAST.generateAnnAssign() (ast line {}), not name found.".format(pos))
 
+
+
+		data2 = self.dataList[pos + 2].getData()
 		if "annotation=Name" in data2:
 			node.setValue(self.findName(pos + 2))
 		elif "annotation=Call" in data2:
