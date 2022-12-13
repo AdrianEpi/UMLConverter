@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-13 10:39:51
+#   @Last Modified time: 2022-12-13 11:38:37
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from app.modules.ast_module.pythonNode import PythonNode
@@ -182,8 +182,10 @@ class PyAST:
 				node.setName(self.findName(i))
 				assigns.append(node)
 			if data == "elts=[": 
+
 				i += 1
 				while True:
+					data = self.dataList[i].getData()
 					node = PythonNode()
 					node.setNodeType("Assign")
 					if ("Name(id='" in data):		
@@ -200,8 +202,11 @@ class PyAST:
 						break
 					else:
 						raise Exception("Error in PyAST.generateAssignTuple() (ast line {}), not valid var in tuple".format(pos))
+
 					i += 1
 					assigns.append(node)
+				data = self.dataList[i].getData()
+
 			if ("value=Call(" == data): # No elif, already incremented
 				tmp = self.generateFunctionCall(i)
 				for j in assigns:

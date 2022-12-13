@@ -1,0 +1,12 @@
+
+	Module
+	    Body: [
+
+		Assign
+		    Name: a
+		    Value: 1
+
+		Assign
+		    Name: b
+		    Value: 1
+	    ]

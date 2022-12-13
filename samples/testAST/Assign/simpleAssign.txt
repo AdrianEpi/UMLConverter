@@ -1,0 +1,8 @@
+
+	Module
+	    Body: [
+
+		Assign
+		    Name: var
+		    Value: 'ASFD'
+	    ]

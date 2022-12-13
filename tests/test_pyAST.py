@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-13 10:37:06
+#   @Last Modified time: 2022-12-13 11:40:48
 #   @Description:        Tests for app/ast_module/pyAST.py
 
 
@@ -74,6 +74,14 @@ def test_importFrom(pythonFile, expectedFile):
 	getFileNames(path + "AnnAssign")
 )
 def test_annAssign(pythonFile, expectedFile):
+	assert(generateTree(pythonFile) == readExpected(expectedFile))
+
+
+@pytest.mark.parametrize(
+	"pythonFile, expectedFile",
+	getFileNames(path + "Assign")
+)
+def test_assign(pythonFile, expectedFile):
 	assert(generateTree(pythonFile) == readExpected(expectedFile))
 
 
