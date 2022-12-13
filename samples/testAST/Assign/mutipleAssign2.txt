@@ -3,6 +3,10 @@
 	    Body: [
 
 		Assign
+		    Name: c
+		    Value: 1
+
+		Assign
 		    Name: a
 		    Value: c
 
