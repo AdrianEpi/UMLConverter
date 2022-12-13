@@ -2,6 +2,10 @@
 	Module
 	    Body: [
 
+		Assign
+		    Name: a
+		    Value: ''
+
 		AnnAssign
 		    Name: a.b
 		    Value: int
