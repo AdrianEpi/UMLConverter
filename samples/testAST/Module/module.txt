@@ -1,0 +1,625 @@
+
+	Module
+	    Body: [
+
+		Assign
+		    Name: NODETYPES
+		    Value: []
+
+		ClassDef
+		    Name: PythonNode
+		    Body: [
+
+			AnnAssign
+			    Name: nodeType
+			    Value: str
+
+			AnnAssign
+			    Name: name
+			    Value: ['str', 'None']
+
+			AnnAssign
+			    Name: value
+			    Value: ['str', 'int', 'list', 'None']
+
+			AnnAssign
+			    Name: args
+			    Value: ['list', 'None']
+
+			AnnAssign
+			    Name: body
+			    Value: ['list', 'None']
+
+			FunctionDef
+			    Name: __init__
+			    Args: [
+				self
+			    ]
+			    Body: [
+
+				Assign
+				    Name: self.nodeType
+				    Value: ''
+
+				Assign
+				    Name: self.name
+				    Value: None
+
+				Assign
+				    Name: self.value
+				    Value: None
+
+				Assign
+				    Name: self.args
+				    Value: []
+
+				Assign
+				    Name: self.body
+				    Value: []
+			    ]
+
+			FunctionDef
+			    Name: getNodeType
+			    Value: str
+			    Args: [
+				self
+			    ]
+
+			FunctionDef
+			    Name: getName
+			    Value: ['str', 'None']
+			    Args: [
+				self
+			    ]
+
+			FunctionDef
+			    Name: getValue
+			    Value: ['str', 'int', 'list', 'None']
+			    Args: [
+				self
+			    ]
+
+			FunctionDef
+			    Name: getArgs
+			    Value: ['list', 'None']
+			    Args: [
+				self
+			    ]
+
+			FunctionDef
+			    Name: getBody
+			    Value: ['list', 'None']
+			    Args: [
+				self
+			    ]
+
+			FunctionDef
+			    Name: setNodeType
+			    Args: [
+				self
+				newNodeType: str
+			    ]
+			    Body: [
+
+				Assign
+				    Name: self.nodeType
+				    Value: newNodeType
+			    ]
+
+			FunctionDef
+			    Name: setName
+			    Args: [
+				self
+				newName: str
+			    ]
+			    Body: [
+
+				Assign
+				    Name: self.name
+				    Value: newName
+			    ]
+
+			FunctionDef
+			    Name: setValue
+			    Args: [
+				self
+				['str', 'int']
+			    ]
+			    Body: [
+
+				Assign
+				    Name: self.value
+				    Value: newValue
+			    ]
+
+			FunctionDef
+			    Name: setArgs
+			    Args: [
+				self
+				newArgs: list
+			    ]
+			    Body: [
+
+				Assign
+				    Name: self.args
+				    Value: newArgs
+			    ]
+
+			FunctionDef
+			    Name: setBody
+			    Args: [
+				self
+				newBody: list
+			    ]
+			    Body: [
+
+				Assign
+				    Name: self.body
+				    Value: newBody
+			    ]
+
+			FunctionDef
+			    Name: addArg
+			    Args: [
+				self
+				node
+			    ]
+
+			FunctionDef
+			    Name: addBody
+			    Args: [
+				self
+				node
+			    ]
+
+			FunctionDef
+			    Name: toString
+			    Value: str
+			    Args: [
+				self
+				indent
+			    ]
+			    Body: [
+
+				Assign
+				    Name: output
+				    Value: '\n'
+
+				Assign
+				    Name: tab
+				    Value: str(BinaryOperation)
+			    ]
+		    ]
+
+		ClassDef
+		    Name: PyAST
+		    Body: [
+
+			AnnAssign
+			    Name: tree
+			    Value: PythonNode
+
+			AnnAssign
+			    Name: dataList
+			    Value: list
+
+			FunctionDef
+			    Name: __init__
+			    Args: [
+				self
+			    ]
+			    Body: [
+
+				Assign
+				    Name: self.tree
+				    Value: PythonNode()
+
+				Assign
+				    Name: self.dataList
+				    Value: []
+			    ]
+
+			FunctionDef
+			    Name: getDataList
+			    Value: list
+			    Args: [
+				self
+			    ]
+
+			FunctionDef
+			    Name: getTree
+			    Value: PythonNode
+			    Args: [
+				self
+			    ]
+
+			FunctionDef
+			    Name: setDataList
+			    Args: [
+				self
+				l: list
+			    ]
+			    Body: [
+
+				Assign
+				    Name: self.dataList
+				    Value: l
+			    ]
+
+			FunctionDef
+			    Name: setTree
+			    Args: [
+				self
+				t: PythonNode
+			    ]
+			    Body: [
+
+				Assign
+				    Name: self.tree
+				    Value: t
+			    ]
+
+			FunctionDef
+			    Name: generateTree
+			    Args: [
+				self
+				l: list
+			    ]
+			    Body: [
+
+				Assign
+				    Name: self.dataList
+				    Value: l
+
+				Assign
+				    Name: pos
+				    Value: 0
+
+				Assign
+				    Name: indent
+				    Value: 9999
+			    ]
+
+			FunctionDef
+			    Name: generateModule
+			    Value: PythonNode
+			    Args: [
+				self
+				pos: int
+			    ]
+			    Body: [
+
+				Assign
+				    Name: node
+				    Value: PythonNode()
+
+				Assign
+				    Name: indent
+				    Value: self.dataList.getIndentationLevel
+			    ]
+
+			FunctionDef
+			    Name: generateClassDef
+			    Value: PythonNode
+			    Args: [
+				self
+				pos: int
+			    ]
+			    Body: [
+
+				Assign
+				    Name: node
+				    Value: PythonNode()
+
+				Assign
+				    Name: bodyPos
+				    Value: self.findBodyPos
+
+				Assign
+				    Name: bodyIndent
+				    Value: self.dataList.getIndentationLevel
+			    ]
+
+			FunctionDef
+			    Name: generateImport
+			    Value: list
+			    Args: [
+				self
+				pos: int
+			    ]
+			    Body: [
+
+				Assign
+				    Name: imports
+				    Value: []
+			    ]
+
+			FunctionDef
+			    Name: generateImportFrom
+			    Value: PythonNode
+			    Args: [
+				self
+				pos: int
+			    ]
+			    Body: [
+
+				Assign
+				    Name: node
+				    Value: PythonNode()
+
+				Assign
+				    Name: imports
+				    Value: []
+
+				Assign
+				    Name: l
+				    Value: self.dataList.getData.split
+			    ]
+
+			FunctionDef
+			    Name: generateAssign
+			    Value: list
+			    Args: [
+				self
+				pos: int
+			    ]
+			    Body: [
+
+				Assign
+				    Name: assigns
+				    Value: []
+
+				Assign
+				    Name: i
+				    Value: BinaryOperation
+
+				Assign
+				    Name: expectedIndent
+				    Value: self.dataList.getIndentationLevel
+			    ]
+
+			FunctionDef
+			    Name: generateFunctionCall
+			    Value: str
+			    Args: [
+				self
+				pos: int
+			    ]
+			    Body: [
+
+				Assign
+				    Name: i
+				    Value: BinaryOperation
+
+				Assign
+				    Name: expectedIndent
+				    Value: self.dataList.getIndentationLevel
+
+				Assign
+				    Name: func
+				    Value: ''
+
+				Assign
+				    Name: f
+				    Value: False
+			    ]
+
+			FunctionDef
+			    Name: generateAttribute
+			    Value: str
+			    Args: [
+				self
+				pos: int
+			    ]
+			    Body: [
+
+				Assign
+				    Name: attrib
+				    Value: ''
+
+				Assign
+				    Name: data
+				    Value: self.dataList.getData
+
+				Assign
+				    Name: data1
+				    Value: self.dataList.getData
+
+				Assign
+				    Name: expectedIndent
+				    Value: BinaryOperation
+
+				Assign
+				    Name: i
+				    Value: BinaryOperation
+			    ]
+
+			FunctionDef
+			    Name: generateAnnAssign
+			    Value: PythonNode
+			    Args: [
+				self
+				pos: int
+			    ]
+			    Body: [
+
+				Assign
+				    Name: node
+				    Value: PythonNode()
+
+				Assign
+				    Name: data1
+				    Value: self.dataList.getData
+
+				Assign
+				    Name: posVal
+				    Value: self.findNextIndentPos
+
+				Assign
+				    Name: data2
+				    Value: self.dataList.getData
+			    ]
+
+			FunctionDef
+			    Name: generateAsyncFunctionDef
+			    Args: [
+				self
+				pos: int
+			    ]
+			    Body: [
+
+				Assign
+				    Name: node
+				    Value: PythonNode()
+			    ]
+
+			FunctionDef
+			    Name: generateFunctionDef
+			    Value: PythonNode
+			    Args: [
+				self
+				pos: int
+			    ]
+			    Body: [
+
+				Assign
+				    Name: node
+				    Value: PythonNode()
+
+				Assign
+				    Name: bodyPos
+				    Value: self.findBodyPos
+
+				Assign
+				    Name: bodyIndent
+				    Value: self.dataList.getIndentationLevel
+
+				Assign
+				    Name: r
+				    Value: self.findReturn
+			    ]
+
+			FunctionDef
+			    Name: generateNode
+			    Value: ['PythonNode', 'list']
+			    Args: [
+				self
+				pos: int
+				ntype: str
+			    ]
+
+			FunctionDef
+			    Name: findName
+			    Value: str
+			    Args: [
+				self
+				pos: int
+			    ]
+			    Body: [
+
+				Assign
+				    Name: line
+				    Value: self.dataList.getData
+
+				Assign
+				    Name: name
+				    Value: ''
+
+				Assign
+				    Name: reading
+				    Value: False
+			    ]
+
+			FunctionDef
+			    Name: findValue
+			    Value: ['str', 'int']
+			    Args: [
+				self
+				pos: int
+			    ]
+			    Body: [
+
+				Assign
+				    Name: value
+				    Value: ''
+
+				Assign
+				    Name: isString
+				    Value: False
+
+				Assign
+				    Name: line
+				    Value: self.dataList.getData
+			    ]
+
+			FunctionDef
+			    Name: findBodyPos
+			    Value: int
+			    Args: [
+				self
+				pos: int
+			    ]
+			    Body: [
+
+				Assign
+				    Name: indent
+				    Value: self.dataList.getIndentationLevel
+			    ]
+
+			FunctionDef
+			    Name: findReturn
+			    Value: ['str', 'list']
+			    Args: [
+				self
+				pos: int
+			    ]
+			    Body: [
+
+				Assign
+				    Name: expectedIndent
+				    Value: self.dataList.getIndentationLevel
+			    ]
+
+			FunctionDef
+			    Name: findNextIndentPos
+			    Value: int
+			    Args: [
+				self
+				pos: int
+			    ]
+			    Body: [
+
+				Assign
+				    Name: ind
+				    Value: self.dataList.getIndentationLevel
+			    ]
+
+			FunctionDef
+			    Name: getBoolOp
+			    Value: list
+			    Args: [
+				self
+				pos: int
+			    ]
+			    Body: [
+
+				Assign
+				    Name: l
+				    Value: []
+
+				Assign
+				    Name: expectedIndent
+				    Value: BinaryOperation
+
+				Assign
+				    Name: i
+				    Value: BinaryOperation
+			    ]
+
+			FunctionDef
+			    Name: print
+			    Args: [
+				self
+			    ]
+		    ]
+	    ]

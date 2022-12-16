@@ -7,11 +7,12 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-13 12:39:52
+#   @Last Modified time: 2022-12-16 11:52:03
 #   @Description:        Tests for app/ast_module/pyAST.py
 
 
 from app.modules.ast_module.pyAST import PyAST
+from app.modules.ast_module.pythonNode import PythonNode
 from app.modules.ast_module.line import Line
 from app.modules.file_module.file import File
 from app.modules.file_module.searcher import Searcher
@@ -59,6 +60,19 @@ def getFileNames(directory: str, ext = ".py") -> list:
 )
 def test_AST(pythonFile, expectedFile):
 	assert(generateTree(pythonFile) == readExpected(expectedFile))
+
+def test_setGetTree():
+	ast = PyAST()
+	newNode = PythonNode()
+	ast.setTree(newNode)
+	assert(ast.getTree() == newNode)
+
+def test_setGetDataList():
+	ast = PyAST()
+	l = ["item1", "item2", "item3"]
+	ast.setDataList(l)
+	assert(ast.getDataList() == l)
+
 
 
 # @pytest.mark.parametrize(
