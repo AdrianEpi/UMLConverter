@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-13 11:38:37
+#   @Last Modified time: 2022-12-16 11:28:42
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from app.modules.ast_module.pythonNode import PythonNode
@@ -172,15 +172,13 @@ class PyAST:
 				node.setName(self.generateAttribute(i))
 				assigns.append(node)
 				tmpIndent = actualIndent
-				i += 1
-				while actualIndent > tmpIndent:
-					i += 1
-				i -= 1
+				i = self.findNextIndentPos(i + 1) # Find the next indent afther the parent
 			if "Name(id='" in data: 
 				node = PythonNode()
 				node.setNodeType("Assign")
 				node.setName(self.findName(i))
 				assigns.append(node)
+
 			if data == "elts=[": 
 
 				i += 1
@@ -222,7 +220,9 @@ class PyAST:
 					j.setValue("[]")
 				break
 			if ("value=Name(" in data): 
+				print("ENTRA")
 				tmp = self.findName(i)
+				print(tmp)
 				for j in assigns:
 					j.setValue(tmp)
 				break

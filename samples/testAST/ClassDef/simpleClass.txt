@@ -1,0 +1,35 @@
+
+	Module
+	    Body: [
+
+		ClassDef
+		    Name: NewClass
+		    Body: [
+
+			AnnAssign
+			    Name: var1
+			    Value: str
+
+			AnnAssign
+			    Name: var2
+			    Value: int
+
+			FunctionDef
+			    Name: __init__
+			    Args: [
+				self
+				v1
+				v2
+			    ]
+			    Body: [
+
+				Assign
+				    Name: self.var1
+				    Value: v1
+
+				Assign
+				    Name: self.var2
+				    Value: v2
+			    ]
+		    ]
+	    ]

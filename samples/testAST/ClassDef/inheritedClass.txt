@@ -1,0 +1,11 @@
+
+	Module
+	    Body: [
+
+		ClassDef
+		    Name: Foo
+		    Args: [
+			base1
+			base2
+		    ]
+	    ]
