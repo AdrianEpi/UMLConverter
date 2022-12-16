@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-16 11:52:03
+#   @Last Modified time: 2022-12-16 11:53:52
 #   @Description:        Tests for app/ast_module/pyAST.py
 
 
@@ -72,38 +72,3 @@ def test_setGetDataList():
 	l = ["item1", "item2", "item3"]
 	ast.setDataList(l)
 	assert(ast.getDataList() == l)
-
-
-
-# @pytest.mark.parametrize(
-# 	"pythonFile, expectedFile",
-# 	getFileNames(path + "Import")
-# )
-# def test_import(pythonFile, expectedFile):
-# 	assert(generateTree(pythonFile) == readExpected(expectedFile))
-
-
-# @pytest.mark.parametrize(
-# 	"pythonFile, expectedFile",
-# 	getFileNames(path + "ImportFrom")
-# )
-# def test_importFrom(pythonFile, expectedFile):
-# 	assert(generateTree(pythonFile) == readExpected(expectedFile))
-
-
-# @pytest.mark.parametrize(
-# 	"pythonFile, expectedFile",
-# 	getFileNames(path + "AnnAssign")
-# )
-# def test_annAssign(pythonFile, expectedFile):
-# 	assert(generateTree(pythonFile) == readExpected(expectedFile))
-
-
-# @pytest.mark.parametrize(
-# 	"pythonFile, expectedFile",
-# 	getFileNames(path + "Assign")
-# )
-# def test_assign(pythonFile, expectedFile):
-# 	assert(generateTree(pythonFile) == readExpected(expectedFile))
-
-
