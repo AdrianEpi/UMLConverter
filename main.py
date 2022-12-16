@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-12 10:06:42
+#   @Last Modified time: 2022-12-16 12:33:43
 #   @Description:        ...
 
 
@@ -34,7 +34,7 @@ for i in range(len(l)):
 
 tree = PyAST()
 tree.generateTree(ns)
-tree.print()
+tree.printTree()
 
 
 
