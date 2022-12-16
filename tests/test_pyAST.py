@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-13 11:40:48
+#   @Last Modified time: 2022-12-13 12:39:52
 #   @Description:        Tests for app/ast_module/pyAST.py
 
 
@@ -55,33 +55,41 @@ def getFileNames(directory: str, ext = ".py") -> list:
 
 @pytest.mark.parametrize(
 	"pythonFile, expectedFile",
-	getFileNames(path + "Import")
+	getFileNames(path)
 )
-def test_import(pythonFile, expectedFile):
+def test_AST(pythonFile, expectedFile):
 	assert(generateTree(pythonFile) == readExpected(expectedFile))
 
 
-@pytest.mark.parametrize(
-	"pythonFile, expectedFile",
-	getFileNames(path + "ImportFrom")
-)
-def test_importFrom(pythonFile, expectedFile):
-	assert(generateTree(pythonFile) == readExpected(expectedFile))
+# @pytest.mark.parametrize(
+# 	"pythonFile, expectedFile",
+# 	getFileNames(path + "Import")
+# )
+# def test_import(pythonFile, expectedFile):
+# 	assert(generateTree(pythonFile) == readExpected(expectedFile))
 
 
-@pytest.mark.parametrize(
-	"pythonFile, expectedFile",
-	getFileNames(path + "AnnAssign")
-)
-def test_annAssign(pythonFile, expectedFile):
-	assert(generateTree(pythonFile) == readExpected(expectedFile))
+# @pytest.mark.parametrize(
+# 	"pythonFile, expectedFile",
+# 	getFileNames(path + "ImportFrom")
+# )
+# def test_importFrom(pythonFile, expectedFile):
+# 	assert(generateTree(pythonFile) == readExpected(expectedFile))
 
 
-@pytest.mark.parametrize(
-	"pythonFile, expectedFile",
-	getFileNames(path + "Assign")
-)
-def test_assign(pythonFile, expectedFile):
-	assert(generateTree(pythonFile) == readExpected(expectedFile))
+# @pytest.mark.parametrize(
+# 	"pythonFile, expectedFile",
+# 	getFileNames(path + "AnnAssign")
+# )
+# def test_annAssign(pythonFile, expectedFile):
+# 	assert(generateTree(pythonFile) == readExpected(expectedFile))
+
+
+# @pytest.mark.parametrize(
+# 	"pythonFile, expectedFile",
+# 	getFileNames(path + "Assign")
+# )
+# def test_assign(pythonFile, expectedFile):
+# 	assert(generateTree(pythonFile) == readExpected(expectedFile))
 
 

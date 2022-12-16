@@ -1,0 +1,12 @@
+
+	Module
+	    Body: [
+
+		FunctionDef
+		    Name: fun
+		    Args: [
+			self
+			arg1
+			arg2
+		    ]
+	    ]

@@ -1,0 +1,26 @@
+
+	Module
+	    Body: [
+
+		FunctionDef
+		    Name: fun
+		    Value: str
+		    Args: [
+			self
+			arg0
+			arg1: str
+			arg2: int
+			arg3
+			arg4
+		    ]
+		    Body: [
+
+			Assign
+			    Name: tmp
+			    Value: str(BinaryOperation)
+
+			Assign
+			    Name: tmp2
+			    Value: str(BinaryOperation)
+		    ]
+	    ]
