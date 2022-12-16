@@ -1,0 +1,35 @@
+
+	Module
+	    Body: [
+
+		FunctionDef
+		    Name: fun
+		    Value: int
+		    Args: [
+			var1: int
+		    ]
+		    Body: [
+
+			Assign
+			    Name: num2
+			    Value: 2
+
+			FunctionDef
+			    Name: fun2
+			    Args: [
+				var2: int
+			    ]
+			    Body: [
+
+				Assign
+				    Name: num3
+				    Value: 3
+
+				FunctionDef
+				    Name: fun3
+				    Args: [
+					var3: int
+				    ]
+			    ]
+		    ]
+	    ]

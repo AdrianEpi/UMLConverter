@@ -1,0 +1,8 @@
+
+	Module
+	    Body: [
+
+		FunctionDef
+		    Name: fun
+		    Value: int
+	    ]

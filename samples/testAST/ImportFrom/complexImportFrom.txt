@@ -1,0 +1,8 @@
+
+	Module
+	    Body: [
+
+		ImportFrom
+		    Name: foo.bar
+		    Value: ['a', 'c']
+	    ]
