@@ -7,89 +7,177 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-09 09:53:38
+#   @Last Modified time: 2022-12-16 12:01:23
 #   @Description:        ...
 
 
 
-NODETYPES = [
-	"Module",
-	"ClassDef",
-	"Import",
-	"ImportFrom",
-	"Assign",
-	"AnnAssign",
-	"AsyncFunctionDef",
-	"FunctionDef",
-	"Return"
-]
+# NODETYPES = [
+# 	"Module",
+# 	"ClassDef",
+# 	"Import",
+# 	"ImportFrom",
+# 	"Assign",
+# 	"AnnAssign",
+# 	"AsyncFunctionDef",
+# 	"FunctionDef",
+# 	"Return"
+# ]
 
 class PythonNode:
+	"""
+	This class describes a python node.
+	"""
 
 	nodeType: str 
-	name: str or None
-	value: str or int or list or None #returns for functions
-	args: list or None # inheritance for classes
-	body: list or None
+	name: str or None 					# Node name
+	value: str or int or list or None 	# Returns for functions
+	args: list or None 					# Inheritance for classes
+	body: list or None 					# List of nodes in functions and classes
 
 	def __init__(self):
+		"""
+		Constructs a new instance.
+		"""
 		self.nodeType = ""
 		self.name = None
 		self.value = None
 		self.args = []
 		self.body = []
 
-
 		  	 
 	def getNodeType(self) -> str:
+		"""
+		Gets the node type.
+
+		:returns:   The node type.
+		:rtype:     str
+		"""
 		return self.nodeType
 
 
 	def getName(self) -> str or None:
+		"""
+		Gets the name.
+
+		:returns:   The name.
+		:rtype:     str or None
+		"""
 		return self.name
 
 
 	def getValue(self) -> str or int or list or None:
+		"""
+		Gets the value.
+
+		:returns:   The value.
+		:rtype:     str or int or list or None
+		"""
 		return self.value
 
 
 	def getArgs(self) -> list or None:
+		"""
+		Gets the arguments.
+
+		:returns:   The arguments.
+		:rtype:     list or None
+		"""
 		return self.args
 
 	
 	def getBody(self) -> list or None:
+		"""
+		Gets the body.
+
+		:returns:   The body.
+		:rtype:     list or None
+		"""
 		return self.body
 
 
 	def setNodeType(self, newNodeType: str):
+		"""
+		Sets the node type.
+
+		:param      newNodeType:  The new node type
+		:type       newNodeType:  str
+		"""
 		self.nodeType = newNodeType
 
 
 	def setName(self, newName: str):
+		"""
+		Sets the name.
+
+		:param      newName:  The new name
+		:type       newName:  str
+		"""
 		self.name = newName
 
 
 	def setValue(self, newValue: str or int):
+		"""
+		Sets the value.
+
+		:param      newValue:  The new value
+		:type       newValue:  list or int
+		"""
 		self.value = newValue
 
 
 	def setArgs(self, newArgs: list):
+		"""
+		Sets the arguments.
+
+		:param      newArgs:  The new arguments
+		:type       newArgs:  list
+		"""
 		self.args = newArgs
 
 
 	def setBody(self, newBody: list):
+		"""
+		Sets the body.
+
+		:param      newBody:  The new body
+		:type       newBody:  list
+		"""
 		self.body = newBody
 
 
 	def addArg(self, node):
+		"""
+		Adds an argument.
+
+		:param      node:  The node
+		:type       node:  PythonNode
+		"""
 		self.args.append(node)
 
 
 	def addBody(self, node):
+		"""
+		Adds a body.
+
+		:param      node:  The node
+		:type       node:  PythonNode
+		"""
 		self.body.append(node)
 
 
 	def toString(self, indent = 1) -> str:
+		"""
+		Returns a string representation of the object
+		
+		:param      indent:     The indent
+		:type       indent:     int
+		
+		:returns:   str
+		:rtype:     str
+		
+		:raises     TypeError:  Error if node type is not PythonNode
+		"""
 		output = "\n"
 		tab = str(indent * "\t")
 		output += tab + self.nodeType
@@ -111,7 +199,7 @@ class PythonNode:
 				if (isinstance(i, PythonNode)):
 					output += "\n" + i.toString(indent + 1)
 				else:
-					raise Exception("Error PythonNode.toString(), body must be a node.")
+					raise TypeError("Error PythonNode.toString(), body must be a node.")
 			output += "\n" + tab + "    ]"
 
 		return output
