@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-16 12:33:43
+#   @Last Modified time: 2022-12-19 13:30:55
 #   @Description:        ...
 
 
@@ -18,7 +18,7 @@ from app.modules.ast_module.line import Line
 from app.modules.file_module.file import File
 from app.modules.file_module.searcher import Searcher
 from app.modules.ast_module.pyAST import PyAST
-
+from app.modules.uml_module.translator import Translator
 
 
 filename = "app/testclass.py"
@@ -40,7 +40,9 @@ tree.printTree()
 
 
 
-
+t = Translator(tree.getTree(), "Python")
+t.translate()
+print(t.getCode())
 
 
 

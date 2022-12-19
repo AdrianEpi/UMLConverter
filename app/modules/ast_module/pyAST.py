@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-19 09:55:58
+#   @Last Modified time: 2022-12-19 12:53:19
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from app.modules.ast_module.pythonNode import PythonNode
@@ -260,7 +260,7 @@ class PyAST:
 		Assign:
 			nodeType: "Assign" 
 			name: str (Name of the assign)
-			value: str or int or list or bool or Object (Assign value
+			value: str or int or list or bool or Object (Assign value)
 			args: None
 			body: None
 
