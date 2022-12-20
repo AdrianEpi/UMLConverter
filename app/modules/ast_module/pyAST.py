@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-19 12:53:19
+#   @Last Modified time: 2022-12-20 10:50:39
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from app.modules.ast_module.pythonNode import PythonNode
@@ -81,20 +81,22 @@ class PyAST:
 		self.tree = t
 
 
-	def generateTree(self, l: list):
+	def generateTree(self, l: list) -> bool:
 		"""
 		Generates the python tree
 		
-		:param      l:          list of lines readed form ast python module
-		:type       l:          list
+		:param      l:    list of lines readed form ast python module
+		:type       l:    list
 		
-		:raises     Exception:  Error if not module
+		:returns:   True if tree can be generated, false otherwhise
+		:rtype:     bool
 		"""
 		self.dataList = l
 		if "Module(" == self.dataList[0].getData():
 			self.tree = self.generateModule(0)
+			return True
 		else:
-			raise Exception("Error, not valid tree")
+			return False
 
 
 	def generateModule(self, pos: int) -> PythonNode:
