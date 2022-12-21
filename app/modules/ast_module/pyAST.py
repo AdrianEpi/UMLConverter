@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-20 10:50:39
+#   @Last Modified time: 2022-12-21 17:24:44
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from app.modules.ast_module.pythonNode import PythonNode
@@ -93,13 +93,13 @@ class PyAST:
 		"""
 		self.dataList = l
 		if "Module(" == self.dataList[0].getData():
-			self.tree = self.generateModule(0)
+			self.tree = self.__generateModule(0)
 			return True
 		else:
 			return False
 
 
-	def generateModule(self, pos: int) -> PythonNode:
+	def __generateModule(self, pos: int) -> PythonNode:
 		"""
 		Generates a Module PythonNode
 		Module:
@@ -124,20 +124,20 @@ class PyAST:
 			if (actualIndent == (indent + 2)):
 				data = self.dataList[i].getData()
 				if data in NODETYPES:
-					n =	self.generateNode(i, data)
+					n =	self.__generateNode(i, data)
 					if isinstance(n, PythonNode):
 						node.addBody(n)
 					elif isinstance(n, list):
 						for j in n:
 							node.addBody(j)
 					else:
-						raise TypeError("Error in PyAST.generateModule() (ast line {}), not valid dataType for body".format(pos))
+						raise TypeError("Error in PyAST.__generateModule() (ast line {}), not valid dataType for body".format(pos))
 			elif (actualIndent <= indent):
 				break
 		return node
 
 
-	def generateClassDef(self, pos: int) -> PythonNode:
+	def __generateClassDef(self, pos: int) -> PythonNode:
 		"""
 		Generates a ClassDef PythonNode
 		ClassDef:
@@ -157,38 +157,38 @@ class PyAST:
 		"""
 		node = PythonNode()
 		node.setNodeType("ClassDef")
-		node.setName(self.findName(pos + 1))
+		node.setName(self.__findName(pos + 1))
 		if (self.dataList[pos + 2].getData() != "bases=[],"): # The class has inheritance
 			inheritance = []
 			for i in range(pos + 3, len(self.dataList), 1):
 				if "keywords=[" in self.dataList[i].getData():
 					break
 				else:
-					inheritance.append(self.findName(i))
+					inheritance.append(self.__findName(i))
 			node.setArgs(inheritance)
 
-		bodyPos = self.findBodyPos(pos)
+		bodyPos = self.__findBodyPos(pos)
 		bodyIndent = self.dataList[bodyPos].getIndentationLevel()
 		for i in range(bodyPos + 1, len(self.dataList), 1):
 			actualIndent = self.dataList[i].getIndentationLevel()
 			if (actualIndent == (bodyIndent + 1)):
 				data = self.dataList[i].getData()
 				if data in NODETYPES:
-					n =	self.generateNode(i, data)
+					n =	self.__generateNode(i, data)
 					if isinstance(n, PythonNode):
 						node.addBody(n)
 					elif isinstance(n, list):
 						for j in n:
 							node.addBody(j)
 					else:
-						raise TypeError("Error in PyAST.generateClassDef() (ast line {}), not valid dataType for body".format(pos))
+						raise TypeError("Error in PyAST.__generateClassDef() (ast line {}), not valid dataType for body".format(pos))
 			elif (actualIndent <= bodyIndent):
 				break
 
 		return node
 
 
-	def generateImport(self, pos: int) -> list:
+	def __generateImport(self, pos: int) -> list:
 		"""
 		Generates an Import PythonNode
 		Import:
@@ -212,16 +212,16 @@ class PyAST:
 			if "alias(name='" in data:
 				node = PythonNode()
 				node.setNodeType("Import")
-				node.setName(self.findName(i))
+				node.setName(self.__findName(i))
 				imports.append(node)
 				if ("])," in data or ")]," in data):
 					break
 			else:
-				raise Exception("Error in PyAST.generateImport() (ast line {}), not import name found".format(pos))
+				raise Exception("Error in PyAST.__generateImport() (ast line {}), not import name found".format(pos))
 		return imports
 
 
-	def generateImportFrom(self, pos: int) -> PythonNode:
+	def __generateImportFrom(self, pos: int) -> PythonNode:
 		"""
 		Generates an ImportFrom PythonNode
 		ImportFrom:
@@ -247,16 +247,16 @@ class PyAST:
 		for i in range(pos + 3, len(self.dataList), 1):
 			data = self.dataList[i].getData()
 			if "alias(name='" in data:
-				imports.append(self.findName(i))
+				imports.append(self.__findName(i))
 				if (")]," in data):
 					break
 			else:
-				raise Exception("Error in PyAST.generateImport() (ast line {}), not import name found".format(pos))
+				raise Exception("Error in PyAST.__generateImport() (ast line {}), not import name found".format(pos))
 		node.setValue(imports)
 		return node
 
 
-	def generateAssign(self, pos: int) -> list:
+	def __generateAssign(self, pos: int) -> list:
 		"""
 		Generates an Assign PythonNode
 		Assign:
@@ -281,18 +281,18 @@ class PyAST:
 			actualIndent = self.dataList[i].getIndentationLevel()
 			data = self.dataList[i].getData()
 			if (actualIndent < expectedIndent):
-				raise Exception("Error in PyAST.generateAssign() (ast line {}), not assign found".format(pos))
+				raise Exception("Error in PyAST.__generateAssign() (ast line {}), not assign found".format(pos))
 			if data == "Attribute(":
 				node = PythonNode()
 				node.setNodeType("Assign")
 				node.setName(self.generateAttribute(i))
 				assigns.append(node)
 				tmpIndent = actualIndent
-				i = self.findNextIndentPos(i + 1) # Find the next indent afther the parent
+				i = self.__findNextIndentPos(i + 1) # Find the next indent afther the parent
 			if "Name(id='" in data: 
 				node = PythonNode()
 				node.setNodeType("Assign")
-				node.setName(self.findName(i))
+				node.setName(self.__findName(i))
 				assigns.append(node)
 
 			if data == "elts=[": 
@@ -303,7 +303,7 @@ class PyAST:
 					node = PythonNode()
 					node.setNodeType("Assign")
 					if ("Name(id='" in data):		
-						node.setName(self.findName(i))
+						node.setName(self.__findName(i))
 					elif ("Attribute(" == data):
 						node.setName(self.generateAttribute(i))
 						tmpIndent = actualIndent
@@ -315,7 +315,7 @@ class PyAST:
 						i += 1
 						break
 					else:
-						raise Exception("Error in PyAST.generateAssignTuple() (ast line {}), not valid var in tuple".format(pos))
+						raise Exception("Error in PyAST.__generateAssignTuple() (ast line {}), not valid var in tuple".format(pos))
 
 					i += 1
 					assigns.append(node)
@@ -327,7 +327,7 @@ class PyAST:
 					j.setValue(tmp)
 				break
 			if ("value=Constant" in data):
-				tmp = self.findValue(i)
+				tmp = self.__findValue(i)
 				for j in assigns:
 					j.setValue(tmp)
 				break
@@ -336,7 +336,7 @@ class PyAST:
 					j.setValue("[]")
 				break
 			if ("value=Name(" in data): 
-				tmp = self.findName(i)
+				tmp = self.__findName(i)
 				for j in assigns:
 					j.setValue(tmp)
 				break
@@ -366,16 +366,16 @@ class PyAST:
 			func = self.generateAttribute(i)
 		else:
 			f = True
-			func = self.findName(i) + "("
+			func = self.__findName(i) + "("
 		if self.dataList[i + 1].getData() == "args=[":
 			i += 2
 			while True:
 				data = self.dataList[i].getData()
 				if "Name(id='" in data:
-					func += self.findName(i) + ", "
+					func += self.__findName(i) + ", "
 				elif "BinOp(" in data:
 					func += "BinaryOperation, "
-					i = self.findNextIndentPos(i)
+					i = self.__findNextIndentPos(i)
 					i -= 1
 				else: 
 					break
@@ -402,7 +402,7 @@ class PyAST:
 		data = self.dataList[pos].getData()
 		data1 = self.dataList[pos + 1].getData()
 		if "value=Name(" in data1:
-			attrib = self.findName(pos + 1)
+			attrib = self.__findName(pos + 1)
 
 		elif "func=Attribute(" == data:
 			attrib = self.generateAttribute(pos + 1)
@@ -424,13 +424,13 @@ class PyAST:
 			if (actualIndent < expectedIndent):
 				raise Exception("Error in PyAST.generateAttribute(), not attr found.")
 			elif (actualIndent == expectedIndent) and ("attr='" in self.dataList[i].getData()):
-				attrib += "." + (self.findName(i))
+				attrib += "." + (self.__findName(i))
 				break
 			i += 1
 		return attrib
 
 
-	def generateAnnAssign(self, pos: int) -> PythonNode:
+	def __generateAnnAssign(self, pos: int) -> PythonNode:
 		"""
 		Generates an AnnAssign PythonNode
 		AnnAssign:
@@ -452,37 +452,37 @@ class PyAST:
 		node.setNodeType("AnnAssign")
 		data1 = self.dataList[pos + 1].getData()
 		if "Name(id='" in data1:
-			node.setName(self.findName(pos + 1))
+			node.setName(self.__findName(pos + 1))
 		elif "target=Subscript(" in data1:
-			node.setName(self.findName(pos + 2) + "[...]")
+			node.setName(self.__findName(pos + 2) + "[...]")
 		elif "target=Attribute(" in data1:
 			node.setName(self.generateAttribute(pos + 1))
 		else:
-			raise Exception("Error in PyAST.generateAnnAssign() (ast line {}), not name found.".format(pos))
+			raise Exception("Error in PyAST.__generateAnnAssign() (ast line {}), not name found.".format(pos))
 
-		posVal = self.findNextIndentPos(pos + 1)
+		posVal = self.__findNextIndentPos(pos + 1)
 		data2 = self.dataList[posVal].getData()
 		if "annotation=Name" in data2:
-			node.setValue(self.findName(posVal))
+			node.setValue(self.__findName(posVal))
 		elif "annotation=Constant" in data2:
-			node.setValue(self.findValue(posVal))
+			node.setValue(self.__findValue(posVal))
 		elif "annotation=Call" in data2:
-			node.setValue(self.findName(posVal + 1))
+			node.setValue(self.__findName(posVal + 1))
 		elif ("annotation=BoolOp(" in data2):
-			l = self.getBoolOp(posVal + 2)
+			l = self.__getBoolOp(posVal + 2)
 			node.setValue(l)
 		else:
-			raise Exception("Error in PyAST.generateAnnAssign() (ast line {}), not value found.".format(pos))
+			raise Exception("Error in PyAST.__generateAnnAssign() (ast line {}), not value found.".format(pos))
 		return node
 
 
 	# FUNCTION NOT IMPLEMENTED YET
-	def generateAsyncFunctionDef(self, pos: int):
+	def __generateAsyncFunctionDef(self, pos: int):
 		node = PythonNode()
 		node.setNodeType("AsyncFunctionDef")
 
 
-	def generateFunctionDef(self, pos: int) -> PythonNode:
+	def __generateFunctionDef(self, pos: int) -> PythonNode:
 		"""
 		Generates a FunctionDef PythonNode. 
 		FunctionDef:
@@ -502,7 +502,7 @@ class PyAST:
 		"""
 		node = PythonNode()
 		node.setNodeType("FunctionDef")
-		node.setName(self.findName(pos + 1))
+		node.setName(self.__findName(pos + 1))
 		if ("arg(" in self.dataList[pos + 5].getData()):
 			args = []
 			i = pos + 5
@@ -512,34 +512,34 @@ class PyAST:
 					break
 				else:
 					if "arg(arg=" in data: # Non typed param
-						args.append(self.findName(i))
+						args.append(self.__findName(i))
 					else: # Typed param -> Generate param name with format "Name: type"
 						param = ""
 						data2 = self.dataList[i + 2].getData()
 						if ("annotation=Name(" in data2):
-							param = str(self.findName(i + 1)) + ": " + str(self.findName(i + 2))
+							param = str(self.__findName(i + 1)) + ": " + str(self.__findName(i + 2))
 						elif ("annotation=BoolOp(" in data2):
-							param = str(self.getBoolOp(i + 2))
+							param = str(self.__getBoolOp(i + 2))
 
 						else:
-							raise TypeError("Error in PyAST.generateFunctionDef() (ast line {}), not valid args type".format(i))	
+							raise TypeError("Error in PyAST.__generateFunctionDef() (ast line {}), not valid args type".format(i))	
 
 						args.append(param)
-						i = self.findNextIndentPos(i)
+						i = self.__findNextIndentPos(i)
 						if (i == -1):
 							break
 						i -= 1
 				i += 1
 			node.setArgs(args)
 
-		bodyPos = self.findBodyPos(pos)
+		bodyPos = self.__findBodyPos(pos)
 		bodyIndent = self.dataList[bodyPos].getIndentationLevel()
 		for i in range(bodyPos + 1, len(self.dataList), 1):
 			actualIndent = self.dataList[i].getIndentationLevel()
 			if (actualIndent == (bodyIndent + 1)):
 				data = self.dataList[i].getData()
 				if data in NODETYPES:
-					n =	self.generateNode(i, data)
+					n =	self.__generateNode(i, data)
 					if isinstance(n, PythonNode):
 						node.addBody(n)
 					elif isinstance(n, list):
@@ -547,19 +547,19 @@ class PyAST:
 							if (j.getName() != j.getValue()):
 								node.addBody(j)
 					else:
-						raise TypeError("Error in PyAST.generateFunctionDef() (ast line {}), not valid dataType for body".format(pos))
+						raise TypeError("Error in PyAST.__generateFunctionDef() (ast line {}), not valid dataType for body".format(pos))
 			elif (actualIndent <= bodyIndent):
 				break
 
-		r = self.findReturn(pos)
+		r = self.__findReturn(pos)
 		if r:
 			node.setValue(r)
 		return node
 
 
-	def generateNode(self, pos: int, ntype: str) -> PythonNode or list:
+	def __generateNode(self, pos: int, ntype: str) -> PythonNode or list:
 		"""
-		Calls the generateNode corresponded to the node type
+		Calls the __generateNode corresponded to the node type
 
 		:param      pos:        The position
 		:type       pos:        int
@@ -572,26 +572,26 @@ class PyAST:
 		:raises     TypeError:  Error if not valid node type
 		"""
 		if ntype == "Module(":
-			return self.generateModule(pos)
+			return self.__generateModule(pos)
 		elif ntype == "ClassDef(":
-			return self.generateClassDef(pos)
+			return self.__generateClassDef(pos)
 		elif ntype == "Import(":
-			return self.generateImport(pos)
+			return self.__generateImport(pos)
 		elif ntype == "ImportFrom(":
-			return self.generateImportFrom(pos)
+			return self.__generateImportFrom(pos)
 		elif ntype == "Assign(":
-			return self.generateAssign(pos)
+			return self.__generateAssign(pos)
 		elif ntype == "AnnAssign(":
-			return self.generateAnnAssign(pos)
+			return self.__generateAnnAssign(pos)
 		elif ntype == "AsyncFunctionDef(":
-			return self.generateAsyncFunctionDef(pos)
+			return self.__generateAsyncFunctionDef(pos)
 		elif ntype == "FunctionDef(":
-			return self.generateFunctionDef(pos)
+			return self.__generateFunctionDef(pos)
 		else:
-			raise TypeError("Error in PyAST.generateNode() (ast line {}), not valid node type.".format(pos))
+			raise TypeError("Error in PyAST.__generateNode() (ast line {}), not valid node type.".format(pos))
 
 
-	def findName (self, pos: int) -> str:
+	def __findName (self, pos: int) -> str:
 		"""
 		Finds a name in a given Line from an AST.
 
@@ -615,11 +615,11 @@ class PyAST:
 			elif reading:
 				name += i
 		if name == "":
-			raise Exception("Error in PyAST.findName(), no name found")
+			raise Exception("Error in PyAST.__findName(), no name found")
 		return name
 
 
-	def findValue (self, pos: int) -> str or int:
+	def __findValue (self, pos: int) -> str or int:
 		"""
 		Finds a value in a given Line from an AST. For AnnAssign and Assign nodes
 
@@ -654,11 +654,11 @@ class PyAST:
 
 
 		if value == "":
-			raise Exception("Error in PyAST.findValue(), no value found")
+			raise Exception("Error in PyAST.__findValue(), no value found")
 		return value[::-1] # [::-1] reverses python string
 
 
-	def findBodyPos (self, pos: int) -> int:
+	def __findBodyPos (self, pos: int) -> int:
 		"""
 		Finds a body position.
 
@@ -682,9 +682,9 @@ class PyAST:
 					return i
 				elif data == "body=[],":
 					return 0 # Empty body
-		raise Exception("Error in PyAST.findBodyPos() (ast line {}), not body".format(pos))
+		raise Exception("Error in PyAST.__findBodyPos() (ast line {}), not body".format(pos))
 
-	def findReturn (self, pos: int) -> str or list:
+	def __findReturn (self, pos: int) -> str or list:
 		expectedIndent = self.dataList[pos].getIndentationLevel()
 		for i in range(pos + 1, len(self.dataList), 1):
 			actualIndent = self.dataList[i].getIndentationLevel()
@@ -693,14 +693,14 @@ class PyAST:
 			elif (actualIndent == (expectedIndent + 1)):
 				data = self.dataList[i].getData()
 				if "returns=Name(" in data:
-					return self.findName(i)
+					return self.__findName(i)
 				elif "returns=BoolOp(" in data:
-					return self.getBoolOp(i)
+					return self.__getBoolOp(i)
 
-		raise Exception("Error in PyAST.findReturn() (ast line {}), no return found".format(pos))
+		raise Exception("Error in PyAST.__findReturn() (ast line {}), no return found".format(pos))
 
 
-	def findNextIndentPos (self, pos: int) -> int:
+	def __findNextIndentPos (self, pos: int) -> int:
 		"""
 		Finds the next indent level position (finds the next line with the same indent level)
 
@@ -719,10 +719,10 @@ class PyAST:
 				return i
 			elif ind > actualIndent:
 				return -1
-		raise Exception("Error in PyAST.findNextIndentPos() (ast line {}), not lower indent found".format(pos))
+		raise Exception("Error in PyAST.__findNextIndentPos() (ast line {}), not lower indent found".format(pos))
 
 
-	def getBoolOp(self, pos: int) -> list:
+	def __getBoolOp(self, pos: int) -> list:
 		"""
 		Gets the bool operation.
 
@@ -741,9 +741,9 @@ class PyAST:
 			else:
 				data = self.dataList[i].getData()
 				if ("Name" in data):
-					l.append(self.findName(i))
+					l.append(self.__findName(i))
 				elif ("Constant" in data):
-					l.append(self.findValue(i))
+					l.append(self.__findValue(i))
 			i += 1
 		return l
 
