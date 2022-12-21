@@ -1,0 +1,148 @@
+
+class Line {
+    + int indentation
+    + str data
+    + int indentationLevel
+    + list args
+    - __init__(self, line: str,)
+    + getIndentation(self,)
+    + getData(self,)
+    + getRawData(self,)
+    + getIndentationLevel(self,)
+    - __generateLine(self, line: str,)
+}
+
+class PyAST {
+    + PythonNode tree
+    + list dataList
+    - __init__(self,)
+    + getDataList(self,)
+    + getTree(self,)
+    + setDataList(self, l: list,)
+    + setTree(self, t: PythonNode,)
+    + generateTree(self, l: list,)
+    - __generateModule(self, pos: int,)
+    - __generateClassDef(self, pos: int,)
+    - __generateImport(self, pos: int,)
+    - __generateImportFrom(self, pos: int,)
+    - __generateAssign(self, pos: int,)
+    + generateFunctionCall(self, pos: int,)
+    + generateAttribute(self, pos: int,)
+    - __generateAnnAssign(self, pos: int,)
+    - __generateAsyncFunctionDef(self, pos: int,)
+    - __generateFunctionDef(self, pos: int,)
+    - __generateNode(self, pos: int, ntype: str,)
+    - __findName(self, pos: int,)
+    - __findValue(self, pos: int,)
+    - __findBodyPos(self, pos: int,)
+    - __findReturn(self, pos: int,)
+    - __findNextIndentPos(self, pos: int,)
+    - __getBoolOp(self, pos: int,)
+    + printTree(self,)
+}
+
+class PythonNode {
+    + str nodeType
+    + (str or None) name
+    + (str or int or list or None) value
+    + (list or None) args
+    + (list or None) body
+    - __init__(self,)
+    + getNodeType(self,)
+    + getName(self,)
+    + getValue(self,)
+    + getArgs(self,)
+    + getBody(self,)
+    + setNodeType(self, newNodeType: str,)
+    + setName(self, newName: str,)
+    + setValue(self, ['str', 'int'],)
+    + setArgs(self, newArgs: list,)
+    + setBody(self, newBody: list,)
+    + addArg(self, node,)
+    + addBody(self, node,)
+    + toString(self, indent,)
+}
+
+class File {
+    + str fileName
+    + str data
+    - __init__(self, file: str,)
+    + getFileName(self,)
+    + getData(self,)
+    + setFileName(self, name: str,)
+    + setData(self, newData: str,)
+    + read(self,)
+    + write(self, data: str,)
+}
+
+class Searcher {
+    + fileList
+    + list
+    + dirList
+    + list
+    - __init__(self,)
+    + getFileList(self,)
+    + getDirList(self,)
+    + lookForFiles(self, directory: str, ext: str,)
+}
+
+class Translator {
+    + PythonNode ast
+    + str code
+    + list imports
+    + list classList
+    + str language
+    - __init__(self, module: PythonNode, lang: str,)
+    + getAst(self,)
+    + getCode(self,)
+    + getImports(self,)
+    + getClassList(self,)
+    + getLanguage(self,)
+    + setAst(self, module: PythonNode,)
+    + setCode(self, newCode: str,)
+    + setImports(self, newImports: list,)
+    + setClassList(self, newClassList: list,)
+    + setLanguage(self, lang: str,)
+    + translate(self,)
+    - __translateClass(self, node: PythonNode,)
+    + getVisibility(self, line: str,)
+    - __translateInheritance(self, className: str, l: list,)
+    - __translateAttrib(self, node: PythonNode,)
+    - __translateFunction(self, node: PythonNode,)
+}
+
+class UMLConverter {
+    + list fileList
+    + str code
+    + str output
+    + str language
+    + str extension
+    - __init__(self,)
+    + getFileList(self,)
+    + getCode(self,)
+    + getOutput(self,)
+    + getLanguage(self,)
+    + setFileList(self, newFileList: list,)
+    + setCode(self, newCode: str,)
+    + setOutput(self, newOutput: str,)
+    + setLanguage(self, newLanguage: str,)
+    - __generateExtention(self,)
+    - __askFiles(self,)
+    + generateUML(self,)
+    - __writeToFile(self,)
+    - __convertToPng(self,)
+}
+
+class base1 {
+}
+
+class base2 {
+}
+
+class meta {
+}
+
+base1 <|-- Foo
+base2 <|-- Foo
+class Foo {
+}

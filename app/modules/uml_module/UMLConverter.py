@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-20 10:50:56
+#   @Last Modified time: 2022-12-21 18:58:54
 #   @Description:        ...
 
 from app.modules.uml_module.translator import Translator, LANGUAGES
@@ -18,6 +18,7 @@ from app.modules.ast_module.pyAST import PyAST
 
 import ast
 from six.moves import input as raw_input
+from os import system
 
 class UMLConverter:
 
@@ -85,7 +86,7 @@ class UMLConverter:
 			lang = raw_input("Please enter the language:\n\t- Python\n\t- ...\n")
 			validLang = self.setLanguage(lang)
 		self.__generateExtention()
-		out = raw_input("Please enter the output folder: ")
+		self.output = raw_input("Please enter the output folder: ")
 
 		searcher = Searcher()
 		self.fileList = searcher.lookForFiles(path, self.extension)
@@ -95,6 +96,7 @@ class UMLConverter:
 		self.__askFiles()
 		for i in self.fileList:
 			f = File(i)
+			f.read()
 			fileAST = ast.dump(ast.parse(f.getData()), annotate_fields=True, include_attributes=False, indent=4)
 			l = fileAST.split("\n")
 			lines = []
@@ -107,5 +109,17 @@ class UMLConverter:
 			t.translate()
 			self.code +=t.getCode()
 
-		print(self.code)
+		self.__writeToFile()
+		self.__convertToPng()
+
+
+	def __writeToFile(self):
+		f = File(self.output)
+		f.write(self.code)
+
+
+	def __convertToPng(self):
+		system("python -m plantuml " + self.output)
+
+
 
