@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-20 09:51:35
+#   @Last Modified time: 2022-12-21 19:05:01
 #   @Description:        Translates generated AST to mermaid language.
 
 
@@ -157,9 +157,9 @@ class Translator:
 		else: # AnnAssign
 			types = ""
 			if isinstance(node.getValue(), list):
-				types = "("
+				types = "["
 				types += " or ".join(node.getValue())
-				types += ")"
+				types += "]"
 			else:
 				types = node.getValue()
 			return "    " + self.getVisibility(node.getName()) + " " + types + " " + node.getName()
@@ -173,7 +173,7 @@ class Translator:
 				args += i + ", "
 			elif isinstance(i, PythonNode):
 				args += i.getName() + ", "
-		args = args[:(len(args) - 1)]
+		args = args[:(len(args) - 2)]
 		return data + args + ")"
 
 
