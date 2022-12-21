@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-21 17:24:44
+#   @Last Modified time: 2022-12-21 19:01:39
 #   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
 
 from app.modules.ast_module.pythonNode import PythonNode
@@ -285,7 +285,7 @@ class PyAST:
 			if data == "Attribute(":
 				node = PythonNode()
 				node.setNodeType("Assign")
-				node.setName(self.generateAttribute(i))
+				node.setName(self.__generateAttribute(i))
 				assigns.append(node)
 				tmpIndent = actualIndent
 				i = self.__findNextIndentPos(i + 1) # Find the next indent afther the parent
@@ -305,7 +305,7 @@ class PyAST:
 					if ("Name(id='" in data):		
 						node.setName(self.__findName(i))
 					elif ("Attribute(" == data):
-						node.setName(self.generateAttribute(i))
+						node.setName(self.__generateAttribute(i))
 						tmpIndent = actualIndent
 						i += 1
 						while actualIndent > tmpIndent:
@@ -322,7 +322,7 @@ class PyAST:
 				data = self.dataList[i].getData()
 
 			if ("value=Call(" == data): # No elif, already incremented
-				tmp = self.generateFunctionCall(i)
+				tmp = self.__generateFunctionCall(i)
 				for j in assigns:
 					j.setValue(tmp)
 				break
@@ -348,7 +348,7 @@ class PyAST:
 		return assigns
 
 			
-	def generateFunctionCall(self, pos: int) -> str:
+	def __generateFunctionCall(self, pos: int) -> str:
 		"""
 	 	Generate a function call "var.func()"  in str format of the ast
 	 
@@ -363,7 +363,7 @@ class PyAST:
 		func = ""
 		f = False
 		if "func=Attribute(" in self.dataList[i].getData():
-			func = self.generateAttribute(i)
+			func = self.__generateAttribute(i)
 		else:
 			f = True
 			func = self.__findName(i) + "("
@@ -386,7 +386,7 @@ class PyAST:
 		return func
 
 
-	def generateAttribute(self, pos: int) -> str:
+	def __generateAttribute(self, pos: int) -> str:
 		"""
 	 	Generates class attributes ["self", "tree", "data"] = self.tree.data
 	 
@@ -405,16 +405,16 @@ class PyAST:
 			attrib = self.__findName(pos + 1)
 
 		elif "func=Attribute(" == data:
-			attrib = self.generateAttribute(pos + 1)
+			attrib = self.__generateAttribute(pos + 1)
 		
 		elif data == "value=Subscript(":
-			return self.generateAttribute(pos + 1)
+			return self.__generateAttribute(pos + 1)
 		
 		elif "value=Attribute(" == data1:
-			attrib = self.generateAttribute(pos + 1)
+			attrib = self.__generateAttribute(pos + 1)
 		
 		elif data == "value=Call(":
-			attrib = self.generateFunctionCall(pos)
+			attrib = self.__generateFunctionCall(pos)
 			return attrib
 
 		expectedIndent = self.dataList[pos].getIndentationLevel() + 1
@@ -422,7 +422,7 @@ class PyAST:
 		while True:
 			actualIndent = self.dataList[i].getIndentationLevel()
 			if (actualIndent < expectedIndent):
-				raise Exception("Error in PyAST.generateAttribute(), not attr found.")
+				raise Exception("Error in PyAST.__generateAttribute(), not attr found.")
 			elif (actualIndent == expectedIndent) and ("attr='" in self.dataList[i].getData()):
 				attrib += "." + (self.__findName(i))
 				break
@@ -456,7 +456,7 @@ class PyAST:
 		elif "target=Subscript(" in data1:
 			node.setName(self.__findName(pos + 2) + "[...]")
 		elif "target=Attribute(" in data1:
-			node.setName(self.generateAttribute(pos + 1))
+			node.setName(self.__generateAttribute(pos + 1))
 		else:
 			raise Exception("Error in PyAST.__generateAnnAssign() (ast line {}), not name found.".format(pos))
 
