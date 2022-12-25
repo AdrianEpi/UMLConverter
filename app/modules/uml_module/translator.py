@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-25 11:45:45
+#   @Last Modified time: 2022-12-25 16:00:02
 #   @Description:        Translates generated AST to mermaid language.
 
 
@@ -113,12 +113,13 @@ class Translator:
 		for i in node.getBody():
 			ntype = i.getNodeType()
 			if (ntype == "ClassDef"):
-				internalClass += self.__translateClass(i)
+				internalClass += self.__translateClass(i) + "\n" + node.getName() + " +-- " + i.getName() + "\n"
 			elif ((ntype == "Assign") or (ntype == "AnnAssign")):
 				data += self.__translateAttrib(i) + "\n"
 			elif (ntype == "FunctionDef"):
 				data += self.__translateFunction(i) + "\n"
 		data += "}\n"
+		data += internalClass
 		return data
 
 
@@ -180,11 +181,3 @@ class Translator:
 				args += i.getName() + ", "
 		args = args[:(len(args) - 2)]
 		return data + args + ")"
-
-
-	# def __translateImport(self, node: PythonNode, className: str) -> list:
-	# 	l = []
-	# 	l.append(className)
-	# 	l.append(node.getName())
-
-

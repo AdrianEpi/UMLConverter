@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-25 10:54:19
+#   @Last Modified time: 2022-12-25 15:02:34
 #   @Description:        ...
 
 from app.modules.uml_module.translator import LANGUAGES
@@ -41,4 +41,5 @@ class Interface:
 		output = easygui.diropenbox("Select output folder")	
 		if output == None:
 			sys.exit(0)
+			
 		return[language, path, output]

@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-25 11:51:44
+#   @Last Modified time: 2022-12-25 15:37:42
 #   @Description:        ...
 
 from app.modules.uml_module.translator import Translator, LANGUAGES
@@ -130,12 +130,14 @@ class UMLConverter:
 			tree = PyAST()
 			tree.generateTree(lines)
 
-			t = Translator(tree.getTree(), self.language)
-			t.translate()
-			moduleClassList = t.getClassList()
-			self.__addClasses(moduleClassList)
-			self.__addImports(t.getImports(), moduleClassList)
-			self.code +=t.getCode()
+			translator = Translator(tree.getTree(), self.language)
+			translator.translate()
+			moduleClassList = translator.getClassList()
+			if (translator.getCode() != ""):
+				self.__addClasses(moduleClassList)
+				self.__addImports(translator.getImports(), moduleClassList)
+				# self.code += "\npackage " + self.__getModuleName(i) + " #DDDDDD {\n" + translator.getCode() + "\n}\n"	# Package version
+				self.code += translator.getCode()	# Non package name
 
 		self.code += "\n" + self.__generateDependences()
 		self.__writeToFile()
@@ -166,6 +168,15 @@ class UMLConverter:
 		return dependences
 
 
+	def __getModuleName(self, filePath: str) -> str:
+		l = []
+		if ((sys.platform == "win32") or (sys.platform == "cygwin")): # Windows
+			l = filePath.split("\\")
+		else:	# Linux or MacOS
+			l = filePath.split("/")
+		if (len(l) >= 2):
+			return l[len(l) - 2] # Is in folder
+		return l[len(l) - 1]
 				
 
 	def __writeToFile(self):
