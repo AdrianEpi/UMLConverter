@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-24 19:47:46
+#   @Last Modified time: 2022-12-25 11:45:45
 #   @Description:        Translates generated AST to mermaid language.
 
 
@@ -91,20 +91,24 @@ class Translator:
 		for i in self.ast.getBody():
 			if i.getNodeType() == "ClassDef":
 				tmp += self.__translateClass(i)
-			# elif i.getNodeType() == "Import":
-			# 	# Metrics
-			# elif i.getNodeType() == "ImportFrom":
-			# 	# Metrics
+			elif i.getNodeType() == "Import": # To do: Add metrics
+			 	self.imports.append(i.getName())
+			elif i.getNodeType() == "ImportFrom":
+				for j in i.getValue():
+					self.imports.append(j)
 		self.code = tmp		
 
 
 	def __translateClass(self, node: PythonNode) -> str:
 		data = "\n"
 		internalClass = "" # How to represent
-		if ((node.getName() == "") or (node.getName() == None)):
+		className = node.getName()
+		self.classList.append(className)
+
+		if ((className == "") or (className == None)):
 			raise Exception("Error in Translator:translateClass(), not name for class.")
 		if node.getArgs():
-			data += self.__translateInheritance(node.getName(), node.getArgs())
+			data += self.__translateInheritance(className, node.getArgs())
 		data += "class " + node.getName() + " {\n"
 		for i in node.getBody():
 			ntype = i.getNodeType()
@@ -176,5 +180,11 @@ class Translator:
 				args += i.getName() + ", "
 		args = args[:(len(args) - 2)]
 		return data + args + ")"
+
+
+	# def __translateImport(self, node: PythonNode, className: str) -> list:
+	# 	l = []
+	# 	l.append(className)
+	# 	l.append(node.getName())
 
 

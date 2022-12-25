@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-25 11:14:02
+#   @Last Modified time: 2022-12-25 11:51:44
 #   @Description:        ...
 
 from app.modules.uml_module.translator import Translator, LANGUAGES
@@ -31,6 +31,7 @@ class UMLConverter:
 	language: str
 	extension: str
 	classList: list
+	imports: list
 
 	def __init__(self):
 		self.fileList = []
@@ -39,6 +40,7 @@ class UMLConverter:
 		self.language = None
 		self.extension = None
 		self.classList = []
+		self.imports = []
 
 
 	def getFileList(self) -> list:
@@ -84,6 +86,14 @@ class UMLConverter:
 		return False
 
 
+	def setExtension(self, newExtension: str):
+		self.extension = newExtension	
+
+
+	def setClassList(self, newClassList: list):
+		self.classList = newClassList	
+
+
 	def __generateExtention(self):
 		if self.language == "Python":
 			self.extension = ".py"
@@ -122,11 +132,41 @@ class UMLConverter:
 
 			t = Translator(tree.getTree(), self.language)
 			t.translate()
+			moduleClassList = t.getClassList()
+			self.__addClasses(moduleClassList)
+			self.__addImports(t.getImports(), moduleClassList)
 			self.code +=t.getCode()
 
+		self.code += "\n" + self.__generateDependences()
 		self.__writeToFile()
 		self.__convertToPng()
 
+
+	def __addClasses(self, classes: list):
+		for i in classes:
+			if (i not in self.classList):
+				self.classList.append(i)
+			else:
+				raise Exception("Error in Translator:__translateClass(), class {} already exists.".format(i))
+
+
+	def __addImports(self, imports: list, moduleClassList: list):
+		for i in moduleClassList:
+			for j in imports:
+				self.imports.append([i, j])
+
+
+	def __generateDependences(self) -> str:
+		dependences = ""
+		for i in self.imports: # i = [className, importedModule]
+			className = i[0]
+			importedModule = i[1]
+			if (className in self.classList) and (importedModule in self.classList):
+				dependences += className + " --> " + importedModule + " #red;line.dashed\n"
+		return dependences
+
+
+				
 
 	def __writeToFile(self):
 		f = File(self.output)
@@ -135,6 +175,8 @@ class UMLConverter:
 
 	def __convertToPng(self):
 		system("python -m plantuml " + self.output)
+
+
 
 
 

@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-24 20:21:25
+#   @Last Modified time: 2022-12-25 11:51:25
 #   @Description:        ...
 
 
@@ -17,9 +17,3 @@ a = UMLConverter()
 a.generateUML()
 
 
-
-# from app.modules.interface_module.interface import Interface
-
-
-# a = Interface()
-# a.porjectInformationInterface()
