@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-21 18:58:54
+#   @Last Modified time: 2022-12-25 11:14:02
 #   @Description:        ...
 
 from app.modules.uml_module.translator import Translator, LANGUAGES
@@ -15,10 +15,13 @@ from app.modules.file_module.file import File
 from app.modules.file_module.searcher import Searcher
 from app.modules.ast_module.line import Line
 from app.modules.ast_module.pyAST import PyAST
+from app.modules.interface_module.interface import Interface
 
 import ast
+import sys
 from six.moves import input as raw_input
 from os import system
+
 
 class UMLConverter:
 
@@ -27,6 +30,7 @@ class UMLConverter:
 	output: str
 	language: str
 	extension: str
+	classList: list
 
 	def __init__(self):
 		self.fileList = []
@@ -34,6 +38,7 @@ class UMLConverter:
 		self.output = ""
 		self.language = None
 		self.extension = None
+		self.classList = []
 
 
 	def getFileList(self) -> list:
@@ -50,6 +55,14 @@ class UMLConverter:
 
 	def getLanguage(self) -> str:
 		return self.language
+
+
+	def getExtension(self) -> str:
+		return self.extension
+
+
+	def getClassList(self) -> list:
+		return self.classList
 
 
 	def setFileList(self, newFileList: list):
@@ -80,16 +93,18 @@ class UMLConverter:
 
 
 	def __askFiles(self):
-		path = raw_input("Please enter the project folder: ")
-		validLang = False
-		while validLang == False:
-			lang = raw_input("Please enter the language:\n\t- Python\n\t- ...\n")
-			validLang = self.setLanguage(lang)
+		gui = Interface()
+		result = gui.porjectInformationInterface() # [language, projectPath, outputPath]
+		self.language = result[0]
 		self.__generateExtention()
-		self.output = raw_input("Please enter the output folder: ")
-
+		self.output = result[2]
 		searcher = Searcher()
-		self.fileList = searcher.lookForFiles(path, self.extension)
+		self.fileList = searcher.lookForFiles(result[1], self.extension)
+		if ((sys.platform == "win32") or (sys.platform == "cygwin")): # Windows
+			self.output += "\\"
+		else:	# Linux or MacOS
+			self.output += "/"
+		self.output += "projectUML.txt"
 
 
 	def generateUML(self):

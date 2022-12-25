@@ -7,14 +7,15 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-21 19:05:01
+#   @Last Modified time: 2022-12-24 19:47:46
 #   @Description:        Translates generated AST to mermaid language.
 
 
 from app.modules.ast_module.pythonNode import PythonNode
 
 LANGUAGES = [
-	"Python"
+	"Python",
+	"Option2"
 ]
 
 class Translator:

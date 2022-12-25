@@ -39,6 +39,10 @@ In order to run the project for the first time:
 	cd app/
 	pip install -r requirements.txt
 ```
+8) Install tkinter for interface display
+```sh
+	sudo apt-get install python3-tk
+```
 
 
 ## TEST AND COVERAGE

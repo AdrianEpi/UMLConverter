@@ -1,0 +1,47 @@
+
+class Translator {
+    + PythonNode ast
+    + str code
+    + list imports
+    + list classList
+    + str language
+    - __init__(self, module: PythonNode, lang: str)
+    + getAst(self)
+    + getCode(self)
+    + getImports(self)
+    + getClassList(self)
+    + getLanguage(self)
+    + setAst(self, module: PythonNode)
+    + setCode(self, newCode: str)
+    + setImports(self, newImports: list)
+    + setClassList(self, newClassList: list)
+    + setLanguage(self, lang: str)
+    + translate(self)
+    - __translateClass(self, node: PythonNode)
+    + getVisibility(self, line: str)
+    - __translateInheritance(self, className: str, l: list)
+    - __translateAttrib(self, node: PythonNode)
+    - __translateFunction(self, node: PythonNode)
+}
+
+class UMLConverter {
+    + list fileList
+    + str code
+    + str output
+    + str language
+    + str extension
+    - __init__(self)
+    + getFileList(self)
+    + getCode(self)
+    + getOutput(self)
+    + getLanguage(self)
+    + setFileList(self, newFileList: list)
+    + setCode(self, newCode: str)
+    + setOutput(self, newOutput: str)
+    + setLanguage(self, newLanguage: str)
+    - __generateExtention(self)
+    - __askFiles(self)
+    + generateUML(self)
+    - __writeToFile(self)
+    - __convertToPng(self)
+}
