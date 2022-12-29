@@ -140,26 +140,15 @@ class UMLConverter {
     + setClassList(self, newClassList: list)
     - __generateExtention(self)
     - __askFiles(self)
+    + run(self)
     + generateUML(self)
     - __addClasses(self, classes: list)
     - __addImports(self, imports: list, moduleClassList: list)
     - __generateDependences(self)
     - __getModuleName(self, filePath: str)
-    - __writeToFile(self)
-    - __convertToPng(self)
+    + writeToFile(self)
+    + convertToPng(self)
 }
-
-class Out {
-    + str var
-    - __init__(self)
-}
-
-class inner {
-    + str varIn
-    - __init__(self, ins: str)
-}
-
-Out +-- inner
 
 PyAST --> PythonNode #red;line.dashed
 Translator --> PythonNode #red;line.dashed

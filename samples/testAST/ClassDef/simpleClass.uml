@@ -1,0 +1,7 @@
+
+class NewClass {
+    + str var1
+    + int var2
+    - __init__(self, v1, v2)
+}
+

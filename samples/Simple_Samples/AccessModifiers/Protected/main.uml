@@ -1,0 +1,8 @@
+
+class Student {
+    # str _firstName
+    # str _lastName
+    # int _age
+    # _say_hello(self)
+}
+

@@ -1,0 +1,8 @@
+
+class Student {
+    - str __firstName
+    - str __lastName
+    - int __age
+    - __say_hello(self)
+}
+

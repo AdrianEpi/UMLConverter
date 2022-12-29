@@ -7,13 +7,13 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-25 11:51:25
+#   @Last Modified time: 2022-12-29 14:02:20
 #   @Description:        ...
 
 
 from app.modules.uml_module.UMLConverter import UMLConverter
 
 a = UMLConverter()
-a.generateUML()
+a.run()
 
 

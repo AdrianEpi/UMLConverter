@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-25 15:37:42
+#   @Last Modified time: 2022-12-29 14:21:11
 #   @Description:        ...
 
 from app.modules.uml_module.translator import Translator, LANGUAGES
@@ -67,6 +67,10 @@ class UMLConverter:
 		return self.classList
 
 
+	def getImports(self) -> list:
+		return self.imports
+
+
 	def setFileList(self, newFileList: list):
 		self.fileList = newFileList
 
@@ -82,6 +86,7 @@ class UMLConverter:
 	def setLanguage(self, newLanguage: str) -> bool:
 		if newLanguage in LANGUAGES:
 			self.language = newLanguage	
+			self.__generateExtention()
 			return True
 		return False
 
@@ -92,6 +97,10 @@ class UMLConverter:
 
 	def setClassList(self, newClassList: list):
 		self.classList = newClassList	
+
+
+	def setImports(self, newImports: list):
+		self.imports = newImports	
 
 
 	def __generateExtention(self):
@@ -117,8 +126,15 @@ class UMLConverter:
 		self.output += "projectUML.txt"
 
 
-	def generateUML(self):
+	def run(self):
 		self.__askFiles()
+		self.generateUML()
+		self.writeToFile()
+		self.convertToPng()
+
+
+	def generateUML(self):
+		self.code = ""
 		for i in self.fileList:
 			f = File(i)
 			f.read()
@@ -140,9 +156,7 @@ class UMLConverter:
 				self.code += translator.getCode()	# Non package name
 
 		self.code += "\n" + self.__generateDependences()
-		self.__writeToFile()
-		self.__convertToPng()
-
+		
 
 	def __addClasses(self, classes: list):
 		for i in classes:
@@ -179,13 +193,21 @@ class UMLConverter:
 		return l[len(l) - 1]
 				
 
-	def __writeToFile(self):
-		f = File(self.output)
-		f.write(self.code)
+	def writeToFile(self) -> bool:
+		if self.code != "\n":
+			f = File(self.output)
+			f.write(self.code)
+			return True
+		else:
+			return False
 
 
-	def __convertToPng(self):
-		system("python -m plantuml " + self.output)
+	def convertToPng(self) -> bool:
+		if self.code != "\n":
+			system("python -m plantuml " + self.output)
+			return True
+		return False
+
 
 
 
