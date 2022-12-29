@@ -7,14 +7,20 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-21 18:53:41
+#   @Last Modified time: 2022-12-29 13:01:51
 #   @Description:        Tests for app/file_module/file.py
 
 from app.modules.file_module.file import File
 import pytest
 import os
+import sys
 
-fileName = "tests/testFiles/example1.py"
+fileName = ""
+
+if ((sys.platform == "win32") or (sys.platform == "cygwin")): # Windows
+	fileName = "tests\\testFiles\\example1.py"
+else:	# Linux or MacOS
+	fileName = "tests/testFiles/example1.py"
 
 f = File(fileName)
 f.read()
@@ -40,7 +46,12 @@ def test_readFileNotFoundError():
 
 
 def test_write():
-	fName = "tests/testFiles2/example2.txt"
+	fName = ""
+	if ((sys.platform == "win32") or (sys.platform == "cygwin")): # Windows
+		fName = "tests\\testFiles2\\example2.txt"
+	else:	# Linux or MacOS
+		fName = "tests/testFiles2/example2.txt"
+	
 	data = "la la la"
 	file = File(fName)
 	file.write(data)
