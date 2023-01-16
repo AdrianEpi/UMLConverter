@@ -1,0 +1,15 @@
+
+class base1 {
+}
+
+class base2 {
+}
+
+class meta {
+}
+
+base1 <|-- Foo
+base2 <|-- Foo
+class Foo {
+}
+

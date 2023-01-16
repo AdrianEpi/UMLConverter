@@ -1,0 +1,52 @@
+
+class PythonNode {
+    + str nodeType
+    + [str or None] name
+    + [str or int or list or None] value
+    + [list or None] args
+    + [list or None] body
+    - __init__(self)
+    + getNodeType(self)
+    + getName(self)
+    + getValue(self)
+    + getArgs(self)
+    + getBody(self)
+    + setNodeType(self, newNodeType: str)
+    + setName(self, newName: str)
+    + setValue(self, ['str', 'int'])
+    + setArgs(self, newArgs: list)
+    + setBody(self, newBody: list)
+    + addArg(self, node)
+    + addBody(self, node)
+    + toString(self, indent)
+}
+
+class PyAST {
+    + PythonNode tree
+    + list dataList
+    - __init__(self)
+    + getDataList(self)
+    + getTree(self)
+    + setDataList(self, l: list)
+    + setTree(self, t: PythonNode)
+    + generateTree(self, l: list)
+    + generateModule(self, pos: int)
+    + generateClassDef(self, pos: int)
+    + generateImport(self, pos: int)
+    + generateImportFrom(self, pos: int)
+    + generateAssign(self, pos: int)
+    + generateFunctionCall(self, pos: int)
+    + generateAttribute(self, pos: int)
+    + generateAnnAssign(self, pos: int)
+    + generateAsyncFunctionDef(self, pos: int)
+    + generateFunctionDef(self, pos: int)
+    + generateNode(self, pos: int, ntype: str)
+    + findName(self, pos: int)
+    + findValue(self, pos: int)
+    + findBodyPos(self, pos: int)
+    + findReturn(self, pos: int)
+    + findNextIndentPos(self, pos: int)
+    + getBoolOp(self, pos: int)
+    + print(self)
+}
+

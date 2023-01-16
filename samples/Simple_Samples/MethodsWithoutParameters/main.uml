@@ -1,0 +1,5 @@
+
+class Student {
+    + say_hello(self)
+}
+

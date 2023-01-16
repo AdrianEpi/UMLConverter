@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-16 11:53:52
+#   @Last Modified time: 2022-12-21 18:31:27
 #   @Description:        Tests for app/ast_module/pyAST.py
 
 
@@ -25,6 +25,7 @@ path = "samples/testAST/"
 
 def generateTree(pythonFile: str) -> str:
 	f = File(pythonFile)	
+	f.read()
 	data = f.getData()
 	myAst = ast.dump(ast.parse(data), annotate_fields=True, include_attributes=False, indent=4)	
 	rawAST = myAst.split("\n")
@@ -39,6 +40,7 @@ def generateTree(pythonFile: str) -> str:
 
 def readExpected(expectedFile: str) -> str:
 	f = File(expectedFile)
+	f.read()
 	return f.getData()
 
 

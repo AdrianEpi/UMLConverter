@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-11-18 13:42:35
+#   @Last Modified time: 2022-12-20 10:52:11
 #   @Description:        This file describes a line and its functionality
 
 import math
@@ -19,10 +19,10 @@ class Line:
 	"""
 	This class describes a string line.
 	"""
-	indentation = int
-	data = str
-	indentationLevel = int
-	args = list
+	indentation: int
+	data: str
+	indentationLevel: int
+	args: list
 
 	def __init__(self, line: str):
 		"""

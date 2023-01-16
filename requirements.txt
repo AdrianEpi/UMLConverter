@@ -1,2 +1,5 @@
-pytest==7.2.0
-coverage==6.5.0
+pytest==7.2.0		# Testing
+coverage==6.5.0		# Coverage
+plantuml==0.3.0		# UML display module
+six==1.16.0 		# Utilities for python 2 and 3 compatibility
+easygui				# Interface for prompts
