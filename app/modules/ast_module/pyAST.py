@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-16 21:20:30
+#   @Last Modified time: 2023-01-16 21:55:12
 #   @Description:        This file describes a python ast class
 
 from app.modules.ast_module.pythonNode import PythonNode
@@ -128,7 +128,7 @@ class PyAST(AST):
 		return node
 
 
-	def _AST__generateImport(self, pos = None, node = None) -> list:
+	def _AST__generateImport(self, pos = None, node = None) -> list or PythonNode:
 		"""
 		Generates an Import PythonNode
 		Import:
@@ -507,7 +507,7 @@ class PyAST(AST):
 		return node
 
 
-	def _AST__generateNode(self, pos = None, ntype = None) -> PythonNode or list:
+	def _AST__generateNode(self, pos = None, ntype = None, node = None) -> PythonNode or list:
 		"""
 		Calls the _AST__generateNode corresponded to the node type
 

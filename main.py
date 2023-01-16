@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-16 21:14:49
+#   @Last Modified time: 2023-01-16 22:45:19
 #   @Description:        ...
 
 
@@ -122,8 +122,45 @@ class Point2 {
 }
 '''
 
+b = '''
+class Teacher extends Person {
+  constructor(first, last, age, gender, interests, subject, grade) {
+    this.name = {
+      first,
+      last
+    };
+
+  this.age = age;
+  this.gender = gender;
+  this.interests = interests;
+  // subject and grade are specific to Teacher
+  this.subject = subject;
+  this.grade = grade;
+  }
+}
+'''
+
+c = '''
+require('esprima')
+var fs = require('fs');
+const { specialForms } = require("../interpreter/registry.js");
+var { egg2js, deleteEnd } = require("../jsTranslator/egg2js.js");
+var asdf = Hello()
+'''
+
+d = '''
+var a = class Point {
+	constructor(x, y) {
+
+	}
+}
+d = function a() { }
+
+'''
 #print(esprima.parseScript(aaa))
-l = esprima.parseScript(aaa)
+l = esprima.parseScript(d)
+
 print(l)
+
 # for i in l.body:
 # 	print(i)

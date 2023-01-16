@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-16 21:22:20
+#   @Last Modified time: 2023-01-16 21:55:38
 #   @Description:        ...
 
 # -*- coding: utf-8 -*-
@@ -110,7 +110,7 @@ class AST(ABC):
 
 
 	@abstractmethod
-	def __generateImport(self, pos = None, node = None) -> list:
+	def __generateImport(self, pos = None, node = None) -> list or PythonNode:
 		pass
 
 
@@ -140,7 +140,7 @@ class AST(ABC):
 
 
 	@abstractmethod
-	def __generateNode(self, pos = None, ntype = None) -> PythonNode or list:
+	def __generateNode(self, pos = None, ntype = None, node = None) -> PythonNode or list:
 		pass
 
 
