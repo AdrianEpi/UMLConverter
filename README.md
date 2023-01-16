@@ -32,11 +32,10 @@ In order to run the project for the first time:
 ```
 6) Activate the virtual enviroment
 ```sh
-	soruce .venv/bin/activate
+	source .venv/bin/activate
 ```
 7) Install all the packages
 ```sh
-	cd app/
 	pip install -r requirements.txt
 ```
 8) Install tkinter for interface display
