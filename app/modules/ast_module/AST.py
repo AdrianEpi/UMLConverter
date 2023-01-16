@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-16 12:41:10
+#   @Last Modified time: 2023-01-16 21:22:20
 #   @Description:        ...
 
 # -*- coding: utf-8 -*-
@@ -20,7 +20,7 @@
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
 #   @Last Modified time: 2022-12-21 19:01:39
-#   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
+#   @Description:        This file describes an abstract ast class and all the node types that are going to be stored in data
 
 from abc import ABC, abstractmethod
 from app.modules.ast_module.pythonNode import PythonNode
@@ -100,77 +100,48 @@ class AST(ABC):
 
 
 	@abstractmethod
-	def __generateModule(self, pos: int) -> PythonNode:
+	def __generateModule(self, pos = None, node = None) -> PythonNode:
 		pass
 
 
 	@abstractmethod
-	def __generateClassDef(self, pos: int) -> PythonNode:
+	def __generateClassDef(self, pos = None, node = None) -> PythonNode:
 		pass
 
 
 	@abstractmethod
-	def __generateImport(self, pos: int) -> list:
+	def __generateImport(self, pos = None, node = None) -> list:
 		pass
 
 
 	@abstractmethod
-	def __generateImportFrom(self, pos: int) -> PythonNode:
+	def __generateImportFrom(self, pos = None, node = None) -> PythonNode:
 		pass
 
 
 	@abstractmethod
-	def __generateAssign(self, pos: int) -> list:
+	def __generateAssign(self, pos = None, node = None) -> list:
 		pass
 
 
 	@abstractmethod
-	def __generateAnnAssign(self, pos: int) -> PythonNode:
+	def __generateAnnAssign(self, pos = None, node = None) -> PythonNode:
 		pass
 
 
 	@abstractmethod
-	def __generateAsyncFunctionDef(self, pos: int):
+	def __generateAsyncFunctionDef(self, pos = None, node = None):
 		pass
 
 
 	@abstractmethod
-	def __generateFunctionDef(self, pos: int) -> PythonNode:
+	def __generateFunctionDef(self, pos = None, node = None) -> PythonNode:
 		pass
 
 
-	def _generateNode(self, pos: int, ntype: str) -> PythonNode or list:
-		"""
-		Calls the __generateNode corresponded to the node type
-
-		:param      pos:        The position
-		:type       pos:        int
-		:param      ntype:      The ntype
-		:type       ntype:      str
-
-		:returns:   PythonNode or list
-		:rtype:     PythonNode or list
-
-		:raises     TypeError:  Error if not valid node type
-		"""
-		if ntype == "Module(":
-			return self.__generateModule(pos)
-		elif ntype == "ClassDef(":
-			return self.__generateClassDef(pos)
-		elif ntype == "Import(":
-			return self.__generateImport(pos)
-		elif ntype == "ImportFrom(":
-			return self.__generateImportFrom(pos)
-		elif ntype == "Assign(":
-			return self.__generateAssign(pos)
-		elif ntype == "AnnAssign(":
-			return self.__generateAnnAssign(pos)
-		elif ntype == "AsyncFunctionDef(":
-			return self.__generateAsyncFunctionDef(pos)
-		elif ntype == "FunctionDef(":
-			return self.__generateFunctionDef(pos)
-		else:
-			raise TypeError("Error in PyAST.__generateNode() (ast line {}), not valid node type.".format(pos))
+	@abstractmethod
+	def __generateNode(self, pos = None, ntype = None) -> PythonNode or list:
+		pass
 
 
 	def printTree(self):

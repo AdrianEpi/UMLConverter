@@ -7,22 +7,11 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-16 12:49:33
-#   @Description:        This file describes a python ast class and all the node types that are going to be stored in data
+#   @Last Modified time: 2023-01-16 21:20:30
+#   @Description:        This file describes a python ast class
 
 from app.modules.ast_module.pythonNode import PythonNode
-from app.modules.ast_module.AST import AST
-
-NODETYPES = [
-	"Module(",
-	"ClassDef(",
-	"Import(",
-	"ImportFrom(",
-	"Assign(",
-	"AnnAssign(",
-	"AsyncFunctionDef(",
-	"FunctionDef("
-]
+from app.modules.ast_module.AST import AST, NODETYPES
 
 
 class PyAST(AST):
@@ -46,7 +35,7 @@ class PyAST(AST):
 			return False
 
 
-	def _AST__generateModule(self, pos: int) -> PythonNode:
+	def _AST__generateModule(self, pos = None, node = None) -> PythonNode:
 		"""
 		Generates a Module PythonNode
 		Module:
@@ -57,7 +46,9 @@ class PyAST(AST):
 			body: list of PyhonNode (List with nodes in module's body)
 		:param      pos:        The position
 		:type       pos:        int
-		
+		:param      node:       The node
+		:type       node:       Node
+
 		:returns:   The python node.
 		:rtype:     PythonNode
 		
@@ -71,7 +62,7 @@ class PyAST(AST):
 			if (actualIndent == (indent + 2)):
 				data = self.dataList[i].getData()
 				if data in NODETYPES:
-					n =	self._generateNode(i, data)
+					n =	self._AST__generateNode(i, data)
 					if isinstance(n, PythonNode):
 						node.addBody(n)
 					elif isinstance(n, list):
@@ -84,7 +75,7 @@ class PyAST(AST):
 		return node
 
 
-	def _AST__generateClassDef(self, pos: int) -> PythonNode:
+	def _AST__generateClassDef(self, pos = None, node = None) -> PythonNode:
 		"""
 		Generates a ClassDef PythonNode
 		ClassDef:
@@ -96,6 +87,8 @@ class PyAST(AST):
 
 		:param      pos:        The position
 		:type       pos:        int
+		:param      node:       The node
+		:type       node:       Node
 		
 		:returns:   The python node.
 		:rtype:     PythonNode
@@ -121,7 +114,7 @@ class PyAST(AST):
 			if (actualIndent == (bodyIndent + 1)):
 				data = self.dataList[i].getData()
 				if data in NODETYPES:
-					n =	self._generateNode(i, data)
+					n =	self._AST__generateNode(i, data)
 					if isinstance(n, PythonNode):
 						node.addBody(n)
 					elif isinstance(n, list):
@@ -135,7 +128,7 @@ class PyAST(AST):
 		return node
 
 
-	def _AST__generateImport(self, pos: int) -> list:
+	def _AST__generateImport(self, pos = None, node = None) -> list:
 		"""
 		Generates an Import PythonNode
 		Import:
@@ -147,7 +140,9 @@ class PyAST(AST):
 
 		:param      pos:        The position
 		:type       pos:        int
-
+		:param      node:       The node
+		:type       node:       Node
+		
 		:returns:   List of PythonNode
 		:rtype:     list
 
@@ -168,7 +163,7 @@ class PyAST(AST):
 		return imports
 
 
-	def _AST__generateImportFrom(self, pos: int) -> PythonNode:
+	def _AST__generateImportFrom(self, pos = None, node = None) -> PythonNode:
 		"""
 		Generates an ImportFrom PythonNode
 		ImportFrom:
@@ -180,7 +175,9 @@ class PyAST(AST):
 
 		:param      pos:        The position
 		:type       pos:        int
-
+		:param      node:       The node
+		:type       node:       Node
+		
 		:returns:   The python node.
 		:rtype:     PythonNode
 
@@ -203,7 +200,7 @@ class PyAST(AST):
 		return node
 
 
-	def _AST__generateAssign(self, pos: int) -> list:
+	def _AST__generateAssign(self, pos = None, node = None) -> list:
 		"""
 		Generates an Assign PythonNode
 		Assign:
@@ -215,7 +212,9 @@ class PyAST(AST):
 
 		:param      pos:        The position
 		:type       pos:        int
-
+		:param      node:       The node
+		:type       node:       Node
+		
 		:returns:   list of PythonNode, strings, integers or empty list
 		:rtype:     list
 
@@ -377,7 +376,7 @@ class PyAST(AST):
 		return attrib
 
 
-	def _AST__generateAnnAssign(self, pos: int) -> PythonNode:
+	def _AST__generateAnnAssign(self, pos = None, node = None) -> PythonNode:
 		"""
 		Generates an AnnAssign PythonNode
 		AnnAssign:
@@ -389,7 +388,9 @@ class PyAST(AST):
 
 		:param      pos:        The position
 		:type       pos:        int
-
+		:param      node:       The node
+		:type       node:       Node
+		
 		:returns:   The python node.
 		:rtype:     PythonNode
 
@@ -424,12 +425,12 @@ class PyAST(AST):
 
 
 	# FUNCTION NOT IMPLEMENTED YET
-	def _AST__generateAsyncFunctionDef(self, pos: int):
+	def _AST__generateAsyncFunctionDef(self, pos = None, node = None):
 		node = PythonNode()
 		node.setNodeType("AsyncFunctionDef")
 
 
-	def _AST__generateFunctionDef(self, pos: int) -> PythonNode:
+	def _AST__generateFunctionDef(self, pos = None, node = None) -> PythonNode:
 		"""
 		Generates a FunctionDef PythonNode. 
 		FunctionDef:
@@ -441,6 +442,8 @@ class PyAST(AST):
 		
 		:param      pos:        The position
 		:type       pos:        int
+		:param      node:       The node
+		:type       node:       Node
 		
 		:returns:   The python node.
 		:rtype:     PythonNode
@@ -486,7 +489,7 @@ class PyAST(AST):
 			if (actualIndent == (bodyIndent + 1)):
 				data = self.dataList[i].getData()
 				if data in NODETYPES:
-					n =	self._generateNode(i, data)
+					n =	self._AST__generateNode(i, data)
 					if isinstance(n, PythonNode):
 						node.addBody(n)
 					elif isinstance(n, list):
@@ -502,6 +505,40 @@ class PyAST(AST):
 		if r:
 			node.setValue(r)
 		return node
+
+
+	def _AST__generateNode(self, pos = None, ntype = None) -> PythonNode or list:
+		"""
+		Calls the _AST__generateNode corresponded to the node type
+
+		:param      pos:        The position
+		:type       pos:        int
+		:param      ntype:      The ntype
+		:type       ntype:      str
+
+		:returns:   PythonNode or list
+		:rtype:     PythonNode or list
+
+		:raises     TypeError:  Error if not valid node type
+		"""
+		if ntype == "Module(":
+			return self._AST__generateModule(pos = pos)
+		elif ntype == "ClassDef(":
+			return self._AST__generateClassDef(pos = pos)
+		elif ntype == "Import(":
+			return self._AST__generateImport(pos = pos)
+		elif ntype == "ImportFrom(":
+			return self._AST__generateImportFrom(pos = pos)
+		elif ntype == "Assign(":
+			return self._AST__generateAssign(pos = pos)
+		elif ntype == "AnnAssign(":
+			return self._AST__generateAnnAssign(pos = pos)
+		elif ntype == "AsyncFunctionDef(":
+			return self._AST__generateAsyncFunctionDef(pos = pos)
+		elif ntype == "FunctionDef(":
+			return self._AST__generateFunctionDef(pos = pos)
+		else:
+			raise TypeError("Error in PyAST._AST__generateNode() (ast line {}), not valid node type.".format(pos))
 
 
 	def __findName (self, pos: int) -> str:

@@ -1,18 +1,6 @@
 
-class Line {
-    + int indentation
-    + str data
-    + int indentationLevel
-    + list args
-    - __init__(self, line: str)
-    + getIndentation(self)
-    + getData(self)
-    + getRawData(self)
-    + getIndentationLevel(self)
-    - __generateLine(self, line: str)
-}
-
-class PyAST {
+ABC <|-- AST
+class AST {
     + PythonNode tree
     + list dataList
     - __init__(self)
@@ -26,19 +14,45 @@ class PyAST {
     - __generateImport(self, pos: int)
     - __generateImportFrom(self, pos: int)
     - __generateAssign(self, pos: int)
-    - __generateFunctionCall(self, pos: int)
-    - __generateAttribute(self, pos: int)
     - __generateAnnAssign(self, pos: int)
     - __generateAsyncFunctionDef(self, pos: int)
     - __generateFunctionDef(self, pos: int)
-    - __generateNode(self, pos: int, ntype: str)
+    # _generateNode(self, pos: int, ntype: str)
+    + printTree(self)
+}
+
+class Line {
+    + int indentation
+    + str data
+    + int indentationLevel
+    + list args
+    - __init__(self, line: str)
+    + getIndentation(self)
+    + getData(self)
+    + getRawData(self)
+    + getIndentationLevel(self)
+    - __generateLine(self, line: str)
+}
+
+AST <|-- PyAST
+class PyAST {
+    + generateTree(self, l: list)
+    # _AST__generateModule(self, pos: int)
+    # _AST__generateClassDef(self, pos: int)
+    # _AST__generateImport(self, pos: int)
+    # _AST__generateImportFrom(self, pos: int)
+    # _AST__generateAssign(self, pos: int)
+    - __generateFunctionCall(self, pos: int)
+    - __generateAttribute(self, pos: int)
+    # _AST__generateAnnAssign(self, pos: int)
+    # _AST__generateAsyncFunctionDef(self, pos: int)
+    # _AST__generateFunctionDef(self, pos: int)
     - __findName(self, pos: int)
     - __findValue(self, pos: int)
     - __findBodyPos(self, pos: int)
     - __findReturn(self, pos: int)
     - __findNextIndentPos(self, pos: int)
     - __getBoolOp(self, pos: int)
-    + printTree(self)
 }
 
 class PythonNode {
@@ -152,7 +166,9 @@ class UMLConverter {
     + convertToPng(self)
 }
 
+AST --> PythonNode #red;line.dashed
 PyAST --> PythonNode #red;line.dashed
+PyAST --> AST #red;line.dashed
 Translator --> PythonNode #red;line.dashed
 UMLConverter --> Translator #red;line.dashed
 UMLConverter --> File #red;line.dashed
