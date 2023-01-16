@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-16 10:59:21
+#   @Last Modified time: 2023-01-16 11:17:02
 #   @Description:        ...
 
 from app.modules.uml_module.translator import LANGUAGES
@@ -28,9 +28,9 @@ class Interface:
 
 
 	def greet(self):
-	"""
- 	Shows a prompt where greets the user.
-  	""" 
+		"""
+		Shows a prompt where greets the user.
+		""" 
 		easygui.msgbox("\n\n\n\t\tWelcome to UMLCoverter!")
 
 
