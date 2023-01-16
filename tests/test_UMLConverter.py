@@ -7,8 +7,8 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-29 14:20:16
-#   @Description:        ...
+#   @Last Modified time: 2023-01-16 10:48:37
+#   @Description:        Tests for app/uml_module/UMLConverter.py
 
 
 from app.modules.file_module.searcher import Searcher
