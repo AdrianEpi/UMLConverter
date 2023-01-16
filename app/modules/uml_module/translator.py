@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-25 16:00:02
+#   @Last Modified time: 2023-01-16 11:08:04
 #   @Description:        Translates generated AST to mermaid language.
 
 
@@ -19,6 +19,9 @@ LANGUAGES = [
 ]
 
 class Translator:
+	"""
+	This class describes a translator, converts a pythonNode into mermaid code.
+	"""
 
 	ast: PythonNode()
 	code: str
@@ -27,6 +30,14 @@ class Translator:
 	language: str
 
 	def __init__(self, module: PythonNode, lang: str):
+		"""
+		Constructs a new instance.
+
+		:param      module:  The module
+		:type       module:  PythonNode
+		:param      lang:    The language
+		:type       lang:    str
+		"""
 		self.code = ""
 		self.imports = []
 		self.classList = []
@@ -35,26 +46,64 @@ class Translator:
 		
 
 	def getAst(self) -> PythonNode:
+		"""
+		Gets the ast.
+
+		:returns:   The ast.
+		:rtype:     PythonNode
+		"""
 		return self.ast
 
 
 	def getCode(self) -> str:
+		"""
+		Gets the code.
+
+		:returns:   The code.
+		:rtype:     str
+		"""
 		return self.code
 
 
 	def getImports(self) -> list:
+		"""
+		Gets the imports.
+
+		:returns:   The imports.
+		:rtype:     list
+		"""
 		return self.imports
 
 
 	def getClassList(self) -> list:
+		"""
+		Gets the class list.
+
+		:returns:   The class list.
+		:rtype:     list
+		"""
 		return self.classList
 
 
 	def getLanguage(self) -> str:
+		"""
+		Gets the language.
+
+		:returns:   The language.
+		:rtype:     str
+		"""
 		return self.language
 
 
 	def setAst(self, module: PythonNode):
+		"""
+		Sets the ast.
+
+		:param      module:     The module
+		:type       module:     PythonNode
+
+		:raises     TypeError:  AST must be pythonNode type
+		"""
 		if isinstance(module, PythonNode):
 			self.ast = module
 		else:
@@ -62,10 +111,24 @@ class Translator:
 
 
 	def setCode(self, newCode: str):
+		"""
+		Sets the code.
+
+		:param      newCode:  The new code
+		:type       newCode:  str
+		"""
 		self.code = newCode
 
 
 	def setImports(self, newImports: list):
+		"""
+		Sets the imports.
+
+		:param      newImports:  The new imports
+		:type       newImports:  list
+
+		:raises     TypeError:   Error if not valid type for newImports, must be a list fo pythonNodes
+		"""
 		if isinstance(newImports, list):
 			for i in newImports:
 				if isinstance(i, PythonNode) == False:
@@ -76,10 +139,24 @@ class Translator:
 
 
 	def setClassList(self, newClassList: list):
+		"""
+		Sets the class list.
+
+		:param      newClassList:  The new class list
+		:type       newClassList:  list
+		"""
 		self.classList = newClassList
 
 
 	def setLanguage(self, lang: str):
+		"""
+		Sets the language.
+
+		:param      lang:       The language
+		:type       lang:       str
+
+		:raises     Exception:  Error if language not defined in program
+		"""
 		if (lang in LANGUAGES):
 			self.language = lang
 		else:
@@ -87,6 +164,9 @@ class Translator:
 
 
 	def translate(self):
+		"""
+		Translates each module of the AST's body into mermaid code
+		"""
 		tmp = ""
 		for i in self.ast.getBody():
 			if i.getNodeType() == "ClassDef":
@@ -100,6 +180,17 @@ class Translator:
 
 
 	def __translateClass(self, node: PythonNode) -> str:
+		"""
+		Translates a class module into mermaid code
+
+		:param      node:       The node
+		:type       node:       PythonNode
+
+		:returns:   String with the mermaid representation of the node.
+		:rtype:     str
+
+		:raises     Exception:  Error if trying to translate a non class type node
+		"""
 		data = "\n"
 		internalClass = "" # How to represent
 		className = node.getName()
@@ -124,6 +215,17 @@ class Translator:
 
 
 	def getVisibility(self, line: str) -> str:
+		"""
+		Gets the visibility.
+
+		:param      line:       The line
+		:type       line:       str
+
+		:returns:   The visibility.
+		:rtype:     str
+
+		:raises     Exception:  Error if not well defined visibility
+		"""
 		# + -> public
 		# - -> private
 		# # -> protected
@@ -144,6 +246,19 @@ class Translator:
 
 
 	def __translateInheritance(self, className: str, l: list) -> str:
+		"""
+		Translates inheritance (includes or requires) from AST to mermaid code
+
+		:param      className:  The class name
+		:type       className:  str
+		:param      l:          list with all the inheritances
+		:type       l:          list
+
+		:returns:   String with the mermaid representation of the node.
+		:rtype:     str
+
+		:raises     TypeError:  Error in case not well defined inheritance
+		"""
 		string = ""
 		for i in l:
 			if isinstance(i, str):
@@ -158,6 +273,15 @@ class Translator:
 
 
 	def __translateAttrib(self, node: PythonNode) -> str:
+		"""
+		Translates an attribute into mermaid code
+
+		:param      node:  The node
+		:type       node:  PythonNode
+
+		:returns:   String with the mermaid representation of the node.
+		:rtype:     str
+		"""
 		if node.getNodeType() == "Assign":
 			return "    " + self.getVisibility(node.getName()) + " " + node.getName()
 		else: # AnnAssign
@@ -172,6 +296,15 @@ class Translator:
 
 
 	def __translateFunction(self, node: PythonNode) -> str:
+		"""
+		Translates a function into mermaid code
+
+		:param      node:  The node
+		:type       node:  PythonNode
+
+		:returns:   String with the mermaid representation of the node.
+		:rtype:     str
+		"""
 		data = "    " + self.getVisibility(node.getName()) + " " + node.getName() + "("
 		args = ""
 		for i in node.getArgs():
