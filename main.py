@@ -7,160 +7,81 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-16 22:45:19
+#   @Last Modified time: 2023-01-17 13:23:51
 #   @Description:        ...
 
 
-# from app.modules.uml_module.UMLConverter import UMLConverter
+from app.modules.uml_module.UMLConverter import UMLConverter
 
-# a = UMLConverter()
-# a.run()
+a = UMLConverter()
+a.run()
 
-import esprima
+# import esprima
+# from app.modules.ast_module.jsAST import JsAST
+# aaa = '''
 
-aaa = '''
-class Point {
+# console.log(materials.map(material => material.length));
 
-  constructor(coordinateX_, coordinateY_) {
-    this.coordinateX = coordinateX_;
-    this.coordinateY = coordinateY_;
-  }
+# '''
 
+# b = '''
+# class Teacher extends Person {
+#   constructor(first, last, age, gender, interests, subject, grade) {
+#     this.name = {
+#       first,
+#       last
+#     };
 
-  get_CoordinateX() {
-    return this.coordinateX;
-  }
+#   this.age = age;
+#   this.gender = gender;
+#   this.interests = interests;
+#   // subject and grade are specific to Teacher
+#   this.subject = subject;
+#   this.grade = grade;
+#   }
+# }
+# '''
 
-  /**
-  get_CoordinateY() {
-    return this.coordinateY;
-  }
+# c = '''
+# require('esprima')
+# var fs = require('fs');
+# const { specialForms } = require("../interpreter/registry.js");
+# var { egg2js, deleteEnd } = require("../jsTranslator/egg2js.js");
+# var asdf = Hello()
+# '''
 
-  set_CoordinateX(newCoord) {
-    this.coordinateX = newCoord;
-  }
+# d = '''
+# var a = class Point {
+# 	constructor(x, y) {
 
+# 	}
+# }
+# d = function a() { }
 
-  set_CoordinateY(newCoord) {
-    this.coordinateY = newCoord;
-  }
+# '''
 
+# e = '''
+# class Point {
 
-  drawPoint(ctx, size, color) {
-    const RADIUS = size;
-    ctx.beginPath();
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-    ctx.arc(this.coordinateX, this.coordinateY, RADIUS, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();
-    ctx.closePath();
-  }
+#   constructor(coordinateX_, coordinateY_) {
+#     this.coordinateX = coordinateX_;
+#     this.coordinateY = coordinateY_;
+#   }
 
+#   aa() {
+#   }
+# }
 
-  erasePoint(ctx, size) {
-    const RADIUS = size;
-    ctx.beginPath();
-    ctx.strokeStyle = 'WHITE';
-    ctx.fillStyle = 'WHITE';
-    ctx.arc(this.coordinateX, this.coordinateY, RADIUS, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();
-    ctx.closePath();
-  }**/
-}
+# '''
+# #print(esprima.parseScript(aaa))
+# l = esprima.parseScript(e)
 
-class Point2 {
-
-  constructor(coordinateX_, coordinateY_) {
-    this.coordinateX = coordinateX_;
-    this.coordinateY = coordinateY_;
-  }
-
-
-  get_CoordinateX() {
-    return this.coordinateX;
-  }
-
-  /**
-  get_CoordinateY() {
-    return this.coordinateY;
-  }
-
-  set_CoordinateX(newCoord) {
-    this.coordinateX = newCoord;
-  }
+# print(l)
+# i = JsAST()
+# i.generateTree(l.body)
+# i.printTree()
 
 
-  set_CoordinateY(newCoord) {
-    this.coordinateY = newCoord;
-  }
 
-
-  drawPoint(ctx, size, color) {
-    const RADIUS = size;
-    ctx.beginPath();
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-    ctx.arc(this.coordinateX, this.coordinateY, RADIUS, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();
-    ctx.closePath();
-  }
-
-
-  erasePoint(ctx, size) {
-    const RADIUS = size;
-    ctx.beginPath();
-    ctx.strokeStyle = 'WHITE';
-    ctx.fillStyle = 'WHITE';
-    ctx.arc(this.coordinateX, this.coordinateY, RADIUS, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();
-    ctx.closePath();
-  }**/
-}
-'''
-
-b = '''
-class Teacher extends Person {
-  constructor(first, last, age, gender, interests, subject, grade) {
-    this.name = {
-      first,
-      last
-    };
-
-  this.age = age;
-  this.gender = gender;
-  this.interests = interests;
-  // subject and grade are specific to Teacher
-  this.subject = subject;
-  this.grade = grade;
-  }
-}
-'''
-
-c = '''
-require('esprima')
-var fs = require('fs');
-const { specialForms } = require("../interpreter/registry.js");
-var { egg2js, deleteEnd } = require("../jsTranslator/egg2js.js");
-var asdf = Hello()
-'''
-
-d = '''
-var a = class Point {
-	constructor(x, y) {
-
-	}
-}
-d = function a() { }
-
-'''
-#print(esprima.parseScript(aaa))
-l = esprima.parseScript(d)
-
-print(l)
-
-# for i in l.body:
-# 	print(i)
+# # for i in l.body:
+# # 	print(i)

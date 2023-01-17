@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-16 11:08:04
+#   @Last Modified time: 2023-01-17 13:12:40
 #   @Description:        Translates generated AST to mermaid language.
 
 
@@ -15,7 +15,7 @@ from app.modules.ast_module.pythonNode import PythonNode
 
 LANGUAGES = [
 	"Python",
-	"Option2"
+	"JavaScript"
 ]
 
 class Translator:
@@ -231,7 +231,7 @@ class Translator:
 		# # -> protected
 		if ((line == "") or (line == None)):
 			raise Exception("Error in Translator:getVisibility(), not name for attribute or method.")
-		if self.language == "Python":
+		if self.language == "Python" or self.language == "JavaScript":
 			if (len(line) == 1):
 				return "+"
 			if (line[0] == "_"):
@@ -292,6 +292,8 @@ class Translator:
 				types += "]"
 			else:
 				types = node.getValue()
+				if types == None:
+					types = ""
 			return "    " + self.getVisibility(node.getName()) + " " + types + " " + node.getName()
 
 

@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-16 11:15:00
+#   @Last Modified time: 2023-01-17 13:28:08
 #   @Description:        ...
 
 from app.modules.uml_module.translator import Translator, LANGUAGES
@@ -15,12 +15,14 @@ from app.modules.file_module.file import File
 from app.modules.file_module.searcher import Searcher
 from app.modules.ast_module.line import Line
 from app.modules.ast_module.pyAST import PyAST
+from app.modules.ast_module.jsAST import JsAST
 from app.modules.interface_module.interface import Interface
 
 import ast
 import sys
 from six.moves import input as raw_input
 from os import system
+import esprima
 
 
 class UMLConverter:
@@ -206,6 +208,8 @@ class UMLConverter:
 		"""
 		if self.language == "Python":
 			self.extension = ".py"
+		elif self.language == "JavaScript":
+			self.extension = ".js"
 		# elif ...
 		else:
 			raise Exception("Error in UMLConverter:generateExtention(), not valid language")
@@ -247,13 +251,25 @@ class UMLConverter:
 		for i in self.fileList:
 			f = File(i)
 			f.read()
-			fileAST = ast.dump(ast.parse(f.getData()), annotate_fields=True, include_attributes=False, indent=4)
-			l = fileAST.split("\n")
-			lines = []
-			for j in l:
-				lines.append(Line(j))
-			tree = PyAST()
-			tree.generateTree(lines)
+			print("TRYING FILE " + f.getFileName())
+			tree = None
+			# Python
+			if self.language == "Python":
+				tree = PyAST()
+				fileAST = ast.dump(ast.parse(f.getData()), annotate_fields=True, include_attributes=False, indent=4)
+				l = fileAST.split("\n")
+				lines = []
+				for j in l:
+					lines.append(Line(j))
+				
+				tree.generateTree(lines)
+
+			# JavaScript
+			elif self.language == "JavaScript":
+				tree = JsAST()
+				fileAST = esprima.parseScript(f.getData())
+				tree.generateTree(fileAST.body)
+				tree.printTree()
 
 			translator = Translator(tree.getTree(), self.language)
 			translator.translate()
