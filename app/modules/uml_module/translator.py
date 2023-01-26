@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-17 13:12:40
+#   @Last Modified time: 2023-01-26 10:33:05
 #   @Description:        Translates generated AST to mermaid language.
 
 
@@ -27,6 +27,7 @@ class Translator:
 	code: str
 	imports: list
 	classList: list
+	classInheritance: list
 	language: str
 
 	def __init__(self, module: PythonNode, lang: str):
@@ -41,6 +42,7 @@ class Translator:
 		self.code = ""
 		self.imports = []
 		self.classList = []
+		self.classInheritance = []
 		self.setAst(module)
 		self.setLanguage(lang)
 		
@@ -84,6 +86,15 @@ class Translator:
 		"""
 		return self.classList
 
+
+	def getClassInheritance(self) -> list:
+		"""
+		Gets the class inheritance.
+
+		:returns:   The class inheritance.
+		:rtype:     list
+		"""
+		return self.classInheritance
 
 	def getLanguage(self) -> str:
 		"""
@@ -146,6 +157,16 @@ class Translator:
 		:type       newClassList:  list
 		"""
 		self.classList = newClassList
+
+
+	def setClassInheritance(self, newClassInheritance: list):
+		"""
+		Sets the class inheritance.
+
+		:param      newClassInheritance:  The new class inheritance
+		:type       newClassInheritance:  list
+		"""
+		self.classInheritance = newClassInheritance
 
 
 	def setLanguage(self, lang: str):
@@ -260,15 +281,20 @@ class Translator:
 		:raises     TypeError:  Error in case not well defined inheritance
 		"""
 		string = ""
+		inheritance = []
+		inheritance.append(className)
 		for i in l:
 			if isinstance(i, str):
+				inheritance.append(i)
 				string += i + " <|-- " + className
 			elif isinstance(i, PythonNode):
+				inheritance.append(i.getName())
 				string += i.getName() + " <|-- " + className
 			else:
 				raise TypeError("Error, not valid inheritance type in Translator:translateInheritance()")
 
 			string += "\n"
+		self.classInheritance.append(inheritance)
 		return string
 
 

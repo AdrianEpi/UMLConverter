@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-17 13:09:55
+#   @Last Modified time: 2023-01-19 11:40:25
 #   @Description:        This file describes a javaScript ast class 
 
 from app.modules.ast_module.pythonNode import PythonNode
@@ -48,7 +48,7 @@ class JsAST(AST):
 		n.setName(node.id.name)
 		# Inheritance
 		if node.superClass != None:
-			args = [n.superClass.name]
+			args = [node.superClass.name]
 			n.setArgs(args)
 
 		for i in node.body.body:
@@ -60,11 +60,7 @@ class JsAST(AST):
 		attributes = self.__findClassAttributes(node.body)
 		if len(attributes) > 0:
 			for i in attributes:
-				assign = PythonNode()
-				assign.setNodeType("AnnAssign")
-				assign.setName(i)
-				assign.setValue(None)
-				n.addBody(assign)
+				n.addBody(self._AST__generateAnnAssign(node = i))
 
 		return n
 
@@ -97,7 +93,13 @@ class JsAST(AST):
 
 
 	def _AST__generateAnnAssign(self, pos = None, node = None) -> PythonNode:
-		pass # Doesn't exist in JavaScript
+		# Param node in this case is going to be just the string with the node name
+		n = PythonNode()
+		n.setNodeType("AnnAssign")
+		n.setName(node)
+		n.setValue(None)
+		return n
+
 
 
 	def _AST__generateAsyncFunctionDef(self, pos = None, node = None):

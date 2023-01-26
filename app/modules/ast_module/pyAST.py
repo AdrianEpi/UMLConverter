@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-16 21:55:12
+#   @Last Modified time: 2023-01-24 10:28:32
 #   @Description:        This file describes a python ast class
 
 from app.modules.ast_module.pythonNode import PythonNode

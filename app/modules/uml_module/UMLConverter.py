@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-17 13:28:08
+#   @Last Modified time: 2023-01-26 10:57:50
 #   @Description:        ...
 
 from app.modules.uml_module.translator import Translator, LANGUAGES
@@ -38,6 +38,7 @@ class UMLConverter:
 	language: str
 	extension: str
 	classList: list
+	inheritance: list
 	imports: list
 
 	def __init__(self):
@@ -50,6 +51,7 @@ class UMLConverter:
 		self.language = None
 		self.extension = None
 		self.classList = []
+		self.inheritance = []
 		self.imports = []
 
 
@@ -251,7 +253,7 @@ class UMLConverter:
 		for i in self.fileList:
 			f = File(i)
 			f.read()
-			print("TRYING FILE " + f.getFileName())
+			#print("TRYING FILE " + f.getFileName())
 			tree = None
 			# Python
 			if self.language == "Python":
@@ -268,8 +270,9 @@ class UMLConverter:
 			elif self.language == "JavaScript":
 				tree = JsAST()
 				fileAST = esprima.parseScript(f.getData())
+				#print(fileAST)
 				tree.generateTree(fileAST.body)
-				tree.printTree()
+				#tree.printTree()
 
 			translator = Translator(tree.getTree(), self.language)
 			translator.translate()
@@ -277,6 +280,7 @@ class UMLConverter:
 			if (translator.getCode() != ""):
 				self.__addClasses(moduleClassList)
 				self.__addImports(translator.getImports(), moduleClassList)
+				self.__addInheritance(translator.getClassInheritance())
 				# self.code += "\npackage " + self.__getModuleName(i) + " #DDDDDD {\n" + translator.getCode() + "\n}\n"	# Package version
 				self.code += translator.getCode()	# Non package name
 
@@ -312,6 +316,15 @@ class UMLConverter:
 			for j in imports:
 				self.imports.append([i, j])
 
+	def __addInheritance(self, inh: list):
+		"""
+		Adds an inheritance.
+
+		:param      inh:  The inh
+		:type       inh:  list
+		"""
+		for i in inh:
+			self.inheritance.append([i[0], i[1]])
 
 	def __generateDependences(self) -> str:
 		"""
@@ -325,7 +338,13 @@ class UMLConverter:
 			className = i[0]
 			importedModule = i[1]
 			if (className in self.classList) and (importedModule in self.classList):
-				dependences += className + " --> " + importedModule + " #red;line.dashed\n"
+				validImport = True
+				for j in self.inheritance:
+					if (j[0] == className) and (j[1] == importedModule):
+						validImport = False
+						break
+				if validImport:
+					dependences += className + " --> " + importedModule + " #black;line.dashed\n"
 		return dependences
 
 

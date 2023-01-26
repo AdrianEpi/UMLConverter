@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-16 11:17:02
+#   @Last Modified time: 2023-01-19 12:03:16
 #   @Description:        ...
 
 from app.modules.uml_module.translator import LANGUAGES
@@ -59,4 +59,4 @@ class Interface:
 		if output == None:
 			sys.exit(0)
 			
-		return[language, path, output]
+		return [language, path, output]

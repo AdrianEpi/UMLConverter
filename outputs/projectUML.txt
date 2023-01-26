@@ -128,17 +128,20 @@ class Translator {
     + str code
     + list imports
     + list classList
+    + list classInheritance
     + str language
     - __init__(self, module: PythonNode, lang: str)
     + getAst(self)
     + getCode(self)
     + getImports(self)
     + getClassList(self)
+    + getClassInheritance(self)
     + getLanguage(self)
     + setAst(self, module: PythonNode)
     + setCode(self, newCode: str)
     + setImports(self, newImports: list)
     + setClassList(self, newClassList: list)
+    + setClassInheritance(self, newClassInheritance: list)
     + setLanguage(self, lang: str)
     + translate(self)
     - __translateClass(self, node: PythonNode)
@@ -155,6 +158,7 @@ class UMLConverter {
     + str language
     + str extension
     + list classList
+    + list inheritance
     + list imports
     - __init__(self)
     + getFileList(self)
@@ -177,22 +181,21 @@ class UMLConverter {
     + generateUML(self)
     - __addClasses(self, classes: list)
     - __addImports(self, imports: list, moduleClassList: list)
+    - __addInheritance(self, inh: list)
     - __generateDependences(self)
     - __getModuleName(self, filePath: str)
     + writeToFile(self)
     + convertToPng(self)
 }
 
-AST --> PythonNode #red;line.dashed
-JsAST --> PythonNode #red;line.dashed
-JsAST --> AST #red;line.dashed
-PyAST --> PythonNode #red;line.dashed
-PyAST --> AST #red;line.dashed
-Translator --> PythonNode #red;line.dashed
-UMLConverter --> Translator #red;line.dashed
-UMLConverter --> File #red;line.dashed
-UMLConverter --> Searcher #red;line.dashed
-UMLConverter --> Line #red;line.dashed
-UMLConverter --> PyAST #red;line.dashed
-UMLConverter --> JsAST #red;line.dashed
-UMLConverter --> Interface #red;line.dashed
+AST --> PythonNode #black;line.dashed
+JsAST --> PythonNode #black;line.dashed
+PyAST --> PythonNode #black;line.dashed
+Translator --> PythonNode #black;line.dashed
+UMLConverter --> Translator #black;line.dashed
+UMLConverter --> File #black;line.dashed
+UMLConverter --> Searcher #black;line.dashed
+UMLConverter --> Line #black;line.dashed
+UMLConverter --> PyAST #black;line.dashed
+UMLConverter --> JsAST #black;line.dashed
+UMLConverter --> Interface #black;line.dashed
