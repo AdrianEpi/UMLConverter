@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-19 12:03:16
+#   @Last Modified time: 2023-01-26 12:12:47
 #   @Description:        ...
 
 from app.modules.uml_module.translator import LANGUAGES
@@ -50,13 +50,54 @@ class Interface:
 			sys.exit(0)
 
 		easygui.msgbox("\n\n\tYou chose: " + str(language) + "\n\n\tSelect project folder", title)
-		path = easygui.diropenbox("Select project folder")	
-		if path == None:
-			sys.exit(0)
+		path = self.selectDirectory("Select project folder")	
+		
 
 		easygui.msgbox("\n\n\tYou chose: " + str(path) + "\n\n\tSelect directory to save the output", title)
-		output = easygui.diropenbox("Select output folder")	
-		if output == None:
+		output = self.selectDirectory("Select output folder")
+
+
+		result = {
+			"Language": language,
+			"ProjectPath": path,
+			"OutputPath": output
+		}
+		return result
+
+	def selectDirectory(self, title: str) -> str:
+		path = easygui.diropenbox(title)
+		if path == None:
 			sys.exit(0)
-			
-		return [language, path, output]
+		return path
+
+	def projectExcludedFiles(self, fileList: list) -> list:
+		excluded = easygui.multchoicebox("Select files which you want to exclude in class diagram", "Exclude files", fileList)
+		return excluded
+
+
+	def advancedMenu(self, fileList: list, excludedFiles = [], output = "", theme = "") -> dict:
+		#image = "path"
+		msg = "Do you want to finish config and start building?"
+		choices = ["Build", "Exclude Files", "Choose Theme", "Exit"]
+		#reply = buttonbox(msg, image=image, choices=choices)
+		reply = easygui.buttonbox(msg, choices=choices)
+
+		if reply == "Build":
+			result = {
+				"OutputPath": output,
+				"ExcludedFiles": excludedFiles,
+				"Theme": theme
+			}
+			return result
+
+		elif reply == "Exclude Files":
+			excludedFiles = self.projectExcludedFiles(fileList)
+
+		elif reply == "Theme":
+			pass
+
+		elif reply == "Exit":
+			sys.exit(0)
+		
+		return self.advancedMenu(fileList = fileList, excludedFiles = excludedFiles, output = output, theme = theme)
+	

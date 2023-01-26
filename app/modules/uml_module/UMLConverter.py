@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-26 10:57:50
+#   @Last Modified time: 2023-01-26 12:12:51
 #   @Description:        ...
 
 from app.modules.uml_module.translator import Translator, LANGUAGES
@@ -40,6 +40,7 @@ class UMLConverter:
 	classList: list
 	inheritance: list
 	imports: list
+	excludedFiles: list
 
 	def __init__(self):
 		"""
@@ -53,7 +54,7 @@ class UMLConverter:
 		self.classList = []
 		self.inheritance = []
 		self.imports = []
-
+		self.excludedFiles = []
 
 	def getFileList(self) -> list:
 		"""
@@ -223,16 +224,20 @@ class UMLConverter:
 		"""
 		gui = Interface()
 		result = gui.porjectInformationInterface() # [language, projectPath, outputPath]
-		self.language = result[0]
+		self.language = result["Language"]
 		self.__generateExtention()
-		self.output = result[2]
+		self.output = result["OutputPath"]
 		searcher = Searcher()
-		self.fileList = searcher.lookForFiles(result[1], self.extension)
+		self.fileList = searcher.lookForFiles(result["ProjectPath"], self.extension)
 		if ((sys.platform == "win32") or (sys.platform == "cygwin")): # Windows
 			self.output += "\\"
 		else:	# Linux or MacOS
 			self.output += "/"
 		self.output += "projectUML.txt"
+
+		result = gui.advancedMenu(self.fileList)
+		self.excludedFiles = result["ExcludedFiles"]
+		#gui.projectExcludedFiles(self.fileList)
 
 
 	def run(self):
@@ -251,6 +256,8 @@ class UMLConverter:
 		"""
 		self.code = ""
 		for i in self.fileList:
+			if i in self.excludedFiles:
+				continue
 			f = File(i)
 			f.read()
 			#print("TRYING FILE " + f.getFileName())

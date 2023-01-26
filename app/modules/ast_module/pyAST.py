@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-24 10:28:32
+#   @Last Modified time: 2023-01-26 11:48:06
 #   @Description:        This file describes a python ast class
 
 from app.modules.ast_module.pythonNode import PythonNode
@@ -289,6 +289,10 @@ class PyAST(AST):
 			if ("value=BinOp(" in data):
 				for j in assigns:
 					j.setValue("BinaryOperation")
+				break
+			if ("value=Dict(" in data):
+				for j in assigns:
+					j.setValue("Dict")
 				break
 			i += 1
 		return assigns

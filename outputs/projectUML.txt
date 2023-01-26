@@ -121,6 +121,9 @@ class Interface {
     - __init__(self)
     + greet(self)
     + porjectInformationInterface(self)
+    + selectDirectory(self, title: str)
+    + projectExcludedFiles(self, fileList: list)
+    + advancedMenu(self, fileList: list, excludedFiles, output, theme)
 }
 
 class Translator {
@@ -160,6 +163,7 @@ class UMLConverter {
     + list classList
     + list inheritance
     + list imports
+    + list excludedFiles
     - __init__(self)
     + getFileList(self)
     + getCode(self)
