@@ -7,10 +7,10 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-26 12:12:47
+#   @Last Modified time: 2023-01-31 13:40:06
 #   @Description:        ...
 
-from app.modules.uml_module.translator import LANGUAGES
+from app.modules.utils import LANGUAGES, UMLTHEMES
 
 import easygui
 import sys
@@ -42,18 +42,13 @@ class Interface:
 		:rtype:     list
 		"""
 		self.greet()
-		msg = "Please select you project language"
-		title = "UMLCoverter"
-		choices = LANGUAGES
-		language = easygui.choicebox(msg, title, choices)
-		if (language == None):
-			sys.exit(0)
-
-		easygui.msgbox("\n\n\tYou chose: " + str(language) + "\n\n\tSelect project folder", title)
+		language = self.selectFromList(msg = "Please select you project language", title = "Language", l = LANGUAGES)
+		
+		#easygui.msgbox("\n\n\tYou chose: " + str(language) + "\n\n\tSelect project folder", title)
 		path = self.selectDirectory("Select project folder")	
 		
 
-		easygui.msgbox("\n\n\tYou chose: " + str(path) + "\n\n\tSelect directory to save the output", title)
+		#easygui.msgbox("\n\n\tYou chose: " + str(path) + "\n\n\tSelect directory to save the output", title)
 		output = self.selectDirectory("Select output folder")
 
 
@@ -64,18 +59,25 @@ class Interface:
 		}
 		return result
 
+
 	def selectDirectory(self, title: str) -> str:
 		path = easygui.diropenbox(title)
 		if path == None:
 			sys.exit(0)
 		return path
 
+
 	def projectExcludedFiles(self, fileList: list) -> list:
 		excluded = easygui.multchoicebox("Select files which you want to exclude in class diagram", "Exclude files", fileList)
 		return excluded
 
+	def selectFromList(self, l: list, msg: str, title: str) -> str:
+		choice = easygui.choicebox(msg, "UMLConverter " + title, l)
+		if (choice == None):
+			sys.exit(0)
+		return choice
 
-	def advancedMenu(self, fileList: list, excludedFiles = [], output = "", theme = "") -> dict:
+	def advancedMenu(self, fileList: list, excludedFiles = [], output = "", theme = "_none_") -> dict:
 		#image = "path"
 		msg = "Do you want to finish config and start building?"
 		choices = ["Build", "Exclude Files", "Choose Theme", "Exit"]
@@ -84,7 +86,6 @@ class Interface:
 
 		if reply == "Build":
 			result = {
-				"OutputPath": output,
 				"ExcludedFiles": excludedFiles,
 				"Theme": theme
 			}
@@ -93,8 +94,8 @@ class Interface:
 		elif reply == "Exclude Files":
 			excludedFiles = self.projectExcludedFiles(fileList)
 
-		elif reply == "Theme":
-			pass
+		elif reply == "Choose Theme":
+			theme = self.selectFromList(msg = "Select a theme from the list:", title = "UML themes", l = UMLTHEMES)
 
 		elif reply == "Exit":
 			sys.exit(0)

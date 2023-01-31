@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-16 21:55:38
+#   @Last Modified time: 2023-01-31 13:17:48
 #   @Description:        ...
 
 # -*- coding: utf-8 -*-
@@ -24,17 +24,6 @@
 
 from abc import ABC, abstractmethod
 from app.modules.ast_module.pythonNode import PythonNode
-
-NODETYPES = [
-	"Module(",
-	"ClassDef(",
-	"Import(",
-	"ImportFrom(",
-	"Assign(",
-	"AnnAssign(",
-	"AsyncFunctionDef(",
-	"FunctionDef("
-]
 
 
 class AST(ABC):

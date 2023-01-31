@@ -1,4 +1,4 @@
-
+!theme cloudscape-design
 ABC <|-- AST
 class AST {
     + PythonNode tree
@@ -123,6 +123,7 @@ class Interface {
     + porjectInformationInterface(self)
     + selectDirectory(self, title: str)
     + projectExcludedFiles(self, fileList: list)
+    + selectFromList(self, l: list, msg: str, title: str)
     + advancedMenu(self, fileList: list, excludedFiles, output, theme)
 }
 
@@ -164,6 +165,7 @@ class UMLConverter {
     + list inheritance
     + list imports
     + list excludedFiles
+    + str theme
     - __init__(self)
     + getFileList(self)
     + getCode(self)
@@ -192,14 +194,14 @@ class UMLConverter {
     + convertToPng(self)
 }
 
-AST --> PythonNode #black;line.dashed
-JsAST --> PythonNode #black;line.dashed
-PyAST --> PythonNode #black;line.dashed
-Translator --> PythonNode #black;line.dashed
-UMLConverter --> Translator #black;line.dashed
-UMLConverter --> File #black;line.dashed
-UMLConverter --> Searcher #black;line.dashed
-UMLConverter --> Line #black;line.dashed
-UMLConverter --> PyAST #black;line.dashed
-UMLConverter --> JsAST #black;line.dashed
-UMLConverter --> Interface #black;line.dashed
+AST --> PythonNode #line.dashed
+JsAST --> PythonNode #line.dashed
+PyAST --> PythonNode #line.dashed
+Translator --> PythonNode #line.dashed
+UMLConverter --> Translator #line.dashed
+UMLConverter --> File #line.dashed
+UMLConverter --> Searcher #line.dashed
+UMLConverter --> Line #line.dashed
+UMLConverter --> PyAST #line.dashed
+UMLConverter --> JsAST #line.dashed
+UMLConverter --> Interface #line.dashed

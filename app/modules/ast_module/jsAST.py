@@ -7,21 +7,16 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-19 11:40:25
+#   @Last Modified time: 2023-01-31 13:16:56
 #   @Description:        This file describes a javaScript ast class 
 
 from app.modules.ast_module.pythonNode import PythonNode
 from app.modules.ast_module.AST import AST
+from app.modules.utils import JSNODETYPES
 
 import esprima
 
-JSNODETYPES = [
-	"ClassDeclaration",
-	"ExpressionStatement",
-	"VariableDeclaration",
-	"FunctionDeclaration",
-	"MethodDefinition"
-]
+
 
 class JsAST(AST):
 

@@ -7,52 +7,13 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-17 12:56:07
+#   @Last Modified time: 2023-01-31 13:18:43
 #   @Description:        This file describes a searcher of files and directories
 
 from os import listdir
 from os.path import isfile, join
+from app.modules.utils import EXCLUDEPATHS
 
-EXCLUDEPATHS = [
-	# Python
-	"__pycache__",
-	"__pypackages__",
-	".env",
-	"env",
-	"ENV",
-	"env.back",
-	"venv.back",
-	".venv",
-	"venv",
-	"docs",
-	"samples",
-	"examples",
-	"tests",
-	"test",
-	"site",
-	".mypy_cache",
-	"target",
-	"htmlcov",
-	".tox",
-	".nox",
-	"coverage",
-	".hypothesis",
-	".pytest_cache",
-
-	# JavaScript
-	"node_modules",
-	"jspm_packages",
-	".nyc_output",
-	"dist",
-	"tmp",
-	"out-tsc",
-	"pids",
-	"lib-cov",
-	"coverage",
-	"bower_components",
-	".npm",
-	"bin"
-]
 
 class Searcher:
 	"""

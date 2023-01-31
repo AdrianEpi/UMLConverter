@@ -7,16 +7,17 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-26 12:12:51
+#   @Last Modified time: 2023-01-31 13:41:11
 #   @Description:        ...
 
-from app.modules.uml_module.translator import Translator, LANGUAGES
+from app.modules.uml_module.translator import Translator
 from app.modules.file_module.file import File
 from app.modules.file_module.searcher import Searcher
 from app.modules.ast_module.line import Line
 from app.modules.ast_module.pyAST import PyAST
 from app.modules.ast_module.jsAST import JsAST
 from app.modules.interface_module.interface import Interface
+from app.modules.utils import LANGUAGES
 
 import ast
 import sys
@@ -41,6 +42,7 @@ class UMLConverter:
 	inheritance: list
 	imports: list
 	excludedFiles: list
+	theme: str
 
 	def __init__(self):
 		"""
@@ -55,6 +57,7 @@ class UMLConverter:
 		self.inheritance = []
 		self.imports = []
 		self.excludedFiles = []
+		self.theme = ""
 
 	def getFileList(self) -> list:
 		"""
@@ -237,8 +240,7 @@ class UMLConverter:
 
 		result = gui.advancedMenu(self.fileList)
 		self.excludedFiles = result["ExcludedFiles"]
-		#gui.projectExcludedFiles(self.fileList)
-
+		self.theme = result["Theme"]
 
 	def run(self):
 		"""
@@ -255,6 +257,8 @@ class UMLConverter:
 		Generates the AST, and converts to mermaid
 		"""
 		self.code = ""
+		if self.theme != "":
+			self.code += "!theme " + self.theme
 		for i in self.fileList:
 			if i in self.excludedFiles:
 				continue
@@ -351,7 +355,7 @@ class UMLConverter:
 						validImport = False
 						break
 				if validImport:
-					dependences += className + " --> " + importedModule + " #black;line.dashed\n"
+					dependences += className + " --> " + importedModule + " #line.dashed\n"
 		return dependences
 
 
