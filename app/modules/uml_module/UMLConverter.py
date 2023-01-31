@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-31 13:41:11
+#   @Last Modified time: 2023-01-31 13:50:40
 #   @Description:        ...
 
 from app.modules.uml_module.translator import Translator
@@ -43,6 +43,7 @@ class UMLConverter:
 	imports: list
 	excludedFiles: list
 	theme: str
+	packages: bool
 
 	def __init__(self):
 		"""
@@ -58,6 +59,7 @@ class UMLConverter:
 		self.imports = []
 		self.excludedFiles = []
 		self.theme = ""
+		self.packages = False
 
 	def getFileList(self) -> list:
 		"""
@@ -241,6 +243,7 @@ class UMLConverter:
 		result = gui.advancedMenu(self.fileList)
 		self.excludedFiles = result["ExcludedFiles"]
 		self.theme = result["Theme"]
+		self.packages = result["Packages"]
 
 	def run(self):
 		"""
@@ -292,8 +295,10 @@ class UMLConverter:
 				self.__addClasses(moduleClassList)
 				self.__addImports(translator.getImports(), moduleClassList)
 				self.__addInheritance(translator.getClassInheritance())
-				# self.code += "\npackage " + self.__getModuleName(i) + " #DDDDDD {\n" + translator.getCode() + "\n}\n"	# Package version
-				self.code += translator.getCode()	# Non package name
+				if self.packages:
+					self.code += "\npackage " + self.__getModuleName(i) + " {\n" + translator.getCode() + "\n}\n"	# Package version
+				else:
+					self.code += translator.getCode()	# Non package name
 
 		self.code += "\n" + self.__generateDependences()
 		

@@ -1,4 +1,6 @@
-!theme cloudscape-design
+!theme _none_
+package ast_module {
+
 ABC <|-- AST
 class AST {
     + PythonNode tree
@@ -21,6 +23,10 @@ class AST {
     + printTree(self)
 }
 
+}
+
+package ast_module {
+
 AST <|-- JsAST
 class JsAST {
     + generateTree(self, l: list)
@@ -37,6 +43,10 @@ class JsAST {
     # _AST__generateNode(self, pos, ntype, node)
 }
 
+}
+
+package ast_module {
+
 class Line {
     + int indentation
     + str data
@@ -49,6 +59,10 @@ class Line {
     + getIndentationLevel(self)
     - __generateLine(self, line: str)
 }
+
+}
+
+package ast_module {
 
 AST <|-- PyAST
 class PyAST {
@@ -72,6 +86,10 @@ class PyAST {
     - __getBoolOp(self, pos: int)
 }
 
+}
+
+package ast_module {
+
 class PythonNode {
     + str nodeType
     + [str or None] name
@@ -94,6 +112,10 @@ class PythonNode {
     + toString(self, indent)
 }
 
+}
+
+package file_module {
+
 class File {
     + str fileName
     + str data
@@ -106,6 +128,10 @@ class File {
     + write(self, data: str)
 }
 
+}
+
+package file_module {
+
 class Searcher {
     + fileList
     + list
@@ -117,43 +143,9 @@ class Searcher {
     + lookForFiles(self, directory: str, ext: str)
 }
 
-class Interface {
-    - __init__(self)
-    + greet(self)
-    + porjectInformationInterface(self)
-    + selectDirectory(self, title: str)
-    + projectExcludedFiles(self, fileList: list)
-    + selectFromList(self, l: list, msg: str, title: str)
-    + advancedMenu(self, fileList: list, excludedFiles, output, theme)
 }
 
-class Translator {
-    + PythonNode ast
-    + str code
-    + list imports
-    + list classList
-    + list classInheritance
-    + str language
-    - __init__(self, module: PythonNode, lang: str)
-    + getAst(self)
-    + getCode(self)
-    + getImports(self)
-    + getClassList(self)
-    + getClassInheritance(self)
-    + getLanguage(self)
-    + setAst(self, module: PythonNode)
-    + setCode(self, newCode: str)
-    + setImports(self, newImports: list)
-    + setClassList(self, newClassList: list)
-    + setClassInheritance(self, newClassInheritance: list)
-    + setLanguage(self, lang: str)
-    + translate(self)
-    - __translateClass(self, node: PythonNode)
-    + getVisibility(self, line: str)
-    - __translateInheritance(self, className: str, l: list)
-    - __translateAttrib(self, node: PythonNode)
-    - __translateFunction(self, node: PythonNode)
-}
+package uml_module {
 
 class UMLConverter {
     + list fileList
@@ -166,6 +158,7 @@ class UMLConverter {
     + list imports
     + list excludedFiles
     + str theme
+    + bool packages
     - __init__(self)
     + getFileList(self)
     + getCode(self)
@@ -194,14 +187,13 @@ class UMLConverter {
     + convertToPng(self)
 }
 
+}
+
 AST --> PythonNode #line.dashed
 JsAST --> PythonNode #line.dashed
 PyAST --> PythonNode #line.dashed
-Translator --> PythonNode #line.dashed
-UMLConverter --> Translator #line.dashed
 UMLConverter --> File #line.dashed
 UMLConverter --> Searcher #line.dashed
 UMLConverter --> Line #line.dashed
 UMLConverter --> PyAST #line.dashed
 UMLConverter --> JsAST #line.dashed
-UMLConverter --> Interface #line.dashed

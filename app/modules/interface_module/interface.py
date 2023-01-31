@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-31 13:40:06
+#   @Last Modified time: 2023-01-31 13:48:40
 #   @Description:        ...
 
 from app.modules.utils import LANGUAGES, UMLTHEMES
@@ -77,17 +77,25 @@ class Interface:
 			sys.exit(0)
 		return choice
 
-	def advancedMenu(self, fileList: list, excludedFiles = [], output = "", theme = "_none_") -> dict:
+	def yesNoQuestion(self, msg: str) -> str:
+		choice = easygui.buttonbox(msg, choices = ["Yes", "No"])
+		if (choice == None):
+			sys.exit(0)
+		return choice
+
+
+	def advancedMenu(self, fileList: list, excludedFiles = [], output = "", theme = "_none_", packages = False) -> dict:
 		#image = "path"
 		msg = "Do you want to finish config and start building?"
-		choices = ["Build", "Exclude Files", "Choose Theme", "Exit"]
+		choices = ["Build", "Exclude Files", "Choose Theme", "Packages", "Exit"]
 		#reply = buttonbox(msg, image=image, choices=choices)
-		reply = easygui.buttonbox(msg, choices=choices)
+		reply = easygui.buttonbox(msg, choices = choices)
 
 		if reply == "Build":
 			result = {
 				"ExcludedFiles": excludedFiles,
-				"Theme": theme
+				"Theme": theme,
+				"Packages": packages
 			}
 			return result
 
@@ -95,10 +103,13 @@ class Interface:
 			excludedFiles = self.projectExcludedFiles(fileList)
 
 		elif reply == "Choose Theme":
-			theme = self.selectFromList(msg = "Select a theme from the list:", title = "UML themes", l = UMLTHEMES)
+			theme = self.selectFromList(msg = "Select a theme from the list:", title = "Themes", l = UMLTHEMES)
+
+		elif reply == "Packages":
+			packages = self.yesNoQuestion(msg = "Do you want to generate pacakges in the diagram?")
 
 		elif reply == "Exit":
 			sys.exit(0)
 		
-		return self.advancedMenu(fileList = fileList, excludedFiles = excludedFiles, output = output, theme = theme)
+		return self.advancedMenu(fileList = fileList, excludedFiles = excludedFiles, output = output, theme = theme, packages = packages)
 	
