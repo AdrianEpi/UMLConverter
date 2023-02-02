@@ -1,5 +1,5 @@
 
-ABC <|-- Student
+
 class Student {
     + say_hello(self)
 }
