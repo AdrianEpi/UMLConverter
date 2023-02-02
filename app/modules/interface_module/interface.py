@@ -7,13 +7,27 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-31 13:48:40
+#   @Last Modified time: 2023-02-02 08:53:01
 #   @Description:        ...
 
 from app.modules.utils import LANGUAGES, UMLTHEMES
 
 import easygui
 import sys
+
+from tkinter import *
+from PIL import ImageTk,Image
+
+
+
+#root.image("./img/logo/267x150.png")
+#root.iconbitmap(default = './img/icon/25x25.ico')
+
+
+#root.mainloop()
+#root.create_image(20,20, anchor=NW, image=PhotoImage(file="./img/logo/267x150.png"))  
+#root.destroy()
+#root.iconify()
 
 class Interface:
 	"""
@@ -31,7 +45,26 @@ class Interface:
 		"""
 		Shows a prompt where greets the user.
 		""" 
-		easygui.msgbox("\n\n\n\t\tWelcome to UMLCoverter!")
+		
+		def close(item):
+			root.destroy()
+			return True
+
+		root = Tk() 
+		root.title("UMLConverter")
+		root.iconbitmap(default = './img/icon/25x25.ico')
+		root.geometry("500x220")
+		img = ImageTk.PhotoImage(Image.open("./img/logo/267x150.png"))
+
+		Button(root, image=img, text="AA", command =lambda: close(root)).pack()
+		Button(root, text="Start ", command = lambda: close(root)).place(x=240, y=180)
+		root.mainloop()
+
+		
+
+
+		#root.mainloop()
+		#easygui.msgbox("\n\n\n\t\tWelcome to UMLCoverter!")
 
 
 	def porjectInformationInterface(self) -> list:
@@ -43,14 +76,8 @@ class Interface:
 		"""
 		self.greet()
 		language = self.selectFromList(msg = "Please select you project language", title = "Language", l = LANGUAGES)
-		
-		#easygui.msgbox("\n\n\tYou chose: " + str(language) + "\n\n\tSelect project folder", title)
 		path = self.selectDirectory("Select project folder")	
-		
-
-		#easygui.msgbox("\n\n\tYou chose: " + str(path) + "\n\n\tSelect directory to save the output", title)
 		output = self.selectDirectory("Select output folder")
-
 
 		result = {
 			"Language": language,
@@ -71,11 +98,13 @@ class Interface:
 		excluded = easygui.multchoicebox("Select files which you want to exclude in class diagram", "Exclude files", fileList)
 		return excluded
 
+
 	def selectFromList(self, l: list, msg: str, title: str) -> str:
 		choice = easygui.choicebox(msg, "UMLConverter " + title, l)
 		if (choice == None):
 			sys.exit(0)
 		return choice
+
 
 	def yesNoQuestion(self, msg: str) -> str:
 		choice = easygui.buttonbox(msg, choices = ["Yes", "No"])
@@ -85,11 +114,12 @@ class Interface:
 
 
 	def advancedMenu(self, fileList: list, excludedFiles = [], output = "", theme = "_none_", packages = False) -> dict:
-		#image = "path"
+		image = "./img/logo/267x150.png"
 		msg = "Do you want to finish config and start building?"
 		choices = ["Build", "Exclude Files", "Choose Theme", "Packages", "Exit"]
-		#reply = buttonbox(msg, image=image, choices=choices)
-		reply = easygui.buttonbox(msg, choices = choices)
+		reply = easygui.buttonbox(msg, choices = choices, image = image)
+		#reply = easygui.buttonbox(msg, choices = choices)
+
 
 		if reply == "Build":
 			result = {

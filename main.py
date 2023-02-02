@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-17 13:23:51
+#   @Last Modified time: 2023-02-02 08:56:55
 #   @Description:        ...
 
 
@@ -15,6 +15,7 @@ from app.modules.uml_module.UMLConverter import UMLConverter
 
 a = UMLConverter()
 a.run()
+
 
 # import esprima
 # from app.modules.ast_module.jsAST import JsAST
