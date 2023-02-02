@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-02 12:18:13
+#   @Last Modified time: 2023-02-02 12:26:05
 #   @Description:        This file describes a javaScript ast class 
 
 from app.modules.ast_module.pythonNode import PythonNode
@@ -44,7 +44,6 @@ class JsAST(AST):
 		Generates a javascript module
 
 		:param      pos:   Unnecessary for jsAST
-		:type       pos:   integer
 		:param      node:  The node
 		:type       node:  javascript node
 
@@ -66,7 +65,6 @@ class JsAST(AST):
 		Generates a javascript class
 
 		:param      pos:   Unnecessary for jsAST
-		:type       pos:   integer
 		:param      node:  The node
 		:type       node:  javascript node
 
@@ -100,12 +98,11 @@ class JsAST(AST):
 		Generates a javascript import
 
 		:param      pos:   Unnecessary for jsAST
-		:type       pos:   integer
 		:param      node:  The node
 		:type       node:  javascript node
 
-		:returns:   { description_of_the_return_value }
-		:rtype:     { return_type_description }
+		:returns:   list of strings or pythonnodes or single pythonde 
+		:rtype:     list or PythonNode
 		"""
 		n = PythonNode()
 		n.setNodeType("Import")
@@ -118,7 +115,6 @@ class JsAST(AST):
 		Generates a javascript importFrom
 
 		:param      pos:   Unnecessary for jsAST
-		:type       pos:   integer
 		:param      node:  The node
 		:type       node:  javascript node
 
@@ -149,7 +145,6 @@ class JsAST(AST):
 		Generates a javascript annAssign 
 
 		:param      pos:   Unnecessary for jsAST
-		:type       pos:   integer
 		:param      node:  The node name in string format
 		:type       node:  string
 
@@ -173,7 +168,6 @@ class JsAST(AST):
 		Generates a javascript Function 
 
 		:param      pos:   Unnecessary for jsAST
-		:type       pos:   integer
 		:param      node:  The node
 		:type       node:  javascript node
 

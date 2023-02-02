@@ -7,8 +7,8 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-02 11:52:37
-#   @Description:        ...
+#   @Last Modified time: 2023-02-02 12:29:18
+#   @Description:        This file describes the interface of the umlConverter and it's utilities
 
 from app.modules.utils import LANGUAGES, UMLTHEMES
 
@@ -22,7 +22,8 @@ from PIL import ImageTk, Image
 
 class Interface:
 	"""
-	This class describes an interface, it handles the different interfaces of UMLConverter.
+	This class describes an interface, it handles the different interfaces of
+	UMLConverter.
 	"""
 	iconPath: str
 	logoPath: str
@@ -45,9 +46,15 @@ class Interface:
 		"""
 		Shows a prompt where greets the user.
 		""" 
+
 		def close(item):
+			"""
+			Kills the greet process
+			
+			:param      item:  The item
+			:type       item:  tkinter
+			"""
 			root.destroy()
-			return True
 
 		root = Tk() 
 		root.title("UMLConverter")
@@ -61,9 +68,11 @@ class Interface:
 
 	def porjectInformationInterface(self) -> list:
 		"""
-		Promps an interface where ask the user for the esential data for the program, such as directory, output, language...
-
-		:returns:   A list with the language, input path for files and path where the output is going to be stored.
+		Promps an interface where ask the user for the esential data for the
+		program, such as directory, output, language...
+		
+		:returns:   A list with the language, input path for files and path
+		            where the output is going to be stored.
 		:rtype:     list
 		"""
 		self.greet()
@@ -80,18 +89,49 @@ class Interface:
 
 
 	def selectDirectory(self, title: str) -> str:
+		"""
+		Opens a selectionbox for choosing directory
+
+		:param      title:  The title
+		:type       title:  str
+
+		:returns:   The directory path
+		:rtype:     str
+		"""
 		path = easygui.diropenbox(title)
 		if path == None:
 			sys.exit(0)
 		return path
 
 
-	def projectExcludedFiles(self, fileList: list) -> list:
-		excluded = easygui.multchoicebox("Select files which you want to exclude in class diagram", "Exclude files", fileList)
+	def multiChoiceSelection(self, title: str, text: str, l: list) -> list:
+		"""
+		Opens a choicebox for multiselection items from list
+		
+		:param      l:  The file list
+		:type       l:  list
+		
+		:returns:   List with selected items
+		:rtype:     list
+		"""
+		excluded = easygui.multchoicebox(text, title, l)
 		return excluded
 
 
 	def selectFromList(self, l: list, msg: str, title: str) -> str:
+		"""
+		Opens a list in which user must select an option
+
+		:param      l:      list of options
+		:type       l:      list
+		:param      msg:    The message
+		:type       msg:    str
+		:param      title:  The title
+		:type       title:  str
+
+		:returns:   selected option
+		:rtype:     str
+		"""
 		choice = easygui.choicebox(msg, "UMLConverter " + title, l)
 		if (choice == None):
 			sys.exit(0)
@@ -99,6 +139,15 @@ class Interface:
 
 
 	def yesNoQuestion(self, msg: str) -> str:
+		"""
+		Asks the user a yes or no question
+
+		:param      msg:  The message
+		:type       msg:  str
+
+		:returns:   answer of the user
+		:rtype:     str
+		"""
 		choice = easygui.buttonbox(msg, choices = ["Yes", "No"])
 		if (choice == None):
 			sys.exit(0)
@@ -106,6 +155,23 @@ class Interface:
 
 
 	def advancedMenu(self, fileList: list, excludedFiles = [], output = "", theme = "_none_", packages = False) -> dict:
+		"""
+		Shows the advanced menu for umlconverter
+
+		:param      fileList:       The file list
+		:type       fileList:       list
+		:param      excludedFiles:  The excluded files
+		:type       excludedFiles:  Array
+		:param      output:         The output
+		:type       output:         str
+		:param      theme:          The theme
+		:type       theme:          str
+		:param      packages:       The packages
+		:type       packages:       bool
+
+		:returns:   object with advanced options
+		:rtype:     dict
+		"""
 		msg = "Do you want to finish config and start building?"
 		choices = ["Build", "Exclude Files", "Choose Theme", "Packages", "Exit"]
 		reply = easygui.buttonbox(msg, choices = choices, image = self.logoPath)
@@ -119,7 +185,7 @@ class Interface:
 			return result
 
 		elif reply == "Exclude Files":
-			excludedFiles = self.projectExcludedFiles(fileList)
+			excludedFiles = self.multiChoiceSelection("Select files which you want to exclude in class diagram", "Exclude files", fileList)
 
 		elif reply == "Choose Theme":
 			theme = self.selectFromList(msg = "Select a theme from the list:", title = "Themes", l = UMLTHEMES)

@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-31 13:18:04
+#   @Last Modified time: 2023-02-02 12:25:08
 #   @Description:        This file describes a python ast class
 
 from app.modules.ast_module.pythonNode import PythonNode
@@ -15,6 +15,9 @@ from app.modules.ast_module.AST import AST
 from app.modules.utils import NODETYPES
 
 class PyAST(AST):
+	"""
+	This class describes a python ast.
+	"""
 
 
 	def generateTree(self, l: list) -> bool:
