@@ -7,13 +7,14 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-02 08:53:01
+#   @Last Modified time: 2023-02-02 11:44:42
 #   @Description:        ...
 
 from app.modules.utils import LANGUAGES, UMLTHEMES
 
 import easygui
 import sys
+import os
 
 from tkinter import *
 from PIL import ImageTk,Image
@@ -33,12 +34,21 @@ class Interface:
 	"""
 	This class describes an interface, it handles the different interfaces of UMLConverter.
 	"""
+	iconPath: str
+	logoPath: str
 
 	def __init__(self):
 		"""
 		Constructs a new instance.
 		"""
-		pass
+		path = os.path.realpath(__file__)
+		path = path[:(len(path) - 42)]
+		if ((sys.platform == "win32") or (sys.platform == "cygwin")): # Windows
+			self.iconPath = path + "\\img\\icon\\25x25.ico"
+			self.logoPath = path + "\\img\\logo\\267x150.png"
+		else:	# Linux or MacOS
+			self.iconPath = path + "/img/icon/25x25.ico"
+			self.logoPath = path + "/img/logo/267x150.png"
 
 
 	def greet(self):
@@ -46,20 +56,23 @@ class Interface:
 		Shows a prompt where greets the user.
 		""" 
 		
+
+
 		def close(item):
 			root.destroy()
 			return True
 
 		root = Tk() 
 		root.title("UMLConverter")
-		root.iconbitmap(default = './img/icon/25x25.ico')
+		root.iconbitmap(default = self.iconPath)
+		#icon = PhotoImage(file = iconPath)
+		#root.iconphoto(False, icon)
 		root.geometry("500x220")
-		img = ImageTk.PhotoImage(Image.open("./img/logo/267x150.png"))
-
+		img = ImageTk.PhotoImage(Image.open(self.logoPath))
 		Button(root, image=img, text="AA", command =lambda: close(root)).pack()
 		Button(root, text="Start ", command = lambda: close(root)).place(x=240, y=180)
 		root.mainloop()
-
+		  
 		
 
 
@@ -114,10 +127,9 @@ class Interface:
 
 
 	def advancedMenu(self, fileList: list, excludedFiles = [], output = "", theme = "_none_", packages = False) -> dict:
-		image = "./img/logo/267x150.png"
 		msg = "Do you want to finish config and start building?"
 		choices = ["Build", "Exclude Files", "Choose Theme", "Packages", "Exit"]
-		reply = easygui.buttonbox(msg, choices = choices, image = image)
+		reply = easygui.buttonbox(msg, choices = choices, image = self.logoPath)
 		#reply = easygui.buttonbox(msg, choices = choices)
 
 

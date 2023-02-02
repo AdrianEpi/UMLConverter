@@ -1,4 +1,4 @@
-!theme spacelab-white
+!theme _none_
 ABC <|-- AST
 class AST {
     + PythonNode tree
@@ -118,6 +118,8 @@ class Searcher {
 }
 
 class Interface {
+    + str iconPath
+    + str logoPath
     - __init__(self)
     + greet(self)
     + porjectInformationInterface(self)

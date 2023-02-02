@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-31 13:50:40
+#   @Last Modified time: 2023-02-02 11:48:17
 #   @Description:        ...
 
 from app.modules.uml_module.translator import Translator
