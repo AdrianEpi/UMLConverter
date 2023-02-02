@@ -1,5 +1,5 @@
 !theme _none_
-ABC <|-- AST
+
 class AST {
     + PythonNode tree
     + list dataList

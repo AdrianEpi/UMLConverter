@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-02 11:44:42
+#   @Last Modified time: 2023-02-02 11:52:37
 #   @Description:        ...
 
 from app.modules.utils import LANGUAGES, UMLTHEMES
@@ -17,18 +17,8 @@ import sys
 import os
 
 from tkinter import *
-from PIL import ImageTk,Image
+from PIL import ImageTk, Image
 
-
-
-#root.image("./img/logo/267x150.png")
-#root.iconbitmap(default = './img/icon/25x25.ico')
-
-
-#root.mainloop()
-#root.create_image(20,20, anchor=NW, image=PhotoImage(file="./img/logo/267x150.png"))  
-#root.destroy()
-#root.iconify()
 
 class Interface:
 	"""
@@ -55,9 +45,6 @@ class Interface:
 		"""
 		Shows a prompt where greets the user.
 		""" 
-		
-
-
 		def close(item):
 			root.destroy()
 			return True
@@ -65,20 +52,12 @@ class Interface:
 		root = Tk() 
 		root.title("UMLConverter")
 		root.iconbitmap(default = self.iconPath)
-		#icon = PhotoImage(file = iconPath)
-		#root.iconphoto(False, icon)
 		root.geometry("500x220")
 		img = ImageTk.PhotoImage(Image.open(self.logoPath))
 		Button(root, image=img, text="AA", command =lambda: close(root)).pack()
 		Button(root, text="Start ", command = lambda: close(root)).place(x=240, y=180)
 		root.mainloop()
-		  
 		
-
-
-		#root.mainloop()
-		#easygui.msgbox("\n\n\n\t\tWelcome to UMLCoverter!")
-
 
 	def porjectInformationInterface(self) -> list:
 		"""
@@ -130,8 +109,6 @@ class Interface:
 		msg = "Do you want to finish config and start building?"
 		choices = ["Build", "Exclude Files", "Choose Theme", "Packages", "Exit"]
 		reply = easygui.buttonbox(msg, choices = choices, image = self.logoPath)
-		#reply = easygui.buttonbox(msg, choices = choices)
-
 
 		if reply == "Build":
 			result = {

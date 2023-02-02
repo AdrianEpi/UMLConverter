@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-31 13:20:20
+#   @Last Modified time: 2023-02-02 11:59:13
 #   @Description:        Translates generated AST to mermaid language.
 
 
@@ -282,8 +282,9 @@ class Translator:
 		inheritance.append(className)
 		for i in l:
 			if isinstance(i, str):
-				inheritance.append(i)
-				string += i + " <|-- " + className
+				if (i != "ABC") and self.language == "Python":
+					inheritance.append(i)
+					string += i + " <|-- " + className
 			elif isinstance(i, PythonNode):
 				inheritance.append(i.getName())
 				string += i.getName() + " <|-- " + className
@@ -291,7 +292,8 @@ class Translator:
 				raise TypeError("Error, not valid inheritance type in Translator:translateInheritance()")
 
 			string += "\n"
-		self.classInheritance.append(inheritance)
+		if (len(inheritance) > 1):
+			self.classInheritance.append(inheritance)
 		return string
 
 
