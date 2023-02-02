@@ -1,3 +1,3 @@
-![](../img/logo/267x150.png#center "UMLConverter")
+![](../img/logo/banner600x200.png "UMLConverter")
 
 # UMLConverter User Guide
