@@ -7,20 +7,9 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-31 13:17:48
-#   @Description:        ...
-
-# -*- coding: utf-8 -*-
-#   @Proyect:            UMLConverter
-#   @Author:             Adrian Epifanio
-#   @File:               pyAST.py
-#   @Author:             Adrian Epifanio
-#   @Date:               2022-11-17 13:08:56
-#   @Email:              adrianepi@gmail.com
-#   @GitHub:             https://github.com/AdrianEpi
-#   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-21 19:01:39
+#   @Last Modified time: 2023-02-02 12:12:15
 #   @Description:        This file describes an abstract ast class and all the node types that are going to be stored in data
+
 
 from abc import ABC, abstractmethod
 from app.modules.ast_module.pythonNode import PythonNode
@@ -28,7 +17,7 @@ from app.modules.ast_module.pythonNode import PythonNode
 
 class AST(ABC):
 	"""
-	This class describes a python ast.
+	This class describes a python abstract class for ast.
 	"""
 
 	tree: PythonNode()
@@ -85,51 +74,158 @@ class AST(ABC):
 
 	@abstractmethod
 	def generateTree(self, l: list) -> bool:
+		"""
+		Generates the tree
+
+		:param      l:    list with nodes or lines 
+		:type       l:    list
+
+		:returns:   True if the tree was generated correctly, false otherwise
+		:rtype:     bool
+		"""
 		pass
 
 
 	@abstractmethod
 	def __generateModule(self, pos = None, node = None) -> PythonNode:
+		"""
+		Generates a module
+
+		:param      pos:   The position
+		:type       pos:   integer
+		:param      node:  The node
+		:type       node:  node
+
+		:returns:   The python node.
+		:rtype:     PythonNode
+		"""
 		pass
 
 
 	@abstractmethod
 	def __generateClassDef(self, pos = None, node = None) -> PythonNode:
+		"""
+		Generate a class
+
+		:param      pos:   The position
+		:type       pos:   integer
+		:param      node:  The node
+		:type       node:  node
+
+		:returns:   The python node.
+		:rtype:     PythonNode
+		"""
 		pass
 
 
 	@abstractmethod
 	def __generateImport(self, pos = None, node = None) -> list or PythonNode:
+		"""
+		Generate an import
+
+		:param      pos:   The position
+		:type       pos:   integer
+		:param      node:  The node
+		:type       node:  node
+
+		:returns:   list with pythonNodes or a single pythonNode
+		:rtype:     list or PythonNode
+		"""
 		pass
 
 
 	@abstractmethod
 	def __generateImportFrom(self, pos = None, node = None) -> PythonNode:
+		"""
+		Generates an importFrom
+
+		:param      pos:   The position
+		:type       pos:   integer
+		:param      node:  The node
+		:type       node:  node
+
+		:returns:   The python node.
+		:rtype:     PythonNode
+		"""
 		pass
 
 
 	@abstractmethod
 	def __generateAssign(self, pos = None, node = None) -> list:
+		"""
+		Generates an assign
+
+		:param      pos:   The position
+		:type       pos:   integer
+		:param      node:  The node
+		:type       node:  node
+
+		:returns:   list with assigns
+		:rtype:     list
+		"""
 		pass
 
 
 	@abstractmethod
 	def __generateAnnAssign(self, pos = None, node = None) -> PythonNode:
+		"""
+		Generates an annassign
+
+		:param      pos:   The position
+		:type       pos:   integer
+		:param      node:  The node
+		:type       node:  node
+
+		:returns:   The python node.
+		:rtype:     PythonNode
+		"""
 		pass
 
 
 	@abstractmethod
 	def __generateAsyncFunctionDef(self, pos = None, node = None):
+		"""
+		Generates am asyncFunction
+
+		:param      pos:   The position
+		:type       pos:   integer
+		:param      node:  The node
+		:type       node:  node
+		"""
 		pass
 
 
 	@abstractmethod
 	def __generateFunctionDef(self, pos = None, node = None) -> PythonNode:
+		"""
+		Generates a function
+
+		:param      pos:   The position
+		:type       pos:   integer
+		:param      node:  The node
+		:type       node:  node
+
+		:returns:   The python node.
+		:rtype:     PythonNode
+		"""
 		pass
 
 
 	@abstractmethod
 	def __generateNode(self, pos = None, ntype = None, node = None) -> PythonNode or list:
+		"""
+		Generates a pythonnode
+
+		:param      pos:    The position
+		:type       pos:    integer
+		:param      ntype:  The ntype
+		:type       ntype:  string
+		:param      node:   The node
+		:type       node:   node
+
+		:returns:   list of pythonnodes or pythonnode
+		:rtype:     PythonNode or list
+		"""
 		pass
 
 

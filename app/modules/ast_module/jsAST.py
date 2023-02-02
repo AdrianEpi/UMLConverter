@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-31 13:16:56
+#   @Last Modified time: 2023-02-02 12:07:37
 #   @Description:        This file describes a javaScript ast class 
 
 from app.modules.ast_module.pythonNode import PythonNode
@@ -24,6 +24,7 @@ class JsAST(AST):
 		# must receive the program.body
 		self.dataList = l
 		self.tree = self._AST__generateModule()
+		return True
 
 
 	def _AST__generateModule(self, pos = None, node = None) -> PythonNode:
