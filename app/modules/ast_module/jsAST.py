@@ -7,20 +7,32 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-02 12:07:37
+#   @Last Modified time: 2023-02-02 12:18:13
 #   @Description:        This file describes a javaScript ast class 
 
 from app.modules.ast_module.pythonNode import PythonNode
 from app.modules.ast_module.AST import AST
 from app.modules.utils import JSNODETYPES
-
+ 
 import esprima
 
 
 
 class JsAST(AST):
+	"""
+	This class describes a javascript ast.
+	"""
 
 	def generateTree(self, l: list) -> bool:
+		"""
+		Generates the tree
+
+		:param      l:    list of js nodes
+		:type       l:    list
+
+		:returns:   True if tree generated correctly, false otherwise
+		:rtype:     bool
+		"""
 		# must receive the program.body
 		self.dataList = l
 		self.tree = self._AST__generateModule()
@@ -28,6 +40,17 @@ class JsAST(AST):
 
 
 	def _AST__generateModule(self, pos = None, node = None) -> PythonNode:
+		"""
+		Generates a javascript module
+
+		:param      pos:   Unnecessary for jsAST
+		:type       pos:   integer
+		:param      node:  The node
+		:type       node:  javascript node
+
+		:returns:   The python node.
+		:rtype:     PythonNode
+		"""
 		n = PythonNode()
 		n.setNodeType("Module")
 		for i in self.dataList:
@@ -39,6 +62,17 @@ class JsAST(AST):
 
 
 	def _AST__generateClassDef(self, pos = None, node = None) -> PythonNode:
+		"""
+		Generates a javascript class
+
+		:param      pos:   Unnecessary for jsAST
+		:type       pos:   integer
+		:param      node:  The node
+		:type       node:  javascript node
+
+		:returns:   The python node.
+		:rtype:     PythonNode
+		"""
 		n = PythonNode()
 		n.setNodeType("ClassDef")
 		n.setName(node.id.name)
@@ -62,6 +96,17 @@ class JsAST(AST):
 
 
 	def _AST__generateImport(self, pos = None, node = None) -> list or PythonNode:
+		"""
+		Generates a javascript import
+
+		:param      pos:   Unnecessary for jsAST
+		:type       pos:   integer
+		:param      node:  The node
+		:type       node:  javascript node
+
+		:returns:   { description_of_the_return_value }
+		:rtype:     { return_type_description }
+		"""
 		n = PythonNode()
 		n.setNodeType("Import")
 		n.setName(node.expression.arguments.name)
@@ -69,6 +114,17 @@ class JsAST(AST):
 
 
 	def _AST__generateImportFrom(self, pos = None, node = None) -> PythonNode:
+		"""
+		Generates a javascript importFrom
+
+		:param      pos:   Unnecessary for jsAST
+		:type       pos:   integer
+		:param      node:  The node
+		:type       node:  javascript node
+
+		:returns:   The python node.
+		:rtype:     PythonNode
+		"""
 		n = PythonNode()
 		n.setNodeType("ImportFrom")
 		n.setName(node.declarations[0].init.arguments.value)
@@ -89,7 +145,17 @@ class JsAST(AST):
 
 
 	def _AST__generateAnnAssign(self, pos = None, node = None) -> PythonNode:
-		# Param node in this case is going to be just the string with the node name
+		"""
+		Generates a javascript annAssign 
+
+		:param      pos:   Unnecessary for jsAST
+		:type       pos:   integer
+		:param      node:  The node name in string format
+		:type       node:  string
+
+		:returns:   The python node.
+		:rtype:     PythonNode
+		"""
 		n = PythonNode()
 		n.setNodeType("AnnAssign")
 		n.setName(node)
@@ -103,6 +169,17 @@ class JsAST(AST):
 
 
 	def _AST__generateFunctionDef(self, pos = None, node = None) -> PythonNode:
+		"""
+		Generates a javascript Function 
+
+		:param      pos:   Unnecessary for jsAST
+		:type       pos:   integer
+		:param      node:  The node
+		:type       node:  javascript node
+
+		:returns:   The python node.
+		:rtype:     PythonNode
+		"""
 		n = PythonNode()
 		n.setNodeType("FunctionDef")
 		n.setName(node.id.name)
@@ -123,6 +200,15 @@ class JsAST(AST):
 
 
 	def __findClassAttributes(self, node = None) -> list:
+		"""
+		Finds class attributes.
+
+		:param      node:  The node
+		:type       node:  javascript node
+
+		:returns:   list with javascript nodes
+		:rtype:     list
+		"""
 		attrs = []
 		if node.type == "ClassBody":
 			for i in node.body:
@@ -141,6 +227,15 @@ class JsAST(AST):
 
 
 	def __generateMethodDef(self, node = None) -> PythonNode:
+		"""
+		Generates a javascript method
+
+		:param      node:  The node
+		:type       node:  javascript node
+
+		:returns:   The python node.
+		:rtype:     PythonNode
+		"""
 		n = PythonNode()
 		n.setNodeType("FunctionDef")
 		n.setName(node.key.name)
@@ -158,6 +253,7 @@ class JsAST(AST):
 		if len(body) > 0:
 			n.setBody(body)
 		return n
+
 
 	def _AST__generateNode(self, pos = None, ntype = None, node = None) -> PythonNode or list:
 		"""
