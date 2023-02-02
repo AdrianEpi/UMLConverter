@@ -7,8 +7,8 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-02 11:48:17
-#   @Description:        ...
+#   @Last Modified time: 2023-02-02 12:34:53
+#   @Description:        This file describes the UMLConverteer main class
 
 from app.modules.uml_module.translator import Translator
 from app.modules.file_module.file import File
@@ -131,6 +131,33 @@ class UMLConverter:
 		return self.imports
 
 
+	def getExcludedFiles(self) -> list:
+		"""
+		Gets the excluded files.
+
+		:returns:   The excluded files.
+		:rtype:     list
+		"""
+		return self.excludedFiles
+
+	def getTheme(self) -> str:
+		"""
+		Gets the theme.
+
+		:returns:   The theme.
+		:rtype:     str
+		"""
+		return self.theme
+
+	def getPackages(self) -> bool:
+		"""
+		Gets the packages.
+
+		:returns:   The packages.
+		:rtype:     bool
+		"""
+		return self.packages
+
 	def setFileList(self, newFileList: list):
 		"""
 		Sets the file list.
@@ -139,16 +166,6 @@ class UMLConverter:
 		:type       newFileList:  list
 		"""
 		self.fileList = newFileList
-
-
-	def setCode(self, newCode: str):
-		"""
-		Sets the code.
-
-		:param      newCode:  The new code
-		:type       newCode:  str
-		"""
-		self.code = newCode
 
 
 	def setOutput(self, newOutput: str):
@@ -176,26 +193,6 @@ class UMLConverter:
 			self.__generateExtention()
 			return True
 		return False
-
-
-	def setExtension(self, newExtension: str):
-		"""
-		Sets the extension.
-
-		:param      newExtension:  The new extension
-		:type       newExtension:  str
-		"""
-		self.extension = newExtension	
-
-
-	def setClassList(self, newClassList: list):
-		"""
-		Sets the class list.
-
-		:param      newClassList:  The new class list
-		:type       newClassList:  list
-		"""
-		self.classList = newClassList	
 
 
 	def setImports(self, newImports: list):
@@ -244,6 +241,7 @@ class UMLConverter:
 		self.excludedFiles = result["ExcludedFiles"]
 		self.theme = result["Theme"]
 		self.packages = result["Packages"]
+
 
 	def run(self):
 		"""
@@ -296,7 +294,7 @@ class UMLConverter:
 				self.__addImports(translator.getImports(), moduleClassList)
 				self.__addInheritance(translator.getClassInheritance())
 				if self.packages:
-					self.code += "\npackage " + self.__getModuleName(i) + " {\n" + translator.getCode() + "\n}\n"	# Package version
+					self.code += "\npackage " + self.__getPackageName(i) + " {\n" + translator.getCode() + "\n}\n"	# Package version
 				else:
 					self.code += translator.getCode()	# Non package name
 
@@ -332,6 +330,7 @@ class UMLConverter:
 			for j in imports:
 				self.imports.append([i, j])
 
+
 	def __addInheritance(self, inh: list):
 		"""
 		Adds an inheritance.
@@ -341,6 +340,7 @@ class UMLConverter:
 		"""
 		for i in inh:
 			self.inheritance.append([i[0], i[1]])
+
 
 	def __generateDependences(self) -> str:
 		"""
@@ -364,14 +364,14 @@ class UMLConverter:
 		return dependences
 
 
-	def __getModuleName(self, filePath: str) -> str:
+	def __getPackageName(self, filePath: str) -> str:
 		"""
-		Gets the module name.
-
+		Gets the package name .
+		
 		:param      filePath:  The file path
 		:type       filePath:  str
-
-		:returns:   The module name.
+		
+		:returns:   The package name.
 		:rtype:     str
 		"""
 		l = []
@@ -387,7 +387,7 @@ class UMLConverter:
 	def writeToFile(self) -> bool:
 		"""
 		Writes to file.
-
+		
 		:returns:   True if code could be written and exists, false otherwise
 		:rtype:     bool
 		"""
@@ -402,7 +402,7 @@ class UMLConverter:
 	def convertToPng(self) -> bool:
 		"""
 		Transforms the mermaid code into png image
-
+		
 		:returns:   True if the image could be generated, false otherwise
 		:rtype:     bool
 		"""

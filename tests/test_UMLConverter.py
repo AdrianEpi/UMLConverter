@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-16 10:48:37
+#   @Last Modified time: 2023-02-02 12:36:39
 #   @Description:        Tests for app/uml_module/UMLConverter.py
 
 
@@ -60,11 +60,9 @@ def test_getSetFileList():
 	assert(u.getFileList() == [1, 2, 3])
 
 
-def test_getSetCode():
+def test_getCode():
 	u = UMLConverter()
 	assert(u.getCode() == "")
-	u.setCode("[1, 2, 3]")
-	assert(u.getCode() == "[1, 2, 3]")
 
 
 def test_getSetOutput():
@@ -84,15 +82,13 @@ def test_getSetLanguage():
 def test_getSetExtension():
 	u = UMLConverter()
 	assert(u.getExtension() == None)
-	u.setExtension(".py")
+	u.setLanguage("Python")
 	assert(u.getExtension() == ".py")
 
 
 def test_getSetClassList():
 	u = UMLConverter()
 	assert(u.getClassList() == [])
-	u.setClassList([1, 2, 3])
-	assert(u.getClassList() == [1, 2, 3])
 
 
 def test_getSetImports():
