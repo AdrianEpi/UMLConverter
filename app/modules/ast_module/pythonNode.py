@@ -7,22 +7,9 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-16 12:01:23
+#   @Last Modified time: 2023-01-31 13:18:12
 #   @Description:        ...
 
-
-
-# NODETYPES = [
-# 	"Module",
-# 	"ClassDef",
-# 	"Import",
-# 	"ImportFrom",
-# 	"Assign",
-# 	"AnnAssign",
-# 	"AsyncFunctionDef",
-# 	"FunctionDef",
-# 	"Return"
-# ]
 
 class PythonNode:
 	"""

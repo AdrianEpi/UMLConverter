@@ -7,16 +7,13 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-16 11:08:04
+#   @Last Modified time: 2023-02-02 11:59:13
 #   @Description:        Translates generated AST to mermaid language.
 
 
 from app.modules.ast_module.pythonNode import PythonNode
+from app.modules.utils import LANGUAGES
 
-LANGUAGES = [
-	"Python",
-	"Option2"
-]
 
 class Translator:
 	"""
@@ -27,6 +24,7 @@ class Translator:
 	code: str
 	imports: list
 	classList: list
+	classInheritance: list
 	language: str
 
 	def __init__(self, module: PythonNode, lang: str):
@@ -41,6 +39,7 @@ class Translator:
 		self.code = ""
 		self.imports = []
 		self.classList = []
+		self.classInheritance = []
 		self.setAst(module)
 		self.setLanguage(lang)
 		
@@ -84,6 +83,15 @@ class Translator:
 		"""
 		return self.classList
 
+
+	def getClassInheritance(self) -> list:
+		"""
+		Gets the class inheritance.
+
+		:returns:   The class inheritance.
+		:rtype:     list
+		"""
+		return self.classInheritance
 
 	def getLanguage(self) -> str:
 		"""
@@ -146,6 +154,16 @@ class Translator:
 		:type       newClassList:  list
 		"""
 		self.classList = newClassList
+
+
+	def setClassInheritance(self, newClassInheritance: list):
+		"""
+		Sets the class inheritance.
+
+		:param      newClassInheritance:  The new class inheritance
+		:type       newClassInheritance:  list
+		"""
+		self.classInheritance = newClassInheritance
 
 
 	def setLanguage(self, lang: str):
@@ -231,7 +249,7 @@ class Translator:
 		# # -> protected
 		if ((line == "") or (line == None)):
 			raise Exception("Error in Translator:getVisibility(), not name for attribute or method.")
-		if self.language == "Python":
+		if self.language == "Python" or self.language == "JavaScript":
 			if (len(line) == 1):
 				return "+"
 			if (line[0] == "_"):
@@ -260,15 +278,22 @@ class Translator:
 		:raises     TypeError:  Error in case not well defined inheritance
 		"""
 		string = ""
+		inheritance = []
+		inheritance.append(className)
 		for i in l:
 			if isinstance(i, str):
-				string += i + " <|-- " + className
+				if (i != "ABC") and self.language == "Python":
+					inheritance.append(i)
+					string += i + " <|-- " + className
 			elif isinstance(i, PythonNode):
+				inheritance.append(i.getName())
 				string += i.getName() + " <|-- " + className
 			else:
 				raise TypeError("Error, not valid inheritance type in Translator:translateInheritance()")
 
 			string += "\n"
+		if (len(inheritance) > 1):
+			self.classInheritance.append(inheritance)
 		return string
 
 
@@ -292,6 +317,8 @@ class Translator:
 				types += "]"
 			else:
 				types = node.getValue()
+				if types == None:
+					types = ""
 			return "    " + self.getVisibility(node.getName()) + " " + types + " " + node.getName()
 
 

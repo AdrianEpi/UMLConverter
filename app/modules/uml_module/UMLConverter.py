@@ -7,20 +7,23 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-01-16 11:15:00
-#   @Description:        ...
+#   @Last Modified time: 2023-02-02 12:34:53
+#   @Description:        This file describes the UMLConverteer main class
 
-from app.modules.uml_module.translator import Translator, LANGUAGES
+from app.modules.uml_module.translator import Translator
 from app.modules.file_module.file import File
 from app.modules.file_module.searcher import Searcher
 from app.modules.ast_module.line import Line
 from app.modules.ast_module.pyAST import PyAST
+from app.modules.ast_module.jsAST import JsAST
 from app.modules.interface_module.interface import Interface
+from app.modules.utils import LANGUAGES
 
 import ast
 import sys
 from six.moves import input as raw_input
 from os import system
+import esprima
 
 
 class UMLConverter:
@@ -36,7 +39,11 @@ class UMLConverter:
 	language: str
 	extension: str
 	classList: list
+	inheritance: list
 	imports: list
+	excludedFiles: list
+	theme: str
+	packages: bool
 
 	def __init__(self):
 		"""
@@ -48,8 +55,11 @@ class UMLConverter:
 		self.language = None
 		self.extension = None
 		self.classList = []
+		self.inheritance = []
 		self.imports = []
-
+		self.excludedFiles = []
+		self.theme = ""
+		self.packages = False
 
 	def getFileList(self) -> list:
 		"""
@@ -121,6 +131,33 @@ class UMLConverter:
 		return self.imports
 
 
+	def getExcludedFiles(self) -> list:
+		"""
+		Gets the excluded files.
+
+		:returns:   The excluded files.
+		:rtype:     list
+		"""
+		return self.excludedFiles
+
+	def getTheme(self) -> str:
+		"""
+		Gets the theme.
+
+		:returns:   The theme.
+		:rtype:     str
+		"""
+		return self.theme
+
+	def getPackages(self) -> bool:
+		"""
+		Gets the packages.
+
+		:returns:   The packages.
+		:rtype:     bool
+		"""
+		return self.packages
+
 	def setFileList(self, newFileList: list):
 		"""
 		Sets the file list.
@@ -129,16 +166,6 @@ class UMLConverter:
 		:type       newFileList:  list
 		"""
 		self.fileList = newFileList
-
-
-	def setCode(self, newCode: str):
-		"""
-		Sets the code.
-
-		:param      newCode:  The new code
-		:type       newCode:  str
-		"""
-		self.code = newCode
 
 
 	def setOutput(self, newOutput: str):
@@ -168,26 +195,6 @@ class UMLConverter:
 		return False
 
 
-	def setExtension(self, newExtension: str):
-		"""
-		Sets the extension.
-
-		:param      newExtension:  The new extension
-		:type       newExtension:  str
-		"""
-		self.extension = newExtension	
-
-
-	def setClassList(self, newClassList: list):
-		"""
-		Sets the class list.
-
-		:param      newClassList:  The new class list
-		:type       newClassList:  list
-		"""
-		self.classList = newClassList	
-
-
 	def setImports(self, newImports: list):
 		"""
 		Sets the imports.
@@ -206,6 +213,8 @@ class UMLConverter:
 		"""
 		if self.language == "Python":
 			self.extension = ".py"
+		elif self.language == "JavaScript":
+			self.extension = ".js"
 		# elif ...
 		else:
 			raise Exception("Error in UMLConverter:generateExtention(), not valid language")
@@ -217,16 +226,21 @@ class UMLConverter:
 		"""
 		gui = Interface()
 		result = gui.porjectInformationInterface() # [language, projectPath, outputPath]
-		self.language = result[0]
+		self.language = result["Language"]
 		self.__generateExtention()
-		self.output = result[2]
+		self.output = result["OutputPath"]
 		searcher = Searcher()
-		self.fileList = searcher.lookForFiles(result[1], self.extension)
+		self.fileList = searcher.lookForFiles(result["ProjectPath"], self.extension)
 		if ((sys.platform == "win32") or (sys.platform == "cygwin")): # Windows
 			self.output += "\\"
 		else:	# Linux or MacOS
 			self.output += "/"
 		self.output += "projectUML.txt"
+
+		result = gui.advancedMenu(self.fileList)
+		self.excludedFiles = result["ExcludedFiles"]
+		self.theme = result["Theme"]
+		self.packages = result["Packages"]
 
 
 	def run(self):
@@ -244,16 +258,33 @@ class UMLConverter:
 		Generates the AST, and converts to mermaid
 		"""
 		self.code = ""
+		if self.theme != "":
+			self.code += "!theme " + self.theme
 		for i in self.fileList:
+			if i in self.excludedFiles:
+				continue
 			f = File(i)
 			f.read()
-			fileAST = ast.dump(ast.parse(f.getData()), annotate_fields=True, include_attributes=False, indent=4)
-			l = fileAST.split("\n")
-			lines = []
-			for j in l:
-				lines.append(Line(j))
-			tree = PyAST()
-			tree.generateTree(lines)
+			#print("TRYING FILE " + f.getFileName())
+			tree = None
+			# Python
+			if self.language == "Python":
+				tree = PyAST()
+				fileAST = ast.dump(ast.parse(f.getData()), annotate_fields=True, include_attributes=False, indent=4)
+				l = fileAST.split("\n")
+				lines = []
+				for j in l:
+					lines.append(Line(j))
+				
+				tree.generateTree(lines)
+
+			# JavaScript
+			elif self.language == "JavaScript":
+				tree = JsAST()
+				fileAST = esprima.parseScript(f.getData())
+				#print(fileAST)
+				tree.generateTree(fileAST.body)
+				#tree.printTree()
 
 			translator = Translator(tree.getTree(), self.language)
 			translator.translate()
@@ -261,8 +292,11 @@ class UMLConverter:
 			if (translator.getCode() != ""):
 				self.__addClasses(moduleClassList)
 				self.__addImports(translator.getImports(), moduleClassList)
-				# self.code += "\npackage " + self.__getModuleName(i) + " #DDDDDD {\n" + translator.getCode() + "\n}\n"	# Package version
-				self.code += translator.getCode()	# Non package name
+				self.__addInheritance(translator.getClassInheritance())
+				if self.packages:
+					self.code += "\npackage " + self.__getPackageName(i) + " {\n" + translator.getCode() + "\n}\n"	# Package version
+				else:
+					self.code += translator.getCode()	# Non package name
 
 		self.code += "\n" + self.__generateDependences()
 		
@@ -297,6 +331,17 @@ class UMLConverter:
 				self.imports.append([i, j])
 
 
+	def __addInheritance(self, inh: list):
+		"""
+		Adds an inheritance.
+
+		:param      inh:  The inh
+		:type       inh:  list
+		"""
+		for i in inh:
+			self.inheritance.append([i[0], i[1]])
+
+
 	def __generateDependences(self) -> str:
 		"""
 		Generate the relationships between classes
@@ -309,18 +354,24 @@ class UMLConverter:
 			className = i[0]
 			importedModule = i[1]
 			if (className in self.classList) and (importedModule in self.classList):
-				dependences += className + " --> " + importedModule + " #red;line.dashed\n"
+				validImport = True
+				for j in self.inheritance:
+					if (j[0] == className) and (j[1] == importedModule):
+						validImport = False
+						break
+				if validImport:
+					dependences += className + " --> " + importedModule + " #line.dashed\n"
 		return dependences
 
 
-	def __getModuleName(self, filePath: str) -> str:
+	def __getPackageName(self, filePath: str) -> str:
 		"""
-		Gets the module name.
-
+		Gets the package name .
+		
 		:param      filePath:  The file path
 		:type       filePath:  str
-
-		:returns:   The module name.
+		
+		:returns:   The package name.
 		:rtype:     str
 		"""
 		l = []
@@ -336,7 +387,7 @@ class UMLConverter:
 	def writeToFile(self) -> bool:
 		"""
 		Writes to file.
-
+		
 		:returns:   True if code could be written and exists, false otherwise
 		:rtype:     bool
 		"""
@@ -351,7 +402,7 @@ class UMLConverter:
 	def convertToPng(self) -> bool:
 		"""
 		Transforms the mermaid code into png image
-
+		
 		:returns:   True if the image could be generated, false otherwise
 		:rtype:     bool
 		"""

@@ -1,0 +1,78 @@
+!theme _none_
+class ClassExample {
+    + type publicVariable
+    - type privateVariable
+    # type protectedVariable
+    + publicMethod(var1, var2)
+    - privateMethod(var1, var2)
+    # protectedMethod(var1, var2)
+
+}
+
+ClassExample <|-- InheritedClass
+class InheritedClass {
+    + type publicVariable
+    - type privateVariable
+    # type protectedVariable
+    + publicMethod(...)
+    - privateMethod(...)
+    # protectedMethod(...)
+}
+
+class IncludedClass {
+    + type publicVariable
+    - type privateVariable
+    # type protectedVariable
+    + publicMethod(...)
+    - privateMethod(...)
+    # protectedMethod(...)
+}
+
+
+package PackageExample {
+class PackageClassExample {
+    + type publicVariable
+    - type privateVariable
+    # type protectedVariable
+    + publicMethod(var1, var2)
+    - privateMethod(var1, var2)
+    # protectedMethod(var1, var2)
+
+}
+class EmptyClassExample {
+}
+PackageClassExample <|-- PackageInheritedClass
+class PackageInheritedClass {
+    + type publicVariable
+    - type privateVariable
+    # type protectedVariable
+    + publicMethod(...)
+    - privateMethod(...)
+    # protectedMethod(...)
+}
+
+}
+
+package OtherPackage {
+class PackageIncludedClass1 {
+    + type publicVariable
+    - type privateVariable
+    # type protectedVariable
+    + publicMethod(...)
+    - privateMethod(...)
+    # protectedMethod(...)
+}
+class PackageIncludedClass2 {
+    + type publicVariable
+    - type privateVariable
+    # type protectedVariable
+    + publicMethod(...)
+    - privateMethod(...)
+    # protectedMethod(...)
+}
+
+}
+ClassExample --> IncludedClass #line.dashed
+InheritedClass --> IncludedClass #line.dashed
+PackageClassExample --> PackageIncludedClass1 #line.dashed
+PackageInheritedClass --> PackageIncludedClass2 #line.dashed
