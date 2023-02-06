@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-06 14:04:43
+#   @Last Modified time: 2023-02-06 14:42:13
 #   @Description:        ...
 
 from app.modules.metric_module.metricClass import MetricClass
@@ -85,11 +85,14 @@ class Metric:
 
 		self.__generateNOC()
 
+
+
 	def __generateNOC(self):
 		for i in range(len(self.classList)):
 			finish = False
 			noc = self.classList[i].getChildren()
 			start = 0
+			itd = 1
 			while finish == False:
 				nocSize = len(noc)
 				finish = True
@@ -98,7 +101,14 @@ class Metric:
 						if k not in noc:
 							finish = False
 							noc.append(k)
+				if finish == False:
+					itd += 1
 				start = nocSize
+			if len(noc) > 0:
+				for j in range(len(self.packageList)):
+					if self.classList[i].getPackageID() == self.packageList[j].getPackageID():
+						self.packageList[j].updateMaxITD(itd)
+
 			self.classList[i].setNoc(noc)
 
 

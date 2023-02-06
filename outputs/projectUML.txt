@@ -37,6 +37,11 @@ class JsAST {
     # _AST__generateNode(self, pos, ntype, node)
 }
 
+JsAST <|-- JsAST2Test
+class JsAST2Test {
+    - __init__(self)
+}
+
 class Line {
     + int indentation
     + str data
@@ -189,6 +194,7 @@ class MetricPackage {
     + int packageID
     + list classList
     + str name
+    + int maxITD
     - __init__(self, id: int, pname: str)
     + getPackageID(self)
     + getClassList(self)
@@ -197,6 +203,8 @@ class MetricPackage {
     + setClassList(self, newClassList: list)
     + addClass(self, classID: int)
     + containClass(self, classID: int)
+    + updateMaxITD(self, itd: int)
+    + print(self)
 }
 
 class Translator {
@@ -272,6 +280,8 @@ class UMLConverter {
 
 AST --> PythonNode #line.dashed
 JsAST --> PythonNode #line.dashed
+JsAST2Test --> PythonNode #line.dashed
+JsAST2Test --> AST #line.dashed
 PyAST --> PythonNode #line.dashed
 Metric --> MetricClass #line.dashed
 Metric --> MetricPackage #line.dashed

@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-06 14:10:15
+#   @Last Modified time: 2023-02-06 14:43:23
 #   @Description:        This file describes a javaScript ast class 
 
 from app.modules.ast_module.pythonNode import PythonNode
@@ -290,3 +290,10 @@ class JsAST(AST):
 			return self.__generateMethodDef(node = node)
 		else:
 			return None # In case non necessary node
+
+
+# class JsAST2Test(JsAST):
+# 	def __init__(self):
+# 		pass
+
+# 	

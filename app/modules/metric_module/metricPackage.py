@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-03 22:36:51
+#   @Last Modified time: 2023-02-06 14:37:08
 #   @Description:        ...
 
 
@@ -16,11 +16,13 @@ class MetricPackage:
 	packageID: int
 	classList: list
 	name: str
+	maxITD: int # Maximum inheritance tree depth
 
 	def __init__(self, id: int, pname: str):
 		self.packageID = id
 		self.classList = []
 		self.name = pname
+		self.maxITD = 0
 
 
 	def getPackageID(self) -> int:
@@ -52,3 +54,17 @@ class MetricPackage:
 		if (classID in self.classList):
 			return True
 		return False
+
+
+	def updateMaxITD(self, itd: int):
+		if itd > self.maxITD:
+			self.maxITD = itd
+
+
+	def print(self):
+		s = ""
+		s += "\n\n\n\t PackageID " + str(self.packageID)
+		s += "\n\t\tName: " + self.name
+		s += "\n\t\tClass List: " + str(self.classList)
+		s += "\n\t\tMaximum ITD: " + str(self.maxITD)
+		print(s)

@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-06 14:03:34
+#   @Last Modified time: 2023-02-06 14:18:27
 #   @Description:        This file describes the UMLConverteer main class
 
 from app.modules.uml_module.translator import Translator
@@ -256,6 +256,8 @@ class UMLConverter:
 		self.convertToPng()
 		self.metrics.generateMetrics()
 		for i in self.metrics.getClassList():
+			i.print()
+		for i in self.metrics.getPackageList():
 			i.print()
 
 
