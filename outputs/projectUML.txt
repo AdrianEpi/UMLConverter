@@ -139,6 +139,7 @@ class Metric {
     + getPackageList(self)
     + addNode(self, node)
     + generateMetrics(self)
+    - __generateNOC(self)
 }
 
 class MetricClass {

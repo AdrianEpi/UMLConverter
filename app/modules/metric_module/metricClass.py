@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-06 12:07:11
+#   @Last Modified time: 2023-02-06 14:02:49
 #   @Description:        ...
 
 
@@ -144,14 +144,6 @@ class MetricClass:
 			self.include.append(id)
 
 
-	# def generateNOC(self, metricClass: MetricClass):
-	# 	# self.noc = self.children
-	# 	# for i in classList:
-	# 	# 	if self.getClassID in i.getInheritance():
-	# 	# 		self.noc.append(i.getClassID())
-
-
-
 	def calculateCCD(self):
 		self.ccd = self.commentLines / self.codeLines
 
@@ -164,4 +156,5 @@ class MetricClass:
 		s += "\n\t\tInheritance: " + str(self.inheritance)
 		s += "\n\t\tIncluded in: " + str(self.include)
 		s += "\n\t\tPackageID: " + str(self.packageID)
+		s += "\n\t\tNOC (Number of Children): " + str(self.noc)
 		print(s)

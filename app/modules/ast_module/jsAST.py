@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-02 12:26:05
+#   @Last Modified time: 2023-02-06 14:10:15
 #   @Description:        This file describes a javaScript ast class 
 
 from app.modules.ast_module.pythonNode import PythonNode

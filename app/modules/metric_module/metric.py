@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-06 12:19:07
+#   @Last Modified time: 2023-02-06 14:04:43
 #   @Description:        ...
 
 from app.modules.metric_module.metricClass import MetricClass
@@ -83,4 +83,23 @@ class Metric:
 				if j in className:
 					self.classList[className.index(j)].addInclude(i)
 
-		# generateClassNoc
+		self.__generateNOC()
+
+	def __generateNOC(self):
+		for i in range(len(self.classList)):
+			finish = False
+			noc = self.classList[i].getChildren()
+			start = 0
+			while finish == False:
+				nocSize = len(noc)
+				finish = True
+				for j in range(start, nocSize, 1):
+					for k in self.classList[j].getChildren():
+						if k not in noc:
+							finish = False
+							noc.append(k)
+				start = nocSize
+			self.classList[i].setNoc(noc)
+
+
+
