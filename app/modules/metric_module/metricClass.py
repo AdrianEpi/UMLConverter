@@ -7,13 +7,14 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-02 14:10:45
+#   @Last Modified time: 2023-02-06 12:07:11
 #   @Description:        ...
 
 
 class MetricClass:
 
 	classID: int 				# Class identifier
+	name: str 					# Class name
 	children: list 				# List of children classIDs inherited from this class
 	noc: list 					# List of children  grandchildren... classIDs
 	inheritance: list 			# List o classes classIDs of which this class is inherited of
@@ -25,7 +26,7 @@ class MetricClass:
 	lcom: float					# Lack of cohesion in methods
 	ccd: float 					# Code comments density
 
-	def __init__(self, id: str):
+	def __init__(self, id: int, cname: str):
 		self.classID = id 
 		self.children = [] 
 		self.noc = [] 
@@ -37,6 +38,7 @@ class MetricClass:
 		self.cc = 0 
 		self.lcom = 0.0 
 		self.ccd = 0.0 
+		self.name = cname
 
 	
 	def getClassID(self) -> int:
@@ -127,27 +129,39 @@ class MetricClass:
 		self.ccd = newCcd
 
 
-	def addChildren(self, id: int):
+	def addChild(self, id: int):
 		if id not in self.children:
-			self.children.append(i)
+			self.children.append(id)
 
 
 	def addInheritance(self, id: int):
 		if id not in self.inheritance:
-			self.inheritance.append(i)
+			self.inheritance.append(id)
 
 
 	def addInclude(self, id: int):
 		if id not in self.include:
-			self.include.append(i)
+			self.include.append(id)
 
 
-	def generateNOC(self, classList: list):
-		self.noc = self.children
-		for i in classList:
-			if self.getClassID in i.getInheritance():
-				self.noc.append(i.getClassID())
+	# def generateNOC(self, metricClass: MetricClass):
+	# 	# self.noc = self.children
+	# 	# for i in classList:
+	# 	# 	if self.getClassID in i.getInheritance():
+	# 	# 		self.noc.append(i.getClassID())
+
 
 
 	def calculateCCD(self):
 		self.ccd = self.commentLines / self.codeLines
+
+
+	def print(self):
+		s = ""
+		s += "\n\n\n\t Class " + str(self.classID)
+		s += "\n\t\tName: " + self.name
+		s += "\n\t\tChildren: " + str(self.children)
+		s += "\n\t\tInheritance: " + str(self.inheritance)
+		s += "\n\t\tIncluded in: " + str(self.include)
+		s += "\n\t\tPackageID: " + str(self.packageID)
+		print(s)

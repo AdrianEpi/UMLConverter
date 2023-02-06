@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-03 22:25:36
+#   @Last Modified time: 2023-02-03 22:36:51
 #   @Description:        ...
 
 
@@ -15,11 +15,12 @@ class MetricPackage:
 
 	packageID: int
 	classList: list
+	name: str
 
-
-	def __init__(self, id):
+	def __init__(self, id: int, pname: str):
 		self.packageID = id
 		self.classList = []
+		self.name = pname
 
 
 	def getPackageID(self) -> int:
@@ -30,6 +31,10 @@ class MetricPackage:
 		return self.classList
 
 
+	def getName(self) -> str:
+		return self.name
+
+		
 	def setPackageID(self, newPackageID: int):
 		self.packageID = newPackageID
 

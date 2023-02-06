@@ -1,4 +1,42 @@
 !theme _none_
+
+class AST {
+    + PythonNode tree
+    + list dataList
+    - __init__(self)
+    + getDataList(self)
+    + getTree(self)
+    + setDataList(self, l: list)
+    + setTree(self, t: PythonNode)
+    + generateTree(self, l: list)
+    - __generateModule(self, pos, node)
+    - __generateClassDef(self, pos, node)
+    - __generateImport(self, pos, node)
+    - __generateImportFrom(self, pos, node)
+    - __generateAssign(self, pos, node)
+    - __generateAnnAssign(self, pos, node)
+    - __generateAsyncFunctionDef(self, pos, node)
+    - __generateFunctionDef(self, pos, node)
+    - __generateNode(self, pos, ntype, node)
+    + printTree(self)
+}
+
+AST <|-- JsAST
+class JsAST {
+    + generateTree(self, l: list)
+    # _AST__generateModule(self, pos, node)
+    # _AST__generateClassDef(self, pos, node)
+    # _AST__generateImport(self, pos, node)
+    # _AST__generateImportFrom(self, pos, node)
+    # _AST__generateAssign(self, pos, node)
+    # _AST__generateAnnAssign(self, pos, node)
+    # _AST__generateAsyncFunctionDef(self, pos, node)
+    # _AST__generateFunctionDef(self, pos, node)
+    - __findClassAttributes(self, node)
+    - __generateMethodDef(self, node)
+    # _AST__generateNode(self, pos, ntype, node)
+}
+
 class Line {
     + int indentation
     + str data
@@ -92,6 +130,74 @@ class Interface {
     + advancedMenu(self, fileList: list, excludedFiles, output, theme, packages)
 }
 
+class Metric {
+    + list classList
+    + list packageList
+    + list nodeList
+    - __init__(self)
+    + getClassList(self)
+    + getPackageList(self)
+    + addNode(self, node)
+    + generateMetrics(self)
+}
+
+class MetricClass {
+    + int classID
+    + str name
+    + list children
+    + list noc
+    + list inheritance
+    + list include
+    + int codeLines
+    + int commentLines
+    + int packageID
+    + int cc
+    + float lcom
+    + float ccd
+    - __init__(self, id: int, cname: str)
+    + getClassID(self)
+    + getChildren(self)
+    + getNoc(self)
+    + getInheritance(self)
+    + getInclude(self)
+    + getCodeLines(self)
+    + getCommentLines(self)
+    + getPackageID(self)
+    + getCc(self)
+    + getLcom(self)
+    + getCcd(self)
+    + setClassID(self, newClassID: int)
+    + setChildren(self, newChildren: list)
+    + setNoc(self, newNoc: list)
+    + setInheritance(self, newInheritance: list)
+    + setInclude(self, newInclude: list)
+    + setCodeLines(self, newCodeLines: int)
+    + setCommentLines(self, newCommentLines: int)
+    + setPackageID(self, newPackageID: int)
+    + setCc(self, newCc: int)
+    + setLcom(self, newLcom: float)
+    + setCcd(self, newCcd: float)
+    + addChild(self, id: int)
+    + addInheritance(self, id: int)
+    + addInclude(self, id: int)
+    + calculateCCD(self)
+    + print(self)
+}
+
+class MetricPackage {
+    + int packageID
+    + list classList
+    + str name
+    - __init__(self, id: int, pname: str)
+    + getPackageID(self)
+    + getClassList(self)
+    + getName(self)
+    + setPackageID(self, newPackageID: int)
+    + setClassList(self, newClassList: list)
+    + addClass(self, classID: int)
+    + containClass(self, classID: int)
+}
+
 class Translator {
     + PythonNode ast
     + str code
@@ -132,6 +238,7 @@ class UMLConverter {
     + list excludedFiles
     + str theme
     + bool packages
+    + Metric metrics
     - __init__(self)
     + getFileList(self)
     + getCode(self)
@@ -140,12 +247,12 @@ class UMLConverter {
     + getExtension(self)
     + getClassList(self)
     + getImports(self)
+    + getExcludedFiles(self)
+    + getTheme(self)
+    + getPackages(self)
     + setFileList(self, newFileList: list)
-    + setCode(self, newCode: str)
     + setOutput(self, newOutput: str)
     + setLanguage(self, newLanguage: str)
-    + setExtension(self, newExtension: str)
-    + setClassList(self, newClassList: list)
     + setImports(self, newImports: list)
     - __generateExtention(self)
     - __askFiles(self)
@@ -155,16 +262,24 @@ class UMLConverter {
     - __addImports(self, imports: list, moduleClassList: list)
     - __addInheritance(self, inh: list)
     - __generateDependences(self)
-    - __getModuleName(self, filePath: str)
+    - __getPackageName(self, filePath: str)
     + writeToFile(self)
     + convertToPng(self)
+    + addDataToMetrics(self, tree, pname: str)
+    + lookForIncludes(self, node)
 }
 
+AST --> PythonNode #line.dashed
+JsAST --> PythonNode #line.dashed
 PyAST --> PythonNode #line.dashed
+Metric --> MetricClass #line.dashed
+Metric --> MetricPackage #line.dashed
 Translator --> PythonNode #line.dashed
 UMLConverter --> Translator #line.dashed
 UMLConverter --> File #line.dashed
 UMLConverter --> Searcher #line.dashed
 UMLConverter --> Line #line.dashed
 UMLConverter --> PyAST #line.dashed
+UMLConverter --> JsAST #line.dashed
 UMLConverter --> Interface #line.dashed
+UMLConverter --> Metric #line.dashed

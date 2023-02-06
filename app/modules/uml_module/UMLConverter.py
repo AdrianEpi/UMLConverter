@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-02 12:34:53
+#   @Last Modified time: 2023-02-06 12:20:16
 #   @Description:        This file describes the UMLConverteer main class
 
 from app.modules.uml_module.translator import Translator
@@ -18,6 +18,7 @@ from app.modules.ast_module.pyAST import PyAST
 from app.modules.ast_module.jsAST import JsAST
 from app.modules.interface_module.interface import Interface
 from app.modules.utils import LANGUAGES
+from app.modules.metric_module.metric import Metric
 
 import ast
 import sys
@@ -44,6 +45,7 @@ class UMLConverter:
 	excludedFiles: list
 	theme: str
 	packages: bool
+	metrics: Metric
 
 	def __init__(self):
 		"""
@@ -60,6 +62,7 @@ class UMLConverter:
 		self.excludedFiles = []
 		self.theme = ""
 		self.packages = False
+		self.metrics = Metric()
 
 	def getFileList(self) -> list:
 		"""
@@ -251,6 +254,9 @@ class UMLConverter:
 		self.generateUML()
 		self.writeToFile()
 		self.convertToPng()
+		self.metrics.generateMetrics()
+		# for i in self.metrics.getClassList():
+		# 	i.print()
 
 
 	def generateUML(self):
@@ -261,12 +267,11 @@ class UMLConverter:
 		if self.theme != "":
 			self.code += "!theme " + self.theme
 		for i in self.fileList:
-			if i in self.excludedFiles:
-				continue
+			
 			f = File(i)
 			f.read()
-			#print("TRYING FILE " + f.getFileName())
 			tree = None
+
 			# Python
 			if self.language == "Python":
 				tree = PyAST()
@@ -282,13 +287,17 @@ class UMLConverter:
 			elif self.language == "JavaScript":
 				tree = JsAST()
 				fileAST = esprima.parseScript(f.getData())
-				#print(fileAST)
 				tree.generateTree(fileAST.body)
-				#tree.printTree()
+
+
+			self.addDataToMetrics(tree.getTree(), self.__getPackageName(i))
+			if i in self.excludedFiles:
+				continue
 
 			translator = Translator(tree.getTree(), self.language)
 			translator.translate()
 			moduleClassList = translator.getClassList()
+
 			if (translator.getCode() != ""):
 				self.__addClasses(moduleClassList)
 				self.__addImports(translator.getImports(), moduleClassList)
@@ -410,6 +419,52 @@ class UMLConverter:
 			system("python -m plantuml " + self.output)
 			return True
 		return False
+
+
+	def addDataToMetrics(self, tree, pname: str):
+		includes = []
+		for i in tree.getBody():
+			if (i.getNodeType() == 'Import') or (i.getNodeType() == 'ImportFrom'):
+				tmp = self.lookForIncludes(i)
+				for j in tmp:
+					includes.append(j)
+		for i in tree.getBody():
+			if i.getNodeType() == "ClassDef":
+				c = {
+					'name': i.getName(),
+					'inheritance': i.getArgs(),
+					'package': pname,
+					'includes': includes,
+					'codeLines': None,
+					'commentLines': None
+				}
+				self.metrics.addNode(c)
+			
+
+
+	def lookForIncludes(self, node) -> list:
+		includes = []
+		if node.getNodeType() == 'Import':
+			includes.append(node.getName())
+		else: #ImportFrom
+			for j in node.getValue():
+				includes.append(j)
+
+
+		# for i in node.getImports():
+		# 	if isinstance(i, str):
+		# 		includes.append(i)
+		# 	else: #PythonNode
+		# 		includes.append(i.getName())
+		# for i in node.getImportFrom():
+		# 	for j in i.getValue():
+		# 		includes.append(j)
+		return includes
+
+
+
+
+		
 
 
 
