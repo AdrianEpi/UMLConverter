@@ -145,6 +145,7 @@ class Metric {
     + addNode(self, node)
     + generateMetrics(self)
     - __generateNOC(self)
+    - __generateCC(self)
 }
 
 class MetricClass {

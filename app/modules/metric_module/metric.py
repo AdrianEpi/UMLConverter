@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-08 10:53:45
+#   @Last Modified time: 2023-02-08 11:20:13
 #   @Description:        ...
 
 from app.modules.metric_module.metricClass import MetricClass
@@ -85,6 +85,7 @@ class Metric:
 					self.classList[className.index(j)].addInclude(i)
 
 		self.__generateNOC()
+		self.__generateCC()
 
 
 
@@ -111,6 +112,15 @@ class Metric:
 						self.packageList[j].updateMaxITD(itd)
 
 			self.classList[i].setNoc(noc)
+
+
+	def __generateCC(self):
+		for i in self.classList:
+			tmpCC = 0
+			for j in self.classList:
+				if (i.getClassID() != j.getClassID()) and (i.getClassID() in j.getInclude()):
+					tmpCC += 1
+			self.classList[i.getClassID()].setCc(tmpCC)
 
 
 

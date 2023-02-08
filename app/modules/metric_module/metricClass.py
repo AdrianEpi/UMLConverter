@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-08 10:59:53
+#   @Last Modified time: 2023-02-08 11:26:45
 #   @Description:        ...
 
 
@@ -171,5 +171,6 @@ class MetricClass:
 		s += "\n\t\tNumber of Lines: " + str(self.nLines)
 		s += "\n\t\tCode Lines: " + str(self.codeLines)
 		s += "\n\t\tComment Lines: " + str(self.commentLines)
-		s += "\n\t\tCode Comments Densiti: " + str(self.calculateCCD())
+		s += "\n\t\tCCD (Code Comments Density): " + str(self.calculateCCD())
+		s += "\n\t\tCC (Class Coupling): " + str(self.cc)
 		print(s)
