@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-08 11:26:45
+#   @Last Modified time: 2023-02-08 11:47:31
 #   @Description:        ...
 
 
@@ -19,28 +19,29 @@ class MetricClass:
 	noc: list 					# List of children  grandchildren... classIDs
 	inheritance: list 			# List o classes classIDs of which this class is inherited of
 	include: list 				# List of classIDs from another class where this class is included
+	inclusion: list 			# List of classIDs included in this class
 	nLines: int 				# Ammount of lines in the class file
 	codeLines: int 				# Ammount of code lines (no empty ones or {})
 	commentLines: int 			# Ammount of commented lines
 	packageID: int 				# Package name
 	cc: int 					# Class coupling (ACO)
-	lcom: float					# Lack of cohesion in methods
 	ccd: float 					# Code comments density
 
 	def __init__(self, id: int, cname: str):
 		self.classID = id 
+		self.name = cname
 		self.children = [] 
 		self.noc = [] 
 		self.inheritance = [] 
 		self.include = [] 
+		self.inclusion = []
 		self.nLines = 0
 		self.codeLines = 0 
 		self.commentLines = 0 
 		self.packageID = 0 
 		self.cc = 0 
-		self.lcom = 0.0 
 		self.ccd = 0.0 
-		self.name = cname
+		
 
 	
 	def getClassID(self) -> int:
@@ -62,6 +63,10 @@ class MetricClass:
 	def getInclude(self) -> list:
 		return 	self.include
 
+
+	def getInclusion(self) -> list:
+		return 	self.inclusion
+
 	
 	def getNLines(self) -> int:
 		return self.nLines
@@ -81,10 +86,6 @@ class MetricClass:
 	
 	def getCc(self) -> int:
 		return 	self.cc
-
-	
-	def getLcom(self) -> float:
-		return 	self.lcom
 
 	
 	def getCcd(self) -> float:
@@ -109,6 +110,10 @@ class MetricClass:
 	
 	def setInclude(self, newInclude:list):
 		self.include = newInclude
+
+
+	def setInclusion(self, newInclusion:list):
+		self.inclusion = newInclusion
 		
 	
 	def setNLines(self, newNLines:int):
@@ -131,10 +136,6 @@ class MetricClass:
 		self.cc = newCc
 		
 	
-	def setLcom(self, newLcom:float):
-		self.lcom = newLcom
-		
-	
 	def setCcd(self, newCcd:float):
 		self.ccd = newCcd
 
@@ -152,6 +153,11 @@ class MetricClass:
 	def addInclude(self, id: int):
 		if id not in self.include:
 			self.include.append(id)
+
+
+	def addInclusion(self, id: int):
+		if id not in self.inclusion:
+			self.inclusion.append(id)
 
 
 	def calculateCCD(self) -> int:

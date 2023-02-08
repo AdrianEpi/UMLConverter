@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-06 14:37:08
+#   @Last Modified time: 2023-02-08 11:43:42
 #   @Description:        ...
 
 
@@ -16,13 +16,16 @@ class MetricPackage:
 	packageID: int
 	classList: list
 	name: str
-	maxITD: int # Maximum inheritance tree depth
+	maxITD: int 		# Maximum inheritance tree depth
+	lcom: float			# Lack of cohesion in methods
+
 
 	def __init__(self, id: int, pname: str):
 		self.packageID = id
 		self.classList = []
 		self.name = pname
 		self.maxITD = 0
+		self.lcom = 0.0
 
 
 	def getPackageID(self) -> int:
@@ -36,6 +39,10 @@ class MetricPackage:
 	def getName(self) -> str:
 		return self.name
 
+
+	def getLcom(self) -> float:
+		return 	self.lcom
+
 		
 	def setPackageID(self, newPackageID: int):
 		self.packageID = newPackageID
@@ -43,6 +50,10 @@ class MetricPackage:
 
 	def setClassList(self, newClassList: list):
 		self.classList = newClassList
+
+
+	def setLcom(self, newLcom:float):
+		self.lcom = newLcom
 
 
 	def addClass(self, classID: int):
@@ -66,5 +77,6 @@ class MetricPackage:
 		s += "\n\n\n\t PackageID " + str(self.packageID)
 		s += "\n\t\tName: " + self.name
 		s += "\n\t\tClass List: " + str(self.classList)
-		s += "\n\t\tMaximum ITD: " + str(self.maxITD)
+		s += "\n\t\tMaximum ITD (Inheritance Tree Depth): " + str(self.maxITD)
+		s += "\n\t\tLCOM (Lack of Cohesion): " + str(self.lcom)
 		print(s)

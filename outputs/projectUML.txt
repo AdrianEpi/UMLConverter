@@ -145,7 +145,8 @@ class Metric {
     + addNode(self, node)
     + generateMetrics(self)
     - __generateNOC(self)
-    - __generateCC(self)
+    - __generateInclusionAndCC(self)
+    - __generateLCOM(self)
 }
 
 class MetricClass {
@@ -155,12 +156,12 @@ class MetricClass {
     + list noc
     + list inheritance
     + list include
+    + list inclusion
     + int nLines
     + int codeLines
     + int commentLines
     + int packageID
     + int cc
-    + float lcom
     + float ccd
     - __init__(self, id: int, cname: str)
     + getClassID(self)
@@ -168,28 +169,29 @@ class MetricClass {
     + getNoc(self)
     + getInheritance(self)
     + getInclude(self)
+    + getInclusion(self)
     + getNLines(self)
     + getCodeLines(self)
     + getCommentLines(self)
     + getPackageID(self)
     + getCc(self)
-    + getLcom(self)
     + getCcd(self)
     + setClassID(self, newClassID: int)
     + setChildren(self, newChildren: list)
     + setNoc(self, newNoc: list)
     + setInheritance(self, newInheritance: list)
     + setInclude(self, newInclude: list)
+    + setInclusion(self, newInclusion: list)
     + setNLines(self, newNLines: int)
     + setCodeLines(self, newCodeLines: int)
     + setCommentLines(self, newCommentLines: int)
     + setPackageID(self, newPackageID: int)
     + setCc(self, newCc: int)
-    + setLcom(self, newLcom: float)
     + setCcd(self, newCcd: float)
     + addChild(self, id: int)
     + addInheritance(self, id: int)
     + addInclude(self, id: int)
+    + addInclusion(self, id: int)
     + calculateCCD(self)
     + print(self)
 }
@@ -199,12 +201,15 @@ class MetricPackage {
     + list classList
     + str name
     + int maxITD
+    + float lcom
     - __init__(self, id: int, pname: str)
     + getPackageID(self)
     + getClassList(self)
     + getName(self)
+    + getLcom(self)
     + setPackageID(self, newPackageID: int)
     + setClassList(self, newClassList: list)
+    + setLcom(self, newLcom: float)
     + addClass(self, classID: int)
     + containClass(self, classID: int)
     + updateMaxITD(self, itd: int)

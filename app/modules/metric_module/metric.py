@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-08 11:20:13
+#   @Last Modified time: 2023-02-08 12:00:18
 #   @Description:        ...
 
 from app.modules.metric_module.metricClass import MetricClass
@@ -85,7 +85,8 @@ class Metric:
 					self.classList[className.index(j)].addInclude(i)
 
 		self.__generateNOC()
-		self.__generateCC()
+		self.__generateInclusionAndCC()
+		self.__generateLCOM()
 
 
 
@@ -114,13 +115,37 @@ class Metric:
 			self.classList[i].setNoc(noc)
 
 
-	def __generateCC(self):
+	def __generateInclusionAndCC(self):
 		for i in self.classList:
 			tmpCC = 0
+			id = i.getClassID()
 			for j in self.classList:
-				if (i.getClassID() != j.getClassID()) and (i.getClassID() in j.getInclude()):
+				if (id != j.getClassID()) and (id in j.getInclude()):
 					tmpCC += 1
-			self.classList[i.getClassID()].setCc(tmpCC)
+					self.classList[id].addInclusion(j.getClassID())
+			self.classList[id].setCc(tmpCC)
 
+
+	def __generateLCOM(self):
+		for i in self.packageList:
+			lcom = 0.0
+			ce = []
+			ca = []
+			for j in i.getClassList():
+				# print('entra')
+				# print(i.getClassInclusion())
+				for k in self.classList[j].getInclusion():
+					if (self.classList[k].getClassID() not in i.getClassList()) and (self.classList[k].getClassID() not in ce):
+						ce.append(self.classList[k].getClassID())
+						
+				for k in self.classList[j].getInclude():
+					if (self.classList[k].getClassID() not in i.getClassList()) and (self.classList[k].getClassID() not in ca):
+						ca.append(self.classList[k].getClassID())
+						
+			ca = len(ca)
+			ce = len(ce)
+			print('package' + str(i.getPackageName()) + ' ce: ' + str(ce) + " ca: " + str(ca))
+			lcom = float(ce / (ca + ce))
+			self.packageList[i.getPackageID()].setLcom(lcom)
 
 
