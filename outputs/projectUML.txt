@@ -111,6 +111,25 @@ class File {
     + getLinesInfo(self)
 }
 
+class Markdown {
+    + str appPath
+    + str banner
+    + str data
+    + str projectName
+    + str classDiagram
+    + Metric metrics
+    - __init__(self, image: str, metrics, projectName)
+    + generateMarkdown(self)
+    - __index(self)
+    - __header(self)
+    - __classDiagram(self)
+    - __metrics(self)
+    - __metricsTables(self)
+    - __classTable(self, c)
+    - __metricsEvaluation(self)
+    - __metricsExplanation(self)
+}
+
 class Searcher {
     + fileList
     + list
@@ -165,6 +184,7 @@ class MetricClass {
     + float ccd
     - __init__(self, id: int, cname: str)
     + getClassID(self)
+    + getName(self)
     + getChildren(self)
     + getNoc(self)
     + getInheritance(self)
@@ -290,12 +310,14 @@ class UMLConverter {
 AST --> PythonNode #line.dashed
 JsAST --> PythonNode #line.dashed
 PyAST --> PythonNode #line.dashed
+Markdown --> Metric #line.dashed
 Metric --> MetricClass #line.dashed
 Metric --> MetricPackage #line.dashed
 Translator --> PythonNode #line.dashed
 UMLConverter --> Translator #line.dashed
 UMLConverter --> File #line.dashed
 UMLConverter --> Searcher #line.dashed
+UMLConverter --> Markdown #line.dashed
 UMLConverter --> Line #line.dashed
 UMLConverter --> PyAST #line.dashed
 UMLConverter --> JsAST #line.dashed

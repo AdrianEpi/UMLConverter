@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-08 12:00:18
+#   @Last Modified time: 2023-02-08 13:43:41
 #   @Description:        ...
 
 from app.modules.metric_module.metricClass import MetricClass
@@ -87,7 +87,8 @@ class Metric:
 		self.__generateNOC()
 		self.__generateInclusionAndCC()
 		self.__generateLCOM()
-
+		for i in range(len(self.classList)):
+			self.classList[i].calculateCCD()
 
 
 	def __generateNOC(self):
@@ -132,8 +133,6 @@ class Metric:
 			ce = []
 			ca = []
 			for j in i.getClassList():
-				# print('entra')
-				# print(i.getClassInclusion())
 				for k in self.classList[j].getInclusion():
 					if (self.classList[k].getClassID() not in i.getClassList()) and (self.classList[k].getClassID() not in ce):
 						ce.append(self.classList[k].getClassID())
@@ -144,7 +143,6 @@ class Metric:
 						
 			ca = len(ca)
 			ce = len(ce)
-			print('package' + str(i.getPackageName()) + ' ce: ' + str(ce) + " ca: " + str(ca))
 			lcom = float(ce / (ca + ce))
 			self.packageList[i.getPackageID()].setLcom(lcom)
 

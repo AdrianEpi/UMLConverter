@@ -7,12 +7,13 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-08 11:57:23
+#   @Last Modified time: 2023-02-08 13:34:34
 #   @Description:        This file describes the UMLConverteer main class
 
 from app.modules.uml_module.translator import Translator
 from app.modules.file_module.file import File
 from app.modules.file_module.searcher import Searcher
+from app.modules.file_module.markdown import Markdown
 from app.modules.ast_module.line import Line
 from app.modules.ast_module.pyAST import PyAST
 from app.modules.ast_module.jsAST import JsAST
@@ -257,8 +258,10 @@ class UMLConverter:
 		self.metrics.generateMetrics()
 		# for i in self.metrics.getClassList():
 		# 	i.print()
-		for i in self.metrics.getPackageList():
-			i.print()
+		# for i in self.metrics.getPackageList():
+		# 	i.print()
+		md = Markdown(image = "", metrics = self.metrics, projectName = "EXAMPLE")
+		print(md.generateMarkdown())
 
 
 	def generateUML(self):

@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-08 11:47:31
+#   @Last Modified time: 2023-02-08 13:45:09
 #   @Description:        ...
 
 
@@ -47,7 +47,11 @@ class MetricClass:
 	def getClassID(self) -> int:
 		return 	self.classID
 
+
+	def getName(self) -> str:
+		return self.name
 	
+
 	def getChildren(self) -> list:
 		return 	self.children
 
@@ -161,7 +165,7 @@ class MetricClass:
 
 
 	def calculateCCD(self) -> int:
-		self.ccd = self.commentLines / self.codeLines
+		self.ccd = round((self.commentLines / self.codeLines), 2)
 		return self.ccd
 
 
