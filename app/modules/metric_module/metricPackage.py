@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-08 11:43:42
+#   @Last Modified time: 2023-02-08 19:23:12
 #   @Description:        ...
 
 
@@ -16,16 +16,18 @@ class MetricPackage:
 	packageID: int
 	classList: list
 	name: str
-	maxITD: int 		# Maximum inheritance tree depth
+	maxDIT: int 		# Maximum Depth of Inheritance Tree
 	lcom: float			# Lack of cohesion in methods
+	ev: float 			# Evaluation of the package (0-100)%
 
 
 	def __init__(self, id: int, pname: str):
 		self.packageID = id
 		self.classList = []
 		self.name = pname
-		self.maxITD = 0
+		self.maxDIT = 0
 		self.lcom = 0.0
+		self.ev = 0.0
 
 
 	def getPackageID(self) -> int:
@@ -40,9 +42,16 @@ class MetricPackage:
 		return self.name
 
 
+	def getMaxDIT(self) -> str:
+		return self.maxDIT
+
+
 	def getLcom(self) -> float:
 		return 	self.lcom
 
+
+	def getEval(self) -> float:
+		return self.ev
 		
 	def setPackageID(self, newPackageID: int):
 		self.packageID = newPackageID
@@ -67,16 +76,40 @@ class MetricPackage:
 		return False
 
 
-	def updateMaxITD(self, itd: int):
-		if itd > self.maxITD:
-			self.maxITD = itd
+	def updateMaxDIT(self, itd: int):
+		if itd > self.maxDIT:
+			self.maxDIT = itd
 
+
+	def evaluate(self, cList: list):
+		ev = 0.0
+		avClassEval = 0.0
+		for i in self.getClassList():
+			avClassEval += (cList[i].getEval() / 100)
+
+		avClassEval /= len(self.classList)
+		# Class evaluation average = 50%
+		ev += avClassEval * 0.5
+
+		# LCOM = 35%
+		LIMIT_LCMO = 0.5
+		if self.lcom < LIMIT_LCMO: # Stable package
+			ev += 0.35
+		else: 
+			ev += ((LIMIT_LCMO - (self.lcom - LIMIT_LCMO)) / LIMIT_LCMO) * 0.35
+
+		# MaxDIT = 15%
+		LIMIT_DIT = 5
+		if self.maxDIT < LIMIT_DIT:
+			ev += 0.15
+	
+		self.ev = round(ev * 100, 2)
 
 	def print(self):
 		s = ""
 		s += "\n\n\n\t PackageID " + str(self.packageID)
 		s += "\n\t\tName: " + self.name
 		s += "\n\t\tClass List: " + str(self.classList)
-		s += "\n\t\tMaximum ITD (Inheritance Tree Depth): " + str(self.maxITD)
+		s += "\n\t\tMaximum DIT (Inheritance Tree Depth): " + str(self.maxDIT)
 		s += "\n\t\tLCOM (Lack of Cohesion): " + str(self.lcom)
 		print(s)

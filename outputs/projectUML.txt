@@ -1,4 +1,6 @@
-!theme _none_
+!theme reddress-darkblue
+package ast_module {
+
 
 class AST {
     + PythonNode tree
@@ -21,6 +23,10 @@ class AST {
     + printTree(self)
 }
 
+}
+
+package ast_module {
+
 AST <|-- JsAST
 class JsAST {
     + generateTree(self, l: list)
@@ -37,6 +43,10 @@ class JsAST {
     # _AST__generateNode(self, pos, ntype, node)
 }
 
+}
+
+package ast_module {
+
 class Line {
     + int indentation
     + str data
@@ -49,6 +59,10 @@ class Line {
     + getIndentationLevel(self)
     - __generateLine(self, line: str)
 }
+
+}
+
+package ast_module {
 
 AST <|-- PyAST
 class PyAST {
@@ -72,6 +86,10 @@ class PyAST {
     - __getBoolOp(self, pos: int)
 }
 
+}
+
+package ast_module {
+
 class PythonNode {
     + str nodeType
     + [str or None] name
@@ -94,6 +112,10 @@ class PythonNode {
     + toString(self, indent)
 }
 
+}
+
+package file_module {
+
 class File {
     + str fileName
     + str data
@@ -111,24 +133,31 @@ class File {
     + getLinesInfo(self)
 }
 
+}
+
+package file_module {
+
 class Markdown {
     + str appPath
     + str banner
     + str data
     + str projectName
-    + str classDiagram
+    + str imageUML
     + Metric metrics
-    - __init__(self, image: str, metrics, projectName)
+    - __init__(self, path: str, metrics, theme, projectName)
     + generateMarkdown(self)
-    - __index(self)
     - __header(self)
+    - __index(self)
+    - __packageInformation(self)
     - __classDiagram(self)
     - __metrics(self)
     - __metricsTables(self)
-    - __classTable(self, c)
-    - __metricsEvaluation(self)
     - __metricsExplanation(self)
 }
+
+}
+
+package file_module {
 
 class Searcher {
     + fileList
@@ -140,6 +169,10 @@ class Searcher {
     + getDirList(self)
     + lookForFiles(self, directory: str, ext: str)
 }
+
+}
+
+package interface_module {
 
 class Interface {
     + str iconPath
@@ -153,6 +186,10 @@ class Interface {
     + yesNoQuestion(self, msg: str)
     + advancedMenu(self, fileList: list, excludedFiles, output, theme, packages)
 }
+
+}
+
+package metric_module {
 
 class Metric {
     + list classList
@@ -168,6 +205,10 @@ class Metric {
     - __generateLCOM(self)
 }
 
+}
+
+package metric_module {
+
 class MetricClass {
     + int classID
     + str name
@@ -180,8 +221,9 @@ class MetricClass {
     + int codeLines
     + int commentLines
     + int packageID
-    + int cc
+    + int cbo
     + float ccd
+    + float ev
     - __init__(self, id: int, cname: str)
     + getClassID(self)
     + getName(self)
@@ -194,8 +236,9 @@ class MetricClass {
     + getCodeLines(self)
     + getCommentLines(self)
     + getPackageID(self)
-    + getCc(self)
+    + getCBO(self)
     + getCcd(self)
+    + getEval(self)
     + setClassID(self, newClassID: int)
     + setChildren(self, newChildren: list)
     + setNoc(self, newNoc: list)
@@ -206,35 +249,48 @@ class MetricClass {
     + setCodeLines(self, newCodeLines: int)
     + setCommentLines(self, newCommentLines: int)
     + setPackageID(self, newPackageID: int)
-    + setCc(self, newCc: int)
+    + setCBO(self, newCBO: int)
     + setCcd(self, newCcd: float)
     + addChild(self, id: int)
     + addInheritance(self, id: int)
     + addInclude(self, id: int)
     + addInclusion(self, id: int)
     + calculateCCD(self)
+    + evaluate(self)
     + print(self)
 }
+
+}
+
+package metric_module {
 
 class MetricPackage {
     + int packageID
     + list classList
     + str name
-    + int maxITD
+    + int maxDIT
     + float lcom
+    + float ev
     - __init__(self, id: int, pname: str)
     + getPackageID(self)
     + getClassList(self)
     + getName(self)
+    + getMaxDIT(self)
     + getLcom(self)
+    + getEval(self)
     + setPackageID(self, newPackageID: int)
     + setClassList(self, newClassList: list)
     + setLcom(self, newLcom: float)
     + addClass(self, classID: int)
     + containClass(self, classID: int)
-    + updateMaxITD(self, itd: int)
+    + updateMaxDIT(self, itd: int)
+    + evaluate(self, cList: list)
     + print(self)
 }
+
+}
+
+package uml_module {
 
 class Translator {
     + PythonNode ast
@@ -263,6 +319,10 @@ class Translator {
     - __translateAttrib(self, node: PythonNode)
     - __translateFunction(self, node: PythonNode)
 }
+
+}
+
+package uml_module {
 
 class UMLConverter {
     + list fileList
@@ -301,10 +361,13 @@ class UMLConverter {
     - __addInheritance(self, inh: list)
     - __generateDependences(self)
     - __getPackageName(self, filePath: str)
-    + writeToFile(self)
+    + writeToFile(self, data: str, path: str, fname: str)
     + convertToPng(self)
     + addDataToMetrics(self, tree, pname: str, linesInfo: dict)
     + lookForIncludes(self, node)
+    + generateMarkdown(self)
+}
+
 }
 
 AST --> PythonNode #line.dashed

@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-08 13:43:41
+#   @Last Modified time: 2023-02-08 19:34:13
 #   @Description:        ...
 
 from app.modules.metric_module.metricClass import MetricClass
@@ -89,6 +89,9 @@ class Metric:
 		self.__generateLCOM()
 		for i in range(len(self.classList)):
 			self.classList[i].calculateCCD()
+			self.classList[i].evaluate()
+		for i in range(len(self.packageList)):
+			self.packageList[i].evaluate(self.classList)
 
 
 	def __generateNOC(self):
@@ -111,20 +114,20 @@ class Metric:
 			if len(noc) > 0:
 				for j in range(len(self.packageList)):
 					if self.classList[i].getPackageID() == self.packageList[j].getPackageID():
-						self.packageList[j].updateMaxITD(itd)
+						self.packageList[j].updateMaxDIT(itd)
 
 			self.classList[i].setNoc(noc)
 
 
 	def __generateInclusionAndCC(self):
 		for i in self.classList:
-			tmpCC = 0
+			tmpCBO = 0
 			id = i.getClassID()
 			for j in self.classList:
 				if (id != j.getClassID()) and (id in j.getInclude()):
-					tmpCC += 1
+					tmpCBO += 1
 					self.classList[id].addInclusion(j.getClassID())
-			self.classList[id].setCc(tmpCC)
+			self.classList[id].setCBO(tmpCBO)
 
 
 	def __generateLCOM(self):

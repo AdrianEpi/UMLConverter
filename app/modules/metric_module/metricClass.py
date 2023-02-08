@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-08 13:45:09
+#   @Last Modified time: 2023-02-08 19:34:22
 #   @Description:        ...
 
 
@@ -24,8 +24,9 @@ class MetricClass:
 	codeLines: int 				# Ammount of code lines (no empty ones or {})
 	commentLines: int 			# Ammount of commented lines
 	packageID: int 				# Package name
-	cc: int 					# Class coupling (ACO)
+	cbo: int 					# Coupling between object classes
 	ccd: float 					# Code comments density
+	ev: float 					# Evaluation of the class (0-100)%
 
 	def __init__(self, id: int, cname: str):
 		self.classID = id 
@@ -39,8 +40,9 @@ class MetricClass:
 		self.codeLines = 0 
 		self.commentLines = 0 
 		self.packageID = 0 
-		self.cc = 0 
+		self.cbo = 0 
 		self.ccd = 0.0 
+		self.ev = 0.0
 		
 
 	
@@ -88,12 +90,16 @@ class MetricClass:
 		return 	self.packageID
 
 	
-	def getCc(self) -> int:
-		return 	self.cc
+	def getCBO(self) -> int:
+		return 	self.cbo
 
 	
 	def getCcd(self) -> float:
 		return 	self.ccd
+
+
+	def getEval(self) -> float:
+		return self.ev
 
 	
 	def setClassID(self, newClassID:int):
@@ -136,8 +142,8 @@ class MetricClass:
 		self.packageID = newPackageID
 		
 	
-	def setCc(self, newCc:int):
-		self.cc = newCc
+	def setCBO(self, newCBO:int):
+		self.cbo = newCBO
 		
 	
 	def setCcd(self, newCcd:float):
@@ -164,9 +170,29 @@ class MetricClass:
 			self.inclusion.append(id)
 
 
-	def calculateCCD(self) -> int:
+	def calculateCCD(self):
 		self.ccd = round((self.commentLines / self.codeLines), 2)
-		return self.ccd
+
+
+	def evaluate(self):
+		ev = 0.0
+		# CC = 42.5%
+		if self.cbo < 39: # 30 + Optimum, 30 is the max it can go over or lower the optimum
+			OPTIMUM = 9
+			ev += ((30 - abs(self.cbo - OPTIMUM)) / 30) * 0.425
+
+		# NOC = 15%
+		if len(self.noc) < 13: # 10 + Optimum, 10 is the max it can go over or lower the optimum
+			OPTIMUM = 3
+			ev += ((10 - abs(len(self.noc) - OPTIMUM)) / 10) * 0.15
+
+		# CCD = 42.5%
+		if self.ccd > 1: 
+			ev += 0.425
+		else :
+			ev += self.ccd * 0.425
+
+		self.ev = round(ev * 100, 2)
 
 
 	def print(self):
@@ -181,6 +207,6 @@ class MetricClass:
 		s += "\n\t\tNumber of Lines: " + str(self.nLines)
 		s += "\n\t\tCode Lines: " + str(self.codeLines)
 		s += "\n\t\tComment Lines: " + str(self.commentLines)
-		s += "\n\t\tCCD (Code Comments Density): " + str(self.calculateCCD())
-		s += "\n\t\tCC (Class Coupling): " + str(self.cc)
+		s += "\n\t\tCCD (Code Comments Density): " + str(self.ccd)
+		s += "\n\t\tCC (Class Coupling): " + str(self.cbo)
 		print(s)

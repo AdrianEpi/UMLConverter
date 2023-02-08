@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-08 13:34:34
+#   @Last Modified time: 2023-02-08 21:07:39
 #   @Description:        This file describes the UMLConverteer main class
 
 from app.modules.uml_module.translator import Translator
@@ -21,12 +21,12 @@ from app.modules.interface_module.interface import Interface
 from app.modules.utils import LANGUAGES
 from app.modules.metric_module.metric import Metric
 
+
 import ast
 import sys
 from six.moves import input as raw_input
 from os import system
 import esprima
-
 
 class UMLConverter:
 	"""
@@ -239,7 +239,7 @@ class UMLConverter:
 			self.output += "\\"
 		else:	# Linux or MacOS
 			self.output += "/"
-		self.output += "projectUML.txt"
+		#self.output += "projectUML.txt"
 
 		result = gui.advancedMenu(self.fileList)
 		self.excludedFiles = result["ExcludedFiles"]
@@ -253,15 +253,14 @@ class UMLConverter:
 		"""
 		self.__askFiles()
 		self.generateUML()
-		self.writeToFile()
+		self.writeToFile(data = self.code, path = self.output, fname = "projectUML.txt")
 		self.convertToPng()
 		self.metrics.generateMetrics()
 		# for i in self.metrics.getClassList():
 		# 	i.print()
 		# for i in self.metrics.getPackageList():
 		# 	i.print()
-		md = Markdown(image = "", metrics = self.metrics, projectName = "EXAMPLE")
-		print(md.generateMarkdown())
+		self.generateMarkdown()
 
 
 	def generateUML(self):
@@ -398,16 +397,16 @@ class UMLConverter:
 		return l[len(l) - 1]
 				
 
-	def writeToFile(self) -> bool:
+	def writeToFile(self, data: str, path: str, fname: str) -> bool:
 		"""
 		Writes to file.
 		
 		:returns:   True if code could be written and exists, false otherwise
 		:rtype:     bool
 		"""
-		if self.code != "\n":
-			f = File(self.output)
-			f.write(self.code)
+		if data != "\n":
+			f = File(path + fname)
+			f.write(data)
 			return True
 		else:
 			return False
@@ -421,7 +420,7 @@ class UMLConverter:
 		:rtype:     bool
 		"""
 		if self.code != "\n":
-			system("python -m plantuml " + self.output)
+			system("python -m plantuml " + self.output + 'projectUML.txt')
 			return True
 		return False
 
@@ -455,17 +454,13 @@ class UMLConverter:
 		else: #ImportFrom
 			for j in node.getValue():
 				includes.append(j)
-
-
-		# for i in node.getImports():
-		# 	if isinstance(i, str):
-		# 		includes.append(i)
-		# 	else: #PythonNode
-		# 		includes.append(i.getName())
-		# for i in node.getImportFrom():
-		# 	for j in i.getValue():
-		# 		includes.append(j)
 		return includes
+
+
+	def generateMarkdown(self):
+		md = Markdown(path = self.output, metrics = self.metrics, projectName = "RESULTS")
+		self.writeToFile(data = md.generateMarkdown(), path = self.output, fname = 'projectUML.md')
+
 
 
 
