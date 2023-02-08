@@ -7,11 +7,12 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-25 11:05:18
+#   @Last Modified time: 2023-02-08 10:56:53
 #   @Description:        This file describes a file and its functionality
 
 import sys
 import os
+from app.modules.utils import COMMENTS
 
 class File:
 	"""
@@ -20,6 +21,9 @@ class File:
 
 	fileName: str
 	data: str
+	nLines: int
+	nCommentLines: int
+	nCodeLines: int
 
 	def __init__(self, file: str):
 		"""
@@ -30,7 +34,9 @@ class File:
 		"""
 		self.data = ""
 		self.fileName = file
-
+		self.nLines = 0
+		self.nCodeLines = 0
+		self.nCommentLines = 0
 
 	def getFileName(self) -> str:
 		"""
@@ -92,6 +98,50 @@ class File:
 				self.data += i
 
 
+	def readAndAnalyze(self, language: str):
+		try:
+			f = open(self.fileName, 'r')
+		except FileNotFoundError:
+			raise FileNotFoundError("Error, {} file not found.".format(self.fileName))
+		except OSError:
+			raise OSError("OS error trying to open {} file.".format(self.fileName))
+		except Exception as err:
+			raise Exception("Unexpected error with {} file.".format(self.fileName))
+		else:
+			single = COMMENTS[language]['single']
+			multiStart = COMMENTS[language]['multiStart']
+			multiEnd = COMMENTS[language]['multiEnd']
+			with f:
+				lines = f.readlines()
+			f.close()
+			insideComment = False
+			for i in lines:
+				self.nLines += 1
+				self.data += i
+				if insideComment == True:
+					self.nCommentLines += 1
+					if multiEnd in i:
+						insideComment = False
+					
+				elif multiStart in i:
+					insideComment = True
+					tmp = i.split(multiStart)
+					self.nCommentLines += 1
+					if len(tmp) > 1:
+						self.nCodeLines += 1
+					if (multiStart == multiEnd) and (i.count(multiStart) % 2 == 0):
+						insideComment = False 
+				elif single in i:
+					tmp = i.split(single)
+					self.nCommentLines += 1
+					if len(tmp) > 1:
+						self.nCodeLines += 1
+				else:
+					if len(i.split()) > 1:
+						self.nCodeLines += 1
+
+
+
 	def write(self, data: str):
 		"""
 		Writes the data into the file stored in self.fileName
@@ -135,4 +185,11 @@ class File:
 			f.close()
 		self.data = data
 
+
+	def getLinesInfo(self) -> dict:
+		return {
+			'nLines': self.nLines,
+			'commentLines': self.nCommentLines,
+			'codeLines': self.nCodeLines
+		}
 

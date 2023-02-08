@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-06 14:18:27
+#   @Last Modified time: 2023-02-08 10:53:18
 #   @Description:        This file describes the UMLConverteer main class
 
 from app.modules.uml_module.translator import Translator
@@ -271,7 +271,7 @@ class UMLConverter:
 		for i in self.fileList:
 			
 			f = File(i)
-			f.read()
+			f.readAndAnalyze(language = self.language)
 			tree = None
 
 			# Python
@@ -292,7 +292,7 @@ class UMLConverter:
 				tree.generateTree(fileAST.body)
 
 
-			self.addDataToMetrics(tree.getTree(), self.__getPackageName(i))
+			self.addDataToMetrics(tree = tree.getTree(), pname = self.__getPackageName(i), linesInfo = f.getLinesInfo())
 			if i in self.excludedFiles:
 				continue
 
@@ -423,7 +423,7 @@ class UMLConverter:
 		return False
 
 
-	def addDataToMetrics(self, tree, pname: str):
+	def addDataToMetrics(self, tree, pname: str, linesInfo: dict):
 		includes = []
 		for i in tree.getBody():
 			if (i.getNodeType() == 'Import') or (i.getNodeType() == 'ImportFrom'):
@@ -437,8 +437,9 @@ class UMLConverter:
 					'inheritance': i.getArgs(),
 					'package': pname,
 					'includes': includes,
-					'codeLines': None,
-					'commentLines': None
+					'nLines': linesInfo['nLines'],
+					'codeLines': linesInfo['codeLines'],
+					'commentLines': linesInfo['commentLines']
 				}
 				self.metrics.addNode(c)
 			

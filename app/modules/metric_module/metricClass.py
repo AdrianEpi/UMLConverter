@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-06 14:02:49
+#   @Last Modified time: 2023-02-08 10:59:53
 #   @Description:        ...
 
 
@@ -19,6 +19,7 @@ class MetricClass:
 	noc: list 					# List of children  grandchildren... classIDs
 	inheritance: list 			# List o classes classIDs of which this class is inherited of
 	include: list 				# List of classIDs from another class where this class is included
+	nLines: int 				# Ammount of lines in the class file
 	codeLines: int 				# Ammount of code lines (no empty ones or {})
 	commentLines: int 			# Ammount of commented lines
 	packageID: int 				# Package name
@@ -32,6 +33,7 @@ class MetricClass:
 		self.noc = [] 
 		self.inheritance = [] 
 		self.include = [] 
+		self.nLines = 0
 		self.codeLines = 0 
 		self.commentLines = 0 
 		self.packageID = 0 
@@ -61,6 +63,10 @@ class MetricClass:
 		return 	self.include
 
 	
+	def getNLines(self) -> int:
+		return self.nLines
+
+
 	def getCodeLines(self) -> int:
 		return 	self.codeLines
 
@@ -105,6 +111,10 @@ class MetricClass:
 		self.include = newInclude
 		
 	
+	def setNLines(self, newNLines:int):
+		self.nLines = newNLines
+
+
 	def setCodeLines(self, newCodeLines:int):
 		self.codeLines = newCodeLines
 		
@@ -144,8 +154,9 @@ class MetricClass:
 			self.include.append(id)
 
 
-	def calculateCCD(self):
+	def calculateCCD(self) -> int:
 		self.ccd = self.commentLines / self.codeLines
+		return self.ccd
 
 
 	def print(self):
@@ -157,4 +168,8 @@ class MetricClass:
 		s += "\n\t\tIncluded in: " + str(self.include)
 		s += "\n\t\tPackageID: " + str(self.packageID)
 		s += "\n\t\tNOC (Number of Children): " + str(self.noc)
+		s += "\n\t\tNumber of Lines: " + str(self.nLines)
+		s += "\n\t\tCode Lines: " + str(self.codeLines)
+		s += "\n\t\tComment Lines: " + str(self.commentLines)
+		s += "\n\t\tCode Comments Densiti: " + str(self.calculateCCD())
 		print(s)

@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-06 14:42:13
+#   @Last Modified time: 2023-02-08 10:53:45
 #   @Description:        ...
 
 from app.modules.metric_module.metricClass import MetricClass
@@ -53,6 +53,7 @@ class Metric:
 				if len(i['inheritance']) > 0:
 					newMetricClass.setInheritance(i['inheritance'])
 				newMetricClass.setPackageID(packageName.index(i['package']))
+				newMetricClass.setNLines(i['nLines'])
 				newMetricClass.setCodeLines(i['codeLines'])
 				newMetricClass.setCommentLines(i['commentLines'])
 				self.classList.append(newMetricClass)

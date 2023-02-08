@@ -37,11 +37,6 @@ class JsAST {
     # _AST__generateNode(self, pos, ntype, node)
 }
 
-JsAST <|-- JsAST2Test
-class JsAST2Test {
-    - __init__(self)
-}
-
 class Line {
     + int indentation
     + str data
@@ -102,13 +97,18 @@ class PythonNode {
 class File {
     + str fileName
     + str data
+    + int nLines
+    + int nCommentLines
+    + int nCodeLines
     - __init__(self, file: str)
     + getFileName(self)
     + getData(self)
     + setFileName(self, name: str)
     + setData(self, newData: str)
     + read(self)
+    + readAndAnalyze(self, language: str)
     + write(self, data: str)
+    + getLinesInfo(self)
 }
 
 class Searcher {
@@ -154,6 +154,7 @@ class MetricClass {
     + list noc
     + list inheritance
     + list include
+    + int nLines
     + int codeLines
     + int commentLines
     + int packageID
@@ -166,6 +167,7 @@ class MetricClass {
     + getNoc(self)
     + getInheritance(self)
     + getInclude(self)
+    + getNLines(self)
     + getCodeLines(self)
     + getCommentLines(self)
     + getPackageID(self)
@@ -177,6 +179,7 @@ class MetricClass {
     + setNoc(self, newNoc: list)
     + setInheritance(self, newInheritance: list)
     + setInclude(self, newInclude: list)
+    + setNLines(self, newNLines: int)
     + setCodeLines(self, newCodeLines: int)
     + setCommentLines(self, newCommentLines: int)
     + setPackageID(self, newPackageID: int)
@@ -274,14 +277,12 @@ class UMLConverter {
     - __getPackageName(self, filePath: str)
     + writeToFile(self)
     + convertToPng(self)
-    + addDataToMetrics(self, tree, pname: str)
+    + addDataToMetrics(self, tree, pname: str, linesInfo: dict)
     + lookForIncludes(self, node)
 }
 
 AST --> PythonNode #line.dashed
 JsAST --> PythonNode #line.dashed
-JsAST2Test --> PythonNode #line.dashed
-JsAST2Test --> AST #line.dashed
 PyAST --> PythonNode #line.dashed
 Metric --> MetricClass #line.dashed
 Metric --> MetricPackage #line.dashed
