@@ -15,7 +15,7 @@
 
 ## Class Diagram<a name="id1"></a>
 
-<img align="middle" width="100%" src="E:\TFG\UMLConverter\samples\JavaScript_Samples\School\projectUML.png">
+<img align="middle" width="100%" src="E:\TFG\UMLConverter\samples\JavaScript_Samples\Animal\projectUML.png">
 
  *Legend*
 
@@ -26,10 +26,9 @@
 
 ## Package Information<a name="id2"></a>
 
-#### *School*
-* Person
-* Student
-* Teacher
+#### *Animal*
+* Animals
+* Cats
 
 ***
 
@@ -43,15 +42,14 @@
 
 | Name | Package | NOC | CodeLines | CommentLines | CCD | CBO | Score |
 | -- | -- | -- | -- | -- | -- | -- | -- |
-| Person | School | 2 | 21 | 3 | 0.14 | 0 | 49.2% |
-| Student | School | 0 | 16 | 0 | 0.0 | 1 | 41.67% |
-| Teacher | School | 0 | 16 | 1 | 0.06 | 2 | 45.63% |
+| Animals | Animal | 1 | 10 | 4 | 0.4 | 0 | 58.75% |
+| Cats | Animal | 0 | 7 | 0 | 0.0 | 0 | 40.25% |
 
 ### *Package Table*
 
 | Name | Class Ammount | DIT | LCOM | Score |
 | -- | -- | -- | -- | -- |
-| School | 3 | 1 | 0.0 | 72.75% |
+| Animal | 2 | 1 | 0.0 | 74.75% |
 
 ***
 

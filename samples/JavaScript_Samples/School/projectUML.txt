@@ -10,7 +10,7 @@ class Person {
     +  books
 }
 
-
+Person <|-- Student
 class Student {
     + constructor(name, age, grades)
     + setGrades(nota)
@@ -20,12 +20,11 @@ class Student {
     +  grades
 }
 
-
+Person <|-- Teacher
 class Teacher {
     + constructor()
+    + addNewTeacher()
     +  teacher
 }
 
-Student --> Person #line.dashed
-Teacher --> Person #line.dashed
 Teacher --> Student #line.dashed

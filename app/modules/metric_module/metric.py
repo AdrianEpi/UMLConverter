@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-08 19:34:13
+#   @Last Modified time: 2023-02-09 08:24:07
 #   @Description:        ...
 
 from app.modules.metric_module.metricClass import MetricClass
@@ -146,7 +146,8 @@ class Metric:
 						
 			ca = len(ca)
 			ce = len(ce)
-			lcom = float(ce / (ca + ce))
-			self.packageList[i.getPackageID()].setLcom(lcom)
+			if ((ca + ce) != 0):
+				lcom = float(ce / (ca + ce))
+				self.packageList[i.getPackageID()].setLcom(lcom)
 
 

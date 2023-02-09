@@ -1,4 +1,4 @@
-!theme cloudscape-design
+!theme _none_
 
 class AST {
     + PythonNode tree
@@ -35,6 +35,7 @@ class JsAST {
     - __findClassAttributes(self, node)
     - __generateMethodDef(self, node)
     # _AST__generateNode(self, pos, ntype, node)
+    + deleteExtention(self, s: str)
 }
 
 class Line {
