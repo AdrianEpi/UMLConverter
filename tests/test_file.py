@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-09 08:48:33
+#   @Last Modified time: 2023-02-09 09:21:54
 #   @Description:        Tests for app/file_module/file.py
 
 from app.modules.file_module.file import File
@@ -32,7 +32,7 @@ def test_getSetFileName():
 
 
 def test_getSetData():
-	data = "class Student:\n\tdef say_hello(self, firstName: str, lastName: str):\n\t\tpass"
+	data = 'class Student:\n\tdef say_hello(self, firstName: str, lastName: str): \n\t\t""" multiple comment """\n\t\tpass # single comment '
 	assert(f.getData() == data)
 	f.setData("NewData")
 	assert(f.getData() == "NewData")
@@ -49,9 +49,9 @@ def test_readAndAnalyze():
 	f = File('tests/testFiles/example1.py')
 	f.readAndAnalyze(language = 'Python')
 	d = {
-		'codeLines': 2,
-		'commentLines': 0,
-		'nLines': 3
+		'nLines': 4,
+		'commentLines': 2,
+		'codeLines': 4
 	}
 	assert(f.getLinesInfo() == d)
 	str

@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-09 08:24:07
+#   @Last Modified time: 2023-02-09 09:16:15
 #   @Description:        ...
 
 from app.modules.metric_module.metricClass import MetricClass
@@ -27,8 +27,17 @@ class Metric:
 	def getClassList(self) -> list:
 		return self.classList
 
+	def setClassList(self, l: list):
+		self.classList = l
+
 	def getPackageList(self) -> list:
 		return self.packageList
+
+	def setClassList(self, l: list):
+		self.classList = l
+
+	def setPackageList(self, l: list):
+		self.packageList = l
 
 	def addNode(self, node):
 		if ('name' in node) and ('package' in node) and ('inheritance' in node):
