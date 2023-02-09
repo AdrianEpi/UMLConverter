@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-09 06:23:09
+#   @Last Modified time: 2023-02-09 08:18:31
 #   @Description:        This file describes the UMLConverteer main class
 
 from app.modules.uml_module.translator import Translator

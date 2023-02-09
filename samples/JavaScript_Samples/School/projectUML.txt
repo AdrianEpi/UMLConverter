@@ -1,0 +1,31 @@
+!theme _none_
+class Person {
+    + constructor(name, books)
+    + setBook(book)
+    + getBooks()
+    + lookBookByTitle(title)
+    + tryGreet(name)
+    + greet()
+    +  name
+    +  books
+}
+
+
+class Student {
+    + constructor(name, age, grades)
+    + setGrades(nota)
+    + getGrades()
+    + greet()
+    + greetPerson()
+    +  grades
+}
+
+
+class Teacher {
+    + constructor()
+    +  teacher
+}
+
+Student --> Person #line.dashed
+Teacher --> Person #line.dashed
+Teacher --> Student #line.dashed

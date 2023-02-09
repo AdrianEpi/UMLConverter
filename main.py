@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-08 20:58:44
+#   @Last Modified time: 2023-02-09 08:05:50
 #   @Description:        ...
 
 
@@ -17,6 +17,18 @@ a = UMLConverter()
 a.run()
 
 
-# from os import system
 
-# system('mdpdf -o ' + './outputs/projectUML.pdf '+ './outputs/projectUML.md')
+
+# from app.modules.file_module.file import File
+# from app.modules.ast_module.jsAST import JsAST
+# import esprima
+
+
+# f = File('E:\\TFG\\UMLConverter\\samples\\JavaScript_Samples\\School\\Teacher.js')
+# f.read()
+# #print(f.getData())
+# tree = JsAST()
+# fileAST = esprima.parseScript(f.getData())
+# print(fileAST)
+# tree.generateTree(fileAST.body)
+# tree.printTree()

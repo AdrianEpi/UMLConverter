@@ -1,0 +1,28 @@
+
+	Module
+	    Body: [
+
+		ClassDef
+		    Name: Animals
+		    Body: [
+
+			FunctionDef
+			    Name: constructor
+			    Args: [
+				nombre
+				especie
+			    ]
+
+			FunctionDef
+			    Name: sing
+
+			FunctionDef
+			    Name: dance
+
+			AnnAssign
+			    Name: nombre
+
+			AnnAssign
+			    Name: especie
+		    ]
+	    ]

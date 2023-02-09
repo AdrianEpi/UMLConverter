@@ -1,41 +1,39 @@
 # -*- coding: utf-8 -*-
 #   @Proyect:            UMLConverter
 #   @Author:             Adrian Epifanio
-#   @File:               test_pyAST.py
+#   @File:               test_jsAST.py
 #   @Author:             Adrian Epifanio
-#   @Date:               2022-12-12 08:56:58
+#   @Date:               2023-02-09 06:34:37
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-09 06:56:16
-#   @Description:        Tests for app/ast_module/pyAST.py
+#   @Last Modified time: 2023-02-09 06:59:03
+#   @Description:        ...
 
-
-from app.modules.ast_module.pyAST import PyAST
-from app.modules.ast_module.pythonNode import PythonNode
+from app.modules.ast_module.jsAST import JsAST
 from tests.utils import generateTree, readExpected, getFileNames
+from app.modules.ast_module.pythonNode import PythonNode
 
 import pytest
-import ast
 
-path = "samples/testAST/"
+path = 'samples/JavaScript_Samples/'
 
 
 @pytest.mark.parametrize(
-	"pythonFile, expectedFile",
-	getFileNames(path)
+	'file, expectedFile',
+	getFileNames(directory = path, ext = '.js')
 )
-def test_AST(pythonFile, expectedFile):
-	assert(generateTree(file = pythonFile, lang ='Python') == readExpected(expectedFile))
+def test_AST(file, expectedFile):
+	assert(generateTree(file = file, lang = 'JavaScript') == readExpected(expectedFile))
 
 def test_setGetTree():
-	ast = PyAST()
+	ast = JsAST()
 	newNode = PythonNode()
 	ast.setTree(newNode)
 	assert(ast.getTree() == newNode)
 
 def test_setGetDataList():
-	ast = PyAST()
-	l = ["item1", "item2", "item3"]
+	ast = JsAST()
+	l = ['item1', 'item2', 'item3']
 	ast.setDataList(l)
 	assert(ast.getDataList() == l)

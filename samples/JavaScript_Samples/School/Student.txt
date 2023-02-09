@@ -1,0 +1,41 @@
+
+	Module
+	    Body: [
+
+		Import
+		    Name: Person
+
+		ClassDef
+		    Name: Student
+		    Args: [
+			Person
+		    ]
+		    Body: [
+
+			FunctionDef
+			    Name: constructor
+			    Args: [
+				name
+				age
+				grades
+			    ]
+
+			FunctionDef
+			    Name: setGrades
+			    Args: [
+				nota
+			    ]
+
+			FunctionDef
+			    Name: getGrades
+
+			FunctionDef
+			    Name: greet
+
+			FunctionDef
+			    Name: greetPerson
+
+			AnnAssign
+			    Name: grades
+		    ]
+	    ]
