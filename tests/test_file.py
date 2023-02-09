@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2022-12-29 13:01:51
+#   @Last Modified time: 2023-02-09 08:48:33
 #   @Description:        Tests for app/file_module/file.py
 
 from app.modules.file_module.file import File
@@ -44,6 +44,17 @@ def test_readFileNotFoundError():
 		f.read()
 	assert str(exception_info.value) == 'Error, AA.txt file not found.'
 
+
+def test_readAndAnalyze():
+	f = File('tests/testFiles/example1.py')
+	f.readAndAnalyze(language = 'Python')
+	d = {
+		'codeLines': 2,
+		'commentLines': 0,
+		'nLines': 3
+	}
+	assert(f.getLinesInfo() == d)
+	str
 
 def test_write():
 	fName = ""
