@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-08 21:07:39
+#   @Last Modified time: 2023-02-09 06:23:09
 #   @Description:        This file describes the UMLConverteer main class
 
 from app.modules.uml_module.translator import Translator
@@ -458,7 +458,7 @@ class UMLConverter:
 
 
 	def generateMarkdown(self):
-		md = Markdown(path = self.output, metrics = self.metrics, projectName = "RESULTS")
+		md = Markdown(path = self.output, metrics = self.metrics, projectName = "RESULTS", theme = self.theme)
 		self.writeToFile(data = md.generateMarkdown(), path = self.output, fname = 'projectUML.md')
 
 

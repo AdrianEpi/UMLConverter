@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-08 21:22:05
+#   @Last Modified time: 2023-02-08 21:32:40
 #   @Description:        ...
 
 from app.modules.metric_module.metric import Metric
@@ -61,7 +61,7 @@ class Markdown():
 		s += '\n2. [Package Information](#id2)'
 		s += '\n3. [Metrics](#id3)'
 		s += '\n4. [Metrics Tables](#id4)'
-		s += '\n5. [Metrics Explanation](#id6)'
+		s += '\n5. [Metrics Explanation](#id5)'
 		s += '\n\n***\n\n'
 		return s
 
@@ -124,7 +124,7 @@ class Markdown():
 
 
 	def __metricsExplanation(self) -> str:
-		s = '\n\n## Metrics Explanation<a name="id4"></a>\n'
+		s = '\n\n## Metrics Explanation<a name="id5"></a>\n'
 		s += '\n### *Class Metrics*\n'
 		s += '\n* **NOC**: A class\'s *number of children* (NOC) metric simply measures the number of immediate descendants of the class.'
 		s += '\n* **CCD**: A class\'s *code comments density* (CCD) metric simply measures the ratio of comment lines per code lines.'
@@ -134,5 +134,5 @@ class Markdown():
 		s += '\n\n### *Package Metrics*\n'
 		s += '\n* **DIT**: The *depth of inheritance tree* (DIT) metric provides for each class a measure of the inheritance levels from the object hierarchy top, excluding languages objects (Class, ABC, Object, BasicObject...).'
 		s += '\n* **LCOM**: A class\'s *lack of cohesion in methods* (LCOM) metric counts the sets of methods in a class that are not related through the sharing of some of the class\'s fields.'
-		s += '\n* **Score**: The *score* of a class is calculated using 50% Average class score + 35% LCOM + 15% DIT making sure thate each metric is between the appropiate limits, the further each value is from the optimal value the less it counts for the score.'
+		s += '\n* **Score**: The *score* of a package is calculated using 50% Average class score + 35% LCOM + 15% DIT making sure thate each metric is between the appropiate limits, the further each value is from the optimal value the less it counts for the score.'
 		return s
