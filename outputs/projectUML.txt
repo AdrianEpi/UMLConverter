@@ -160,7 +160,10 @@ class Metric {
     + list nodeList
     - __init__(self)
     + getClassList(self)
+    + setClassList(self, l: list)
     + getPackageList(self)
+    + setClassList(self, l: list)
+    + setPackageList(self, l: list)
     + addNode(self, node)
     + generateMetrics(self)
     - __generateNOC(self)
@@ -226,6 +229,7 @@ class MetricPackage {
     + int maxDIT
     + float lcom
     + float ev
+    + float cas
     - __init__(self, id: int, pname: str)
     + getPackageID(self)
     + getClassList(self)
@@ -233,6 +237,7 @@ class MetricPackage {
     + getMaxDIT(self)
     + getLcom(self)
     + getEval(self)
+    + getCas(self)
     + setPackageID(self, newPackageID: int)
     + setClassList(self, newClassList: list)
     + setLcom(self, newLcom: float)
@@ -240,6 +245,7 @@ class MetricPackage {
     + containClass(self, classID: int)
     + updateMaxDIT(self, itd: int)
     + evaluate(self, cList: list)
+    - __calculateCas(self, cList: list)
     + print(self)
 }
 

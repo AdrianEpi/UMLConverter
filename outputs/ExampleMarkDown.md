@@ -19,7 +19,7 @@
 
  *Legend*
 
-<img align="middle" src="../img/legend/_none_-legend.png">
+<img align="middle" src="..//img/legend/reddress-darkblue-legend.png">
 
 ***
 

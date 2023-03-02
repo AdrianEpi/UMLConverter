@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-08 19:23:12
+#   @Last Modified time: 2023-03-02 12:52:21
 #   @Description:        ...
 
 
@@ -19,6 +19,7 @@ class MetricPackage:
 	maxDIT: int 		# Maximum Depth of Inheritance Tree
 	lcom: float			# Lack of cohesion in methods
 	ev: float 			# Evaluation of the package (0-100)%
+	cas: float 			# Evaluation of the class average
 
 
 	def __init__(self, id: int, pname: str):
@@ -28,6 +29,7 @@ class MetricPackage:
 		self.maxDIT = 0
 		self.lcom = 0.0
 		self.ev = 0.0
+		self.cas = 0.0
 
 
 	def getPackageID(self) -> int:
@@ -52,6 +54,10 @@ class MetricPackage:
 
 	def getEval(self) -> float:
 		return self.ev
+
+
+	def getCas (self) -> float:
+		return self.cas
 		
 	def setPackageID(self, newPackageID: int):
 		self.packageID = newPackageID
@@ -83,13 +89,10 @@ class MetricPackage:
 
 	def evaluate(self, cList: list):
 		ev = 0.0
-		avClassEval = 0.0
-		for i in self.getClassList():
-			avClassEval += (cList[i].getEval() / 100)
+		self.__calculateCas(cList)
 
-		avClassEval /= len(self.classList)
 		# Class evaluation average = 50%
-		ev += avClassEval * 0.5
+		ev += self.cas * 0.5
 
 		# LCOM = 35%
 		LIMIT_LCMO = 0.5
@@ -105,6 +108,15 @@ class MetricPackage:
 	
 		self.ev = round(ev * 100, 2)
 
+
+	def __calculateCas (self, cList: list):
+		self.cas = 0.0
+		for i in self.getClassList():
+			self.cas += (cList[i].getEval() / 100)
+
+		self.cas /= len(self.classList)
+		self.cas = round(self.cas, 2)
+
 	def print(self):
 		s = ""
 		s += "\n\n\n\t PackageID " + str(self.packageID)
@@ -113,3 +125,4 @@ class MetricPackage:
 		s += "\n\t\tMaximum DIT (Inheritance Tree Depth): " + str(self.maxDIT)
 		s += "\n\t\tLCOM (Lack of Cohesion): " + str(self.lcom)
 		print(s)
+
