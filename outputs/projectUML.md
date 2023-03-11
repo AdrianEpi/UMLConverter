@@ -19,7 +19,7 @@
 
  *Legend*
 
-<img align="middle" src="E:\TFG\UMLConverter\img\legend\_none_-legend.png">
+<img align="middle" src="E:\TFG\UMLConverter\img\legend\reddress-lightblue-legend.png">
 
 ***
 

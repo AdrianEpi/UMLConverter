@@ -1,5 +1,5 @@
 # UMLConverter
-Repository for TFG code
+Repository for Thesis code
 
 ## TABLE OF CONTENTS
 1. [Requirements](#REQUIREMENTS)
