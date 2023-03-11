@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-03-11 12:01:24
+#   @Last Modified time: 2023-03-11 12:12:05
 #   @Description:        ...
 
 from app.modules.metric_module.metricClass import MetricClass
@@ -40,13 +40,16 @@ class Metric:
 	def setClassList(self, l: list):
 		self.classList = l
 
-	
+
 
 	def setClassList(self, l: list):
 		self.classList = l
 
 	def setPackageList(self, l: list):
 		self.packageList = l
+
+	def setPercentages(self, d: dict):
+		self.percentages = d
 
 	def addNode(self, node):
 		if ('name' in node) and ('package' in node) and ('inheritance' in node):

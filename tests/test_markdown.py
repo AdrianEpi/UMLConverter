@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-03-11 10:55:45
+#   @Last Modified time: 2023-03-11 12:11:19
 #   @Description:        ...
 
 from app.modules.file_module.markdown import Markdown
@@ -22,6 +22,7 @@ import sys
 
 def test_Markdown():
 	metrics = Metric()
+	metrics.setPercentages({'NOC': 15,'CCD': 42.5,'CBO': 42.5,'DIT': 15,'LCOM': 35,'CAS': 50})
 	package = MetricPackage(0, 'pName')
 	mClass = MetricClass(0, 'cName')
 	metrics.setClassList([mClass])
