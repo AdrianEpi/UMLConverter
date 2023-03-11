@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-08 19:34:22
+#   @Last Modified time: 2023-03-11 11:54:02
 #   @Description:        ...
 
 
@@ -174,23 +174,23 @@ class MetricClass:
 		self.ccd = round((self.commentLines / self.codeLines), 2)
 
 
-	def evaluate(self):
+	def evaluate(self, dic: dict):
 		ev = 0.0
-		# CC = 42.5%
+		# CBO
 		if self.cbo < 39: # 30 + Optimum, 30 is the max it can go over or lower the optimum
 			OPTIMUM = 9
-			ev += ((30 - abs(self.cbo - OPTIMUM)) / 30) * 0.425
+			ev += ((30 - abs(self.cbo - OPTIMUM)) / 30) * (dic['CBO'] / 100)
 
-		# NOC = 15%
+		# NOC 
 		if len(self.noc) < 13: # 10 + Optimum, 10 is the max it can go over or lower the optimum
 			OPTIMUM = 3
-			ev += ((10 - abs(len(self.noc) - OPTIMUM)) / 10) * 0.15
+			ev += ((10 - abs(len(self.noc) - OPTIMUM)) / 10) * (dic['NOC'] / 100)
 
-		# CCD = 42.5%
+		# CCD 
 		if self.ccd > 1: 
-			ev += 0.425
+			ev += (dic['CCD'] / 100)
 		else :
-			ev += self.ccd * 0.425
+			ev += self.ccd * (dic['CCD'] / 100)
 
 		self.ev = round(ev * 100, 2)
 

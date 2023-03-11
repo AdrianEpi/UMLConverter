@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-09 08:38:48
+#   @Last Modified time: 2023-03-11 12:02:26
 #   @Description:        This file describes the UMLConverteer main class
 
 from app.modules.uml_module.translator import Translator
@@ -47,6 +47,7 @@ class UMLConverter:
 	theme: str
 	packages: bool
 	metrics: Metric
+	metricPercentaje: dict
 
 	def __init__(self):
 		"""
@@ -64,6 +65,7 @@ class UMLConverter:
 		self.theme = ""
 		self.packages = False
 		self.metrics = Metric()
+		self.metricPercentaje =  {'NOC': 15,'CCD': 42.5,'CBO': 42.5,'DIT': 15,'LCOM': 35,'CAS': 50}
 
 	def getFileList(self) -> list:
 		"""
@@ -241,10 +243,11 @@ class UMLConverter:
 			self.output += "/"
 		#self.output += "projectUML.txt"
 
-		result = gui.advancedMenu(self.fileList)
+		result = gui.advancedMenu(self.fileList, metrics = self.metricPercentaje)
 		self.excludedFiles = result["ExcludedFiles"]
 		self.theme = result["Theme"]
 		self.packages = result["Packages"]
+		self.metricPercentaje = result["Metrics"]
 
 
 	def run(self):
@@ -255,11 +258,7 @@ class UMLConverter:
 		self.generateUML()
 		self.writeToFile(data = self.code, path = self.output, fname = "projectUML.txt")
 		self.convertToPng()
-		self.metrics.generateMetrics()
-		# for i in self.metrics.getClassList():
-		# 	i.print()
-		# for i in self.metrics.getPackageList():
-		# 	i.print()
+		self.metrics.generateMetrics(dic = self.metricPercentaje)
 		self.generateMarkdown()
 
 

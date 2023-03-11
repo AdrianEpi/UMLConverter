@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-03-02 12:52:21
+#   @Last Modified time: 2023-03-11 11:55:28
 #   @Description:        ...
 
 
@@ -87,24 +87,24 @@ class MetricPackage:
 			self.maxDIT = itd
 
 
-	def evaluate(self, cList: list):
+	def evaluate(self, cList: list, dic: dict):
 		ev = 0.0
 		self.__calculateCas(cList)
 
-		# Class evaluation average = 50%
-		ev += self.cas * 0.5
+		# CAS
+		ev += self.cas * (dic['CAS'] / 100)
 
-		# LCOM = 35%
+		# LCOM
 		LIMIT_LCMO = 0.5
 		if self.lcom < LIMIT_LCMO: # Stable package
 			ev += 0.35
 		else: 
-			ev += ((LIMIT_LCMO - (self.lcom - LIMIT_LCMO)) / LIMIT_LCMO) * 0.35
+			ev += ((LIMIT_LCMO - (self.lcom - LIMIT_LCMO)) / LIMIT_LCMO) * (dic['LCOM'] / 100)
 
-		# MaxDIT = 15%
+		# MaxDIT
 		LIMIT_DIT = 5
 		if self.maxDIT < LIMIT_DIT:
-			ev += 0.15
+			ev += (dic['DIT'] / 100)
 	
 		self.ev = round(ev * 100, 2)
 

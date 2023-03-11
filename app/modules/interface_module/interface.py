@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-02 12:29:18
+#   @Last Modified time: 2023-03-11 12:03:43
 #   @Description:        This file describes the interface of the umlConverter and it's utilities
 
 from app.modules.utils import LANGUAGES, UMLTHEMES
@@ -72,7 +72,7 @@ class Interface:
 		program, such as directory, output, language...
 		
 		:returns:   A list with the language, input path for files and path
-		            where the output is going to be stored.
+					where the output is going to be stored.
 		:rtype:     list
 		"""
 		self.greet()
@@ -154,7 +154,7 @@ class Interface:
 		return choice
 
 
-	def advancedMenu(self, fileList: list, excludedFiles = [], output = "", theme = "_none_", packages = False) -> dict:
+	def advancedMenu(self, fileList: list, excludedFiles = [], output = "", theme = "_none_", packages = False, metrics =  {}) -> dict:
 		"""
 		Shows the advanced menu for umlconverter
 
@@ -173,14 +173,15 @@ class Interface:
 		:rtype:     dict
 		"""
 		msg = "Do you want to finish config and start building?"
-		choices = ["Build", "Exclude Files", "Choose Theme", "Packages", "Exit"]
+		choices = ["Build", "Exclude Files", "Choose Theme", "Group in Packages", "Modify Metrics", "Exit"]
 		reply = easygui.buttonbox(msg, choices = choices, image = self.logoPath)
 
 		if reply == "Build":
 			result = {
 				"ExcludedFiles": excludedFiles,
 				"Theme": theme,
-				"Packages": packages
+				"Packages": packages,
+				"Metrics": metrics
 			}
 			return result
 
@@ -193,8 +194,64 @@ class Interface:
 		elif reply == "Packages":
 			packages = self.yesNoQuestion(msg = "Do you want to generate pacakges in the diagram?")
 
+		elif reply == "Modify Metrics":
+			metrics = self.metricsMenu()
+
 		elif reply == "Exit":
 			sys.exit(0)
 		
-		return self.advancedMenu(fileList = fileList, excludedFiles = excludedFiles, output = output, theme = theme, packages = packages)
+		return self.advancedMenu(fileList = fileList, excludedFiles = excludedFiles, output = output, theme = theme, packages = packages, metrics = metrics)
 	
+
+	def metricsMenu(self) -> dict:
+		msg = 'Enter the pertentaje you want to apply to each class metric, remember that NOC + CCD + CBO = 100%'
+		fieldNames = ['NOC', 'CCD', 'CBO']
+		defaultValues = [15, 42.5, 42.5]
+		classMetrics = self.multipleEnterBox(msg = msg, fieldNames = fieldNames, defaultValues = defaultValues, title = "")
+		msg = 'Enter the pertentaje you want to apply to each package metric, remember that DIT + LCOM + CAS = 100%'
+		fieldNames = ['DIT', 'LCOM', 'CAS']
+		defaultValues = [15, 35, 50]
+		packageMetrics = self.multipleEnterBox(msg = msg, fieldNames = fieldNames, defaultValues = defaultValues, title = "")
+		return {
+			'NOC': classMetrics['NOC'],
+			'CCD': classMetrics['CCD'],
+			'CBO': classMetrics['CBO'],
+			'DIT': packageMetrics['DIT'],
+			'LCOM': packageMetrics['LCOM'],
+			'CAS': packageMetrics['CAS']
+		}
+
+
+	def multipleEnterBox(self, msg: str, fieldNames: list, defaultValues: list, title: str) -> dict:
+		fieldValues = []
+		while 1:
+			value = 0
+			err = False
+			fieldValues = easygui.multenterbox("", title, fieldNames, defaultValues)
+			for i, name in enumerate(fieldNames):
+				data = fieldValues[i].strip()
+				if data == "":
+				  easygui.msgbox("{} is a required field.\n\n".format(name))
+				  err = True
+				else:
+					try: 
+						num = float(data)
+						value += num 
+					except ValueError:
+						easygui.msgbox("{} must be a number or float.\n\n".format(name))
+						err = True
+
+			if value != 100 and err == False:
+				easygui.msgbox("The sum of all the fields must be equal to 100%")
+			
+			if value == 100:
+				break
+
+		result = {}
+		counter = 0
+		for i in fieldNames:
+			result[i] = float(fieldValues[counter])
+			counter += 1
+
+		return result
+

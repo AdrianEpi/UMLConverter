@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-09 09:16:15
+#   @Last Modified time: 2023-03-11 12:01:24
 #   @Description:        ...
 
 from app.modules.metric_module.metricClass import MetricClass
@@ -18,20 +18,29 @@ class Metric:
 	classList: list
 	packageList: list
 	nodeList: list
+	percentages: dict
 
 	def __init__(self):
 		self.classList = []
 		self.packageList= []
 		self.nodeList = []
+		self.percentages = {}
 
 	def getClassList(self) -> list:
 		return self.classList
 
+	
+	def getPackageList(self) -> list:
+		return self.packageList
+
+	
+	def getPercentajes(self) -> dict:
+		return self.percentages
+
 	def setClassList(self, l: list):
 		self.classList = l
 
-	def getPackageList(self) -> list:
-		return self.packageList
+	
 
 	def setClassList(self, l: list):
 		self.classList = l
@@ -45,7 +54,8 @@ class Metric:
 		else:
 			raise TypeError("Error in Metic.addNode(), not valid node.")
 
-	def generateMetrics(self):
+	def generateMetrics(self, dic: dict):
+		self.percentages = dic
 		packageName = []
 		className = []
 		includes = []
@@ -98,9 +108,9 @@ class Metric:
 		self.__generateLCOM()
 		for i in range(len(self.classList)):
 			self.classList[i].calculateCCD()
-			self.classList[i].evaluate()
+			self.classList[i].evaluate(dic = dic)
 		for i in range(len(self.packageList)):
-			self.packageList[i].evaluate(self.classList)
+			self.packageList[i].evaluate(self.classList, dic = dic)
 
 
 	def __generateNOC(self):
