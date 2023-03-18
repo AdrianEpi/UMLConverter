@@ -7,8 +7,8 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-09 06:59:03
-#   @Description:        ...
+#   @Last Modified time: 2023-03-18 11:25:19
+#   @Description:        Tests for app/ast_module/jsAST.py
 
 from app.modules.ast_module.jsAST import JsAST
 from tests.utils import generateTree, readExpected, getFileNames
@@ -26,11 +26,13 @@ path = 'samples/JavaScript_Samples/'
 def test_AST(file, expectedFile):
 	assert(generateTree(file = file, lang = 'JavaScript') == readExpected(expectedFile))
 
+
 def test_setGetTree():
 	ast = JsAST()
 	newNode = PythonNode()
 	ast.setTree(newNode)
 	assert(ast.getTree() == newNode)
+
 
 def test_setGetDataList():
 	ast = JsAST()

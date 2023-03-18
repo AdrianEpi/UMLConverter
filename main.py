@@ -7,8 +7,8 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-09 08:41:00
-#   @Description:        ...
+#   @Last Modified time: 2023-03-18 11:24:42
+#   @Description:        This file executes the main program
 
 
 from app.modules.uml_module.UMLConverter import UMLConverter
