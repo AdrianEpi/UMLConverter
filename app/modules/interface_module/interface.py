@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-03-11 12:03:43
+#   @Last Modified time: 2023-03-18 11:12:31
 #   @Description:        This file describes the interface of the umlConverter and it's utilities
 
 from app.modules.utils import LANGUAGES, UMLTHEMES
@@ -204,6 +204,12 @@ class Interface:
 	
 
 	def metricsMenu(self) -> dict:
+		"""
+		Prompts the metrics menu with the default values.
+
+		:returns:   Dictionary with the metrics set
+		:rtype:     dict
+		"""
 		msg = 'Enter the pertentaje you want to apply to each class metric, remember that NOC + CCD + CBO = 100%'
 		fieldNames = ['NOC', 'CCD', 'CBO']
 		defaultValues = [15, 42.5, 42.5]
@@ -223,6 +229,21 @@ class Interface:
 
 
 	def multipleEnterBox(self, msg: str, fieldNames: list, defaultValues: list, title: str) -> dict:
+		"""
+		Promps a multiple box interface
+
+		:param      msg:            The message
+		:type       msg:            str
+		:param      fieldNames:     The field names
+		:type       fieldNames:     list
+		:param      defaultValues:  The default values
+		:type       defaultValues:  list
+		:param      title:          The title
+		:type       title:          str
+
+		:returns:   Dict with the results of the input data
+		:rtype:     dict
+		"""
 		fieldValues = []
 		while 1:
 			value = 0
