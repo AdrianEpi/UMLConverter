@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-08 10:56:53
+#   @Last Modified time: 2023-03-18 11:06:47
 #   @Description:        This file describes a file and its functionality
 
 import sys
@@ -99,6 +99,16 @@ class File:
 
 
 	def readAndAnalyze(self, language: str):
+		"""
+		Reads and analyze a code for counting the codelines and the comments.
+
+		:param      language:           The language
+		:type       language:           str
+
+		:raises     Exception:          Unexpected error
+		:raises     FileNotFoundError:  If file not found
+		:raises     OSError:            If OS error
+		"""
 		try:
 			f = open(self.fileName, 'r')
 		except FileNotFoundError:
@@ -187,6 +197,12 @@ class File:
 
 
 	def getLinesInfo(self) -> dict:
+		"""
+		Gets the lines information.
+
+		:returns:   The lines information.
+		:rtype:     dict
+		"""
 		return {
 			'nLines': self.nLines,
 			'commentLines': self.nCommentLines,
