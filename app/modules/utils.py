@@ -7,8 +7,8 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-07 10:38:02
-#   @Description:        ...
+#   @Last Modified time: 2023-03-18 11:23:49
+#   @Description:        This file describes lists and dicts used along the program
 
 # Program Languages
 LANGUAGES = [
@@ -93,6 +93,7 @@ EXCLUDEPATHS = [
 	'bin'
 ]
 
+# UML diagrams themes
 UMLTHEMES = [
 	'_none_',
 	'carbon-gray',

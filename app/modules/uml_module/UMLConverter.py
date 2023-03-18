@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-03-11 12:02:26
+#   @Last Modified time: 2023-03-18 11:22:58
 #   @Description:        This file describes the UMLConverteer main class
 
 from app.modules.uml_module.translator import Translator
@@ -67,6 +67,7 @@ class UMLConverter:
 		self.metrics = Metric()
 		self.metricPercentaje =  {'NOC': 15,'CCD': 42.5,'CBO': 42.5,'DIT': 15,'LCOM': 35,'CAS': 50}
 
+	
 	def getFileList(self) -> list:
 		"""
 		Gets the file list.
@@ -445,8 +446,16 @@ class UMLConverter:
 				self.metrics.addNode(c)
 			
 
-
 	def lookForIncludes(self, node) -> list:
+		"""
+		Generates the includes of the project
+
+		:param      node:  The node
+		:type       node:  PythonNode
+
+		:returns:   List with the inclusion relationships of the project
+		:rtype:     list
+		"""
 		includes = []
 		if node.getNodeType() == 'Import':
 			includes.append(node.getName())
