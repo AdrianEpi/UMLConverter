@@ -7,13 +7,16 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-03-11 12:12:05
-#   @Description:        ...
+#   @Last Modified time: 2023-03-18 11:15:21
+#   @Description:        This file describes the metrics
 
 from app.modules.metric_module.metricClass import MetricClass
 from app.modules.metric_module.metricPackage import MetricPackage
 
 class Metric:
+	"""
+	This class describes a metric object.
+	"""
 
 	classList: list
 	packageList: list
@@ -21,43 +24,107 @@ class Metric:
 	percentages: dict
 
 	def __init__(self):
+		"""
+		Constructs a new instance.
+		"""
 		self.classList = []
 		self.packageList= []
 		self.nodeList = []
 		self.percentages = {}
 
+
 	def getClassList(self) -> list:
+		"""
+		Gets the class list.
+
+		:returns:   The class list.
+		:rtype:     list
+		"""
 		return self.classList
 
 	
 	def getPackageList(self) -> list:
+		"""
+		Gets the package list.
+
+		:returns:   The package list.
+		:rtype:     list
+		"""
 		return self.packageList
 
 	
 	def getPercentajes(self) -> dict:
+		"""
+		Gets the percentajes.
+
+		:returns:   The percentajes.
+		:rtype:     dict
+		"""
 		return self.percentages
 
+
 	def setClassList(self, l: list):
+		"""
+		Sets the class list.
+
+		:param      l:    The new value
+		:type       l:    list
+		"""
 		self.classList = l
 
 
-
 	def setClassList(self, l: list):
+		"""
+		Sets the class list.
+
+		:param      l:    The new value
+		:type       l:    list
+		"""
 		self.classList = l
+
 
 	def setPackageList(self, l: list):
+		"""
+		Sets the package list.
+
+		:param      l:    The new value
+		:type       l:    list
+		"""
 		self.packageList = l
 
+
 	def setPercentages(self, d: dict):
+		"""
+		Sets the percentages.
+
+		:param      d:    The new value
+		:type       d:    dict
+		"""
 		self.percentages = d
 
+
 	def addNode(self, node):
+		"""
+		Adds a node.
+
+		:param      node:       The node
+		:type       node:       PythonNode
+
+		:raises     TypeError:  { exception_description }
+		"""
 		if ('name' in node) and ('package' in node) and ('inheritance' in node):
 			self.nodeList.append(node)
 		else:
 			raise TypeError("Error in Metic.addNode(), not valid node.")
 
+	
 	def generateMetrics(self, dic: dict):
+		"""
+		Generates the metrics
+
+		:param      dic:  The dic with imput data
+		:type       dic:  dict
+		"""
 		self.percentages = dic
 		packageName = []
 		className = []
@@ -117,6 +184,9 @@ class Metric:
 
 
 	def __generateNOC(self):
+		"""
+		Generates the NOC list
+		"""
 		for i in range(len(self.classList)):
 			finish = False
 			noc = self.classList[i].getChildren()
@@ -142,6 +212,9 @@ class Metric:
 
 
 	def __generateInclusionAndCC(self):
+		"""
+		Generates the inclusion and class coupling lists
+		"""
 		for i in self.classList:
 			tmpCBO = 0
 			id = i.getClassID()
@@ -153,6 +226,9 @@ class Metric:
 
 
 	def __generateLCOM(self):
+		"""
+		Generates the lack of cohesion in methods
+		"""
 		for i in self.packageList:
 			lcom = 0.0
 			ce = []
