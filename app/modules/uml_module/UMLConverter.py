@@ -7,24 +7,26 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-02 12:34:53
+#   @Last Modified time: 2023-03-18 11:22:58
 #   @Description:        This file describes the UMLConverteer main class
 
 from app.modules.uml_module.translator import Translator
 from app.modules.file_module.file import File
 from app.modules.file_module.searcher import Searcher
+from app.modules.file_module.markdown import Markdown
 from app.modules.ast_module.line import Line
 from app.modules.ast_module.pyAST import PyAST
 from app.modules.ast_module.jsAST import JsAST
 from app.modules.interface_module.interface import Interface
 from app.modules.utils import LANGUAGES
+from app.modules.metric_module.metric import Metric
+
 
 import ast
 import sys
 from six.moves import input as raw_input
 from os import system
 import esprima
-
 
 class UMLConverter:
 	"""
@@ -44,6 +46,8 @@ class UMLConverter:
 	excludedFiles: list
 	theme: str
 	packages: bool
+	metrics: Metric
+	metricPercentaje: dict
 
 	def __init__(self):
 		"""
@@ -60,7 +64,10 @@ class UMLConverter:
 		self.excludedFiles = []
 		self.theme = ""
 		self.packages = False
+		self.metrics = Metric()
+		self.metricPercentaje =  {'NOC': 15,'CCD': 42.5,'CBO': 42.5,'DIT': 15,'LCOM': 35,'CAS': 50}
 
+	
 	def getFileList(self) -> list:
 		"""
 		Gets the file list.
@@ -235,12 +242,13 @@ class UMLConverter:
 			self.output += "\\"
 		else:	# Linux or MacOS
 			self.output += "/"
-		self.output += "projectUML.txt"
+		#self.output += "projectUML.txt"
 
-		result = gui.advancedMenu(self.fileList)
+		result = gui.advancedMenu(self.fileList, metrics = self.metricPercentaje)
 		self.excludedFiles = result["ExcludedFiles"]
 		self.theme = result["Theme"]
 		self.packages = result["Packages"]
+		self.metricPercentaje = result["Metrics"]
 
 
 	def run(self):
@@ -249,8 +257,10 @@ class UMLConverter:
 		"""
 		self.__askFiles()
 		self.generateUML()
-		self.writeToFile()
+		self.writeToFile(data = self.code, path = self.output, fname = "projectUML.txt")
 		self.convertToPng()
+		self.metrics.generateMetrics(dic = self.metricPercentaje)
+		self.generateMarkdown()
 
 
 	def generateUML(self):
@@ -261,12 +271,11 @@ class UMLConverter:
 		if self.theme != "":
 			self.code += "!theme " + self.theme
 		for i in self.fileList:
-			if i in self.excludedFiles:
-				continue
+			
 			f = File(i)
-			f.read()
-			#print("TRYING FILE " + f.getFileName())
+			f.readAndAnalyze(language = self.language)
 			tree = None
+
 			# Python
 			if self.language == "Python":
 				tree = PyAST()
@@ -282,13 +291,17 @@ class UMLConverter:
 			elif self.language == "JavaScript":
 				tree = JsAST()
 				fileAST = esprima.parseScript(f.getData())
-				#print(fileAST)
 				tree.generateTree(fileAST.body)
-				#tree.printTree()
+
+
+			self.addDataToMetrics(tree = tree.getTree(), pname = self.__getPackageName(i), linesInfo = f.getLinesInfo())
+			if i in self.excludedFiles:
+				continue
 
 			translator = Translator(tree.getTree(), self.language)
 			translator.translate()
 			moduleClassList = translator.getClassList()
+
 			if (translator.getCode() != ""):
 				self.__addClasses(moduleClassList)
 				self.__addImports(translator.getImports(), moduleClassList)
@@ -384,16 +397,16 @@ class UMLConverter:
 		return l[len(l) - 1]
 				
 
-	def writeToFile(self) -> bool:
+	def writeToFile(self, data: str, path: str, fname: str) -> bool:
 		"""
 		Writes to file.
 		
 		:returns:   True if code could be written and exists, false otherwise
 		:rtype:     bool
 		"""
-		if self.code != "\n":
-			f = File(self.output)
-			f.write(self.code)
+		if data != "\n":
+			f = File(path + fname)
+			f.write(data)
 			return True
 		else:
 			return False
@@ -407,9 +420,60 @@ class UMLConverter:
 		:rtype:     bool
 		"""
 		if self.code != "\n":
-			system("python -m plantuml " + self.output)
+			system("python -m plantuml " + self.output + 'projectUML.txt')
 			return True
 		return False
+
+
+	def addDataToMetrics(self, tree, pname: str, linesInfo: dict):
+		includes = []
+		for i in tree.getBody():
+			if (i.getNodeType() == 'Import') or (i.getNodeType() == 'ImportFrom'):
+				tmp = self.lookForIncludes(i)
+				for j in tmp:
+					includes.append(j)
+		for i in tree.getBody():
+			if i.getNodeType() == "ClassDef":
+				c = {
+					'name': i.getName(),
+					'inheritance': i.getArgs(),
+					'package': pname,
+					'includes': includes,
+					'nLines': linesInfo['nLines'],
+					'codeLines': linesInfo['codeLines'],
+					'commentLines': linesInfo['commentLines']
+				}
+				self.metrics.addNode(c)
+			
+
+	def lookForIncludes(self, node) -> list:
+		"""
+		Generates the includes of the project
+
+		:param      node:  The node
+		:type       node:  PythonNode
+
+		:returns:   List with the inclusion relationships of the project
+		:rtype:     list
+		"""
+		includes = []
+		if node.getNodeType() == 'Import':
+			includes.append(node.getName())
+		else: #ImportFrom
+			for j in node.getValue():
+				includes.append(j)
+		return includes
+
+
+	def generateMarkdown(self):
+		md = Markdown(path = self.output, metrics = self.metrics, projectName = "RESULTS", theme = self.theme)
+		self.writeToFile(data = md.generateMarkdown(), path = self.output, fname = 'projectUML.md')
+
+
+
+
+
+		
 
 
 

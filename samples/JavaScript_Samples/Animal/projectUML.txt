@@ -1,0 +1,16 @@
+!theme _none_
+class Animals {
+    + constructor(nombre, especie)
+    + sing()
+    + dance()
+    +  nombre
+    +  especie
+}
+
+Animals <|-- Cats
+class Cats {
+    + constructor(name, age, color)
+    + color()
+    +  color
+}
+

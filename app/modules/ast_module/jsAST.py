@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-02 12:26:05
+#   @Last Modified time: 2023-03-18 11:03:49
 #   @Description:        This file describes a javaScript ast class 
 
 from app.modules.ast_module.pythonNode import PythonNode
@@ -104,10 +104,18 @@ class JsAST(AST):
 		:returns:   list of strings or pythonnodes or single pythonde 
 		:rtype:     list or PythonNode
 		"""
-		n = PythonNode()
-		n.setNodeType("Import")
-		n.setName(node.expression.arguments.name)
-		return n
+		l = []
+		for i in node.expression.arguments:
+			n = PythonNode()
+			n.setNodeType("Import")
+			if i.name:
+				n.setName(self.deleteExtention(i.name))	
+			elif i.value:
+				n.setName(self.deleteExtention(i.value))
+			l.append(n)
+		if len(l) == 1:
+			return l[0]
+		return l
 
 
 	def _AST__generateImportFrom(self, pos = None, node = None) -> PythonNode:
@@ -123,13 +131,13 @@ class JsAST(AST):
 		"""
 		n = PythonNode()
 		n.setNodeType("ImportFrom")
-		n.setName(node.declarations[0].init.arguments.value)
+		n.setName(self.deleteExtention(node.declarations[0].init.arguments.value))
 		if node.id.type == "Identifier":
 			n.setValue(node.declarations[0].init.arguments.value)
 
 		elif node.id.type == "ObjectPattern":
 			imports = []
-			n.setName(node.declarations[0].arguments.value)
+			n.setName(self.deleteExtention(node.declarations[0].arguments.value))
 			for i in node.declarations[0].id.properties:
 				imports.append(i.key.name)
 			n.setValue(imports)
@@ -270,7 +278,7 @@ class JsAST(AST):
 		elif ntype == "ClassDeclaration":
 			return self._AST__generateClassDef(node = node)
 		elif ntype == "ExpressionStatement":
-			if node.expression.callee == "require":
+			if (node.expression.callee != None) and (node.expression.callee.name  == "require"):
 				return self._AST__generateImport(node = node)
 			elif node.expression.right != None:
 				if node.expression.right.type == "ClassExpresssion":
@@ -290,3 +298,19 @@ class JsAST(AST):
 			return self.__generateMethodDef(node = node)
 		else:
 			return None # In case non necessary node
+
+
+	def deleteExtention(self, s: str) -> str:
+		"""
+		Deletes the extention of a JavaScript file of the name and returns it.
+
+		:param      s:    file name
+		:type       s:    str
+
+		:returns:   String with the name of the file without extention
+		:rtype:     str
+		"""
+		if '.js' in s:
+			return s[0:(len(s) - 3)] 
+		return s
+

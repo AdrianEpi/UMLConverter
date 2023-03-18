@@ -1,4 +1,43 @@
 !theme _none_
+
+class AST {
+    + PythonNode tree
+    + list dataList
+    - __init__(self)
+    + getDataList(self)
+    + getTree(self)
+    + setDataList(self, l: list)
+    + setTree(self, t: PythonNode)
+    + generateTree(self, l: list)
+    - __generateModule(self, pos, node)
+    - __generateClassDef(self, pos, node)
+    - __generateImport(self, pos, node)
+    - __generateImportFrom(self, pos, node)
+    - __generateAssign(self, pos, node)
+    - __generateAnnAssign(self, pos, node)
+    - __generateAsyncFunctionDef(self, pos, node)
+    - __generateFunctionDef(self, pos, node)
+    - __generateNode(self, pos, ntype, node)
+    + printTree(self)
+}
+
+AST <|-- JsAST
+class JsAST {
+    + generateTree(self, l: list)
+    # _AST__generateModule(self, pos, node)
+    # _AST__generateClassDef(self, pos, node)
+    # _AST__generateImport(self, pos, node)
+    # _AST__generateImportFrom(self, pos, node)
+    # _AST__generateAssign(self, pos, node)
+    # _AST__generateAnnAssign(self, pos, node)
+    # _AST__generateAsyncFunctionDef(self, pos, node)
+    # _AST__generateFunctionDef(self, pos, node)
+    - __findClassAttributes(self, node)
+    - __generateMethodDef(self, node)
+    # _AST__generateNode(self, pos, ntype, node)
+    + deleteExtention(self, s: str)
+}
+
 class Line {
     + int indentation
     + str data
@@ -59,13 +98,36 @@ class PythonNode {
 class File {
     + str fileName
     + str data
+    + int nLines
+    + int nCommentLines
+    + int nCodeLines
     - __init__(self, file: str)
     + getFileName(self)
     + getData(self)
     + setFileName(self, name: str)
     + setData(self, newData: str)
     + read(self)
+    + readAndAnalyze(self, language: str)
     + write(self, data: str)
+    + getLinesInfo(self)
+}
+
+class Markdown {
+    + str appPath
+    + str banner
+    + str data
+    + str projectName
+    + str imageUML
+    + Metric metrics
+    - __init__(self, path: str, metrics, theme, projectName)
+    + generateMarkdown(self)
+    - __header(self)
+    - __index(self)
+    - __packageInformation(self)
+    - __classDiagram(self)
+    - __metrics(self)
+    - __metricsTables(self)
+    - __metricsExplanation(self)
 }
 
 class Searcher {
@@ -89,7 +151,106 @@ class Interface {
     + multiChoiceSelection(self, title: str, text: str, l: list)
     + selectFromList(self, l: list, msg: str, title: str)
     + yesNoQuestion(self, msg: str)
-    + advancedMenu(self, fileList: list, excludedFiles, output, theme, packages)
+    + advancedMenu(self, fileList: list, excludedFiles, output, theme, packages, metrics)
+    + metricsMenu(self)
+    + multipleEnterBox(self, msg: str, fieldNames: list, defaultValues: list, title: str)
+}
+
+class Metric {
+    + list classList
+    + list packageList
+    + list nodeList
+    + dict percentages
+    - __init__(self)
+    + getClassList(self)
+    + getPackageList(self)
+    + getPercentajes(self)
+    + setClassList(self, l: list)
+    + setClassList(self, l: list)
+    + setPackageList(self, l: list)
+    + addNode(self, node)
+    + generateMetrics(self, dic: dict)
+    - __generateNOC(self)
+    - __generateInclusionAndCC(self)
+    - __generateLCOM(self)
+}
+
+class MetricClass {
+    + int classID
+    + str name
+    + list children
+    + list noc
+    + list inheritance
+    + list include
+    + list inclusion
+    + int nLines
+    + int codeLines
+    + int commentLines
+    + int packageID
+    + int cbo
+    + float ccd
+    + float ev
+    - __init__(self, id: int, cname: str)
+    + getClassID(self)
+    + getName(self)
+    + getChildren(self)
+    + getNoc(self)
+    + getInheritance(self)
+    + getInclude(self)
+    + getInclusion(self)
+    + getNLines(self)
+    + getCodeLines(self)
+    + getCommentLines(self)
+    + getPackageID(self)
+    + getCBO(self)
+    + getCcd(self)
+    + getEval(self)
+    + setClassID(self, newClassID: int)
+    + setChildren(self, newChildren: list)
+    + setNoc(self, newNoc: list)
+    + setInheritance(self, newInheritance: list)
+    + setInclude(self, newInclude: list)
+    + setInclusion(self, newInclusion: list)
+    + setNLines(self, newNLines: int)
+    + setCodeLines(self, newCodeLines: int)
+    + setCommentLines(self, newCommentLines: int)
+    + setPackageID(self, newPackageID: int)
+    + setCBO(self, newCBO: int)
+    + setCcd(self, newCcd: float)
+    + addChild(self, id: int)
+    + addInheritance(self, id: int)
+    + addInclude(self, id: int)
+    + addInclusion(self, id: int)
+    + calculateCCD(self)
+    + evaluate(self, dic: dict)
+    + print(self)
+}
+
+class MetricPackage {
+    + int packageID
+    + list classList
+    + str name
+    + int maxDIT
+    + float lcom
+    + float ev
+    + float cas
+    - __init__(self, id: int, pname: str)
+    + getPackageID(self)
+    + getClassList(self)
+    + getName(self)
+    + getMaxDIT(self)
+    + getLcom(self)
+    + getEval(self)
+    + getCas(self)
+    + setPackageID(self, newPackageID: int)
+    + setClassList(self, newClassList: list)
+    + setLcom(self, newLcom: float)
+    + addClass(self, classID: int)
+    + containClass(self, classID: int)
+    + updateMaxDIT(self, itd: int)
+    + evaluate(self, cList: list, dic: dict)
+    - __calculateCas(self, cList: list)
+    + print(self)
 }
 
 class Translator {
@@ -132,6 +293,8 @@ class UMLConverter {
     + list excludedFiles
     + str theme
     + bool packages
+    + Metric metrics
+    + dict metricPercentaje
     - __init__(self)
     + getFileList(self)
     + getCode(self)
@@ -140,12 +303,12 @@ class UMLConverter {
     + getExtension(self)
     + getClassList(self)
     + getImports(self)
+    + getExcludedFiles(self)
+    + getTheme(self)
+    + getPackages(self)
     + setFileList(self, newFileList: list)
-    + setCode(self, newCode: str)
     + setOutput(self, newOutput: str)
     + setLanguage(self, newLanguage: str)
-    + setExtension(self, newExtension: str)
-    + setClassList(self, newClassList: list)
     + setImports(self, newImports: list)
     - __generateExtention(self)
     - __askFiles(self)
@@ -155,16 +318,27 @@ class UMLConverter {
     - __addImports(self, imports: list, moduleClassList: list)
     - __addInheritance(self, inh: list)
     - __generateDependences(self)
-    - __getModuleName(self, filePath: str)
-    + writeToFile(self)
+    - __getPackageName(self, filePath: str)
+    + writeToFile(self, data: str, path: str, fname: str)
     + convertToPng(self)
+    + addDataToMetrics(self, tree, pname: str, linesInfo: dict)
+    + lookForIncludes(self, node)
+    + generateMarkdown(self)
 }
 
+AST --> PythonNode #line.dashed
+JsAST --> PythonNode #line.dashed
 PyAST --> PythonNode #line.dashed
+Markdown --> Metric #line.dashed
+Metric --> MetricClass #line.dashed
+Metric --> MetricPackage #line.dashed
 Translator --> PythonNode #line.dashed
 UMLConverter --> Translator #line.dashed
 UMLConverter --> File #line.dashed
 UMLConverter --> Searcher #line.dashed
+UMLConverter --> Markdown #line.dashed
 UMLConverter --> Line #line.dashed
 UMLConverter --> PyAST #line.dashed
+UMLConverter --> JsAST #line.dashed
 UMLConverter --> Interface #line.dashed
+UMLConverter --> Metric #line.dashed

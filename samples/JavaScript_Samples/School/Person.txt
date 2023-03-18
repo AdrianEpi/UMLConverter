@@ -1,0 +1,46 @@
+
+	Module
+	    Body: [
+
+		ClassDef
+		    Name: Person
+		    Body: [
+
+			FunctionDef
+			    Name: constructor
+			    Args: [
+				name
+				books
+			    ]
+
+			FunctionDef
+			    Name: setBook
+			    Args: [
+				book
+			    ]
+
+			FunctionDef
+			    Name: getBooks
+
+			FunctionDef
+			    Name: lookBookByTitle
+			    Args: [
+				title
+			    ]
+
+			FunctionDef
+			    Name: tryGreet
+			    Args: [
+				name
+			    ]
+
+			FunctionDef
+			    Name: greet
+
+			AnnAssign
+			    Name: name
+
+			AnnAssign
+			    Name: books
+		    ]
+	    ]

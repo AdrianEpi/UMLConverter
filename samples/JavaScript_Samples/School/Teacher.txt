@@ -1,0 +1,41 @@
+
+	Module
+	    Body: [
+
+		Import
+		    Name: Person
+
+		Import
+		    Name: Student
+
+		ClassDef
+		    Name: Teacher
+		    Args: [
+			Person
+		    ]
+		    Body: [
+
+			FunctionDef
+			    Name: constructor
+
+			FunctionDef
+			    Name: addNewTeacher
+
+			AnnAssign
+			    Name: teacher
+		    ]
+
+		FunctionDef
+		    Name: sayHi
+		    Args: [
+			person
+		    ]
+		    Body: [
+
+			FunctionDef
+			    Name: give2
+			    Args: [
+				num
+			    ]
+		    ]
+	    ]

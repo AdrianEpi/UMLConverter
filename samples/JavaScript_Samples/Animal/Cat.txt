@@ -1,0 +1,29 @@
+
+	Module
+	    Body: [
+
+		Import
+		    Name: Animal
+
+		ClassDef
+		    Name: Cats
+		    Args: [
+			Animals
+		    ]
+		    Body: [
+
+			FunctionDef
+			    Name: constructor
+			    Args: [
+				name
+				age
+				color
+			    ]
+
+			FunctionDef
+			    Name: color
+
+			AnnAssign
+			    Name: color
+		    ]
+	    ]
