@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-09 08:17:21
+#   @Last Modified time: 2023-03-18 11:03:49
 #   @Description:        This file describes a javaScript ast class 
 
 from app.modules.ast_module.pythonNode import PythonNode
@@ -300,13 +300,17 @@ class JsAST(AST):
 			return None # In case non necessary node
 
 
-	def deleteExtention(self, s:str) -> str:
+	def deleteExtention(self, s: str) -> str:
+		"""
+		Deletes the extention of a JavaScript file of the name and returns it.
+
+		:param      s:    file name
+		:type       s:    str
+
+		:returns:   String with the name of the file without extention
+		:rtype:     str
+		"""
 		if '.js' in s:
 			return s[0:(len(s) - 3)] 
 		return s
 
-# class JsAST2Test(JsAST):
-# 	def __init__(self):
-# 		pass
-
-# 	

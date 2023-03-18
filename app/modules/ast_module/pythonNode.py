@@ -7,8 +7,8 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-02-09 08:21:00
-#   @Description:        ...
+#   @Last Modified time: 2023-03-18 11:04:42
+#   @Description:        Generic node for the ast
 
 
 class PythonNode:
