@@ -168,6 +168,7 @@ class Metric {
     + setClassList(self, l: list)
     + setClassList(self, l: list)
     + setPackageList(self, l: list)
+    + setPercentages(self, d: dict)
     + addNode(self, node)
     + generateMetrics(self, dic: dict)
     - __generateNOC(self)
