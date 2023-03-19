@@ -7,7 +7,7 @@
 #   @Email:              adrianepi@gmail.com
 #   @GitHub:             https://github.com/AdrianEpi
 #   @Last Modified by:   Adrian Epifanio
-#   @Last Modified time: 2023-03-18 11:12:31
+#   @Last Modified time: 2023-03-19 08:26:51
 #   @Description:        This file describes the interface of the umlConverter and it's utilities
 
 from app.modules.utils import LANGUAGES, UMLTHEMES
@@ -175,7 +175,6 @@ class Interface:
 		msg = "Do you want to finish config and start building?"
 		choices = ["Build", "Exclude Files", "Choose Theme", "Group in Packages", "Modify Metrics", "Exit"]
 		reply = easygui.buttonbox(msg, choices = choices, image = self.logoPath)
-
 		if reply == "Build":
 			result = {
 				"ExcludedFiles": excludedFiles,
@@ -191,7 +190,7 @@ class Interface:
 		elif reply == "Choose Theme":
 			theme = self.selectFromList(msg = "Select a theme from the list:", title = "Themes", l = UMLTHEMES)
 
-		elif reply == "Packages":
+		elif reply == "Group in Packages":
 			packages = self.yesNoQuestion(msg = "Do you want to generate pacakges in the diagram?")
 
 		elif reply == "Modify Metrics":
