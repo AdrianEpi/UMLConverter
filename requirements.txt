@@ -3,6 +3,6 @@ coverage==6.5.0			# Coverage
 plantuml==0.3.0			# UML display module
 six==1.16.0 			# Utilities for python 2 and 3 compatibility
 easygui					# Interface for prompts
-Pillow==9.4.0 			# Reading and showing images
+Pillow==10.0.1 			# Reading and showing images
 esprima==4.0.1 			# JS AST generator
 #cgen==2020.1 			# C/C++/C# AST generator
